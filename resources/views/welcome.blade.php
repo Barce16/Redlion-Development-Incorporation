@@ -229,33 +229,37 @@ class="fixed top-0 left-0 w-full z-50 transition-all duration-500 bg-black/40 ba
 
     <div class="grid md:grid-cols-3 gap-8">
 
-      <!-- Card -->
-      <div class="bg-gray-900 rounded-2xl overflow-hidden shadow-lg hover:-translate-y-2 transition">
-        <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c" class="h-64 w-full object-cover">
-        <div class="p-6">
-          <h4 class="text-xl font-semibold">Downtown Luxury Villa</h4>
-          <p class="text-gray-400 mt-2">4 Bedrooms • 5 Bathrooms</p>
-          <p class="mt-4 text-2xl font-bold">₱ 5.2M</p>
+      @forelse($featuredProperties as $property)
+      <!-- Card (Dynamic) -->
+      <a href="{{ route('properties.show', $property->id) }}" class="bg-gray-900 rounded-2xl overflow-hidden shadow-lg hover:-translate-y-2 transition block group">
+        <div class="h-64 w-full object-cover bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center relative overflow-hidden">
+          @if($property->views)
+            <div class="absolute inset-0 flex items-center justify-center">
+              <div class="text-center text-white">
+                <p class="text-3xl font-bold">{{ $property->views }}</p>
+                <p class="text-sm">views</p>
+              </div>
+            </div>
+          @else
+            <svg class="w-20 h-20 text-white opacity-30" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/>
+            </svg>
+          @endif
         </div>
-      </div>
-
-      <div class="bg-gray-900 rounded-2xl overflow-hidden shadow-lg hover:-translate-y-2 transition">
-        <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c" class="h-64 w-full object-cover">
         <div class="p-6">
-          <h4 class="text-xl font-semibold">East Horizon Residences – Cugman, CDO</h4>
-          <p class="text-gray-400 mt-2">3 Bedrooms • 4 Bathrooms</p>
-          <p class="mt-4 text-2xl font-bold">₱ 7.8M</p>
+          <h4 class="text-xl font-semibold text-white truncate group-hover:text-red-500 transition">{{ $property->title }}</h4>
+          <p class="text-gray-400 mt-2">
+            @if($property->total_rooms){{ $property->total_rooms }} Bedroom{{ $property->total_rooms > 1 ? 's' : '' }} • @endif
+            {{ $property->city ?? 'Location TBA' }}
+          </p>
+          <p class="mt-4 text-2xl font-bold text-white">₱ {{ number_format($property->price / 1000000, 1) }}M</p>
         </div>
+      </a>
+      @empty
+      <div class="col-span-full text-center py-12 text-gray-400">
+        <p>No featured properties available yet.</p>
       </div>
-
-      <div class="bg-gray-900 rounded-2xl overflow-hidden shadow-lg hover:-translate-y-2 transition">
-        <img src="https://images.unsplash.com/photo-1600573472591-ee6b68d14c68" class="h-64 w-full object-cover">
-        <div class="p-6">
-          <h4 class="text-xl font-semibold">Davao Prime Heights – Davao City</h4>
-          <p class="text-gray-400 mt-2">2 Bedrooms • 3 Bathrooms</p>
-          <p class="mt-4 text-2xl font-bold">₱ 2.9M</p>
-        </div>
-      </div>
+      @endforelse
 
     </div>
   </div>
@@ -287,32 +291,22 @@ class="fixed top-0 left-0 w-full z-50 transition-all duration-500 bg-black/40 ba
             </p>
         </div>
 
-        <!-- Location Grid -->
+        <!-- Location Grid (Dynamic from Database) -->
         <div class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-8">
 
-            @php
-    $locations = [
-    ['city'=>'Cagayan de Oro','country'=>'Misamis Oriental','count'=>'45+','img'=>'/images/cagayan.jpg'],
-    ['city'=>'Davao City','country'=>'Davao del Sur','count'=>'38+','img'=>'/images/davao.jpg'],
-    ['city'=>'General Santos','country'=>'South Cotabato','count'=>'22+','img'=>'/images/gensan.jpg'],
-    ['city'=>'Butuan City','country'=>'Agusan del Norte','count'=>'18+','img'=>'/images/butuan.jpg'],
-    ['city'=>'Zamboanga City','country'=>'Zamboanga del Sur','count'=>'16+','img'=>'/images/zamboanga.jpg'],
-    ['city'=>'Iligan City','country'=>'Lanao del Norte','count'=>'14+','img'=>'/images/iligan.jpg'],
-    ];
-    @endphp
-
-            @foreach($locations as $location)
-            <div class="bg-white rounded-2xl shadow-md hover:shadow-xl transition duration-300 overflow-hidden group">
+            @forelse($locations as $location)
+            <a href="{{ route('properties.index') }}?city={{ urlencode($location['city']) }}"
+               class="bg-white rounded-2xl shadow-md hover:shadow-xl transition duration-300 overflow-hidden group block">
 
                 <!-- Image -->
                 <div class="relative h-48 overflow-hidden">
                     <img src="{{ $location['img'] }}"
+                         alt="{{ $location['city'] }}"
                          class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
 
                     <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
 
                     <div class="absolute bottom-4 left-4 text-white">
-                        <p class="text-xs opacity-80">{{ $location['country'] }}</p>
                         <h3 class="text-xl font-semibold">{{ $location['city'] }}</h3>
                     </div>
                 </div>
@@ -327,31 +321,27 @@ class="fixed top-0 left-0 w-full z-50 transition-all duration-500 bg-black/40 ba
                     </span>
                 </div>
 
+            </a>
+            @empty
+            <div class="col-span-full text-center py-12 text-gray-500">
+                <p>No properties available yet. Check back soon for new developments!</p>
             </div>
-            @endforeach
+            @endforelse
 
         </div>
 
-        <!-- Country Filters -->
+        <!-- Country/City Filters (Dynamic) -->
+        @if($locations->count() > 0)
         <div class="mt-14 flex flex-wrap justify-center gap-4">
-            @php
-            $countries = [
-            'Misamis Oriental (45)',
-            'Davao del Sur (38)',
-            'South Cotabato (22)',
-            'Agusan del Norte (18)',
-            'Zamboanga del Sur (16)',
-            'Lanao del Norte (14)'
-            ];
-            @endphp
-
-            @foreach($countries as $country)
-                <button class="px-5 py-2 bg-white border border-gray-200 rounded-full text-sm
-                               hover:bg-gray-900 hover:text-white transition">
-                    {{ $country }}
-                </button>
+            @foreach($locations as $location)
+                <a href="{{ route('properties.index') }}?city={{ urlencode($location['city']) }}"
+                   class="px-5 py-2 bg-white border border-gray-200 rounded-full text-sm
+                           hover:bg-gray-900 hover:text-white transition">
+                    {{ $location['city'] }} ({{ $location['count'] }})
+                </a>
             @endforeach
         </div>
+        @endif
 
     </div>
 </section>

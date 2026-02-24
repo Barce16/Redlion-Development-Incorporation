@@ -9,9 +9,16 @@ use Illuminate\Http\RedirectResponse;
 
 class PropertyController extends Controller
 {
-    public function index(): View
+    public function index(Request $request): View
     {
-        $properties = PropertyListing::paginate(12);
+        $query = PropertyListing::query();
+
+        // Filter by city if provided
+        if ($request->has('city') && $request->city) {
+            $query->where('city', ucfirst($request->city));
+        }
+
+        $properties = $query->paginate(12);
         $stats = [
             'total' => PropertyListing::count(),
             'published' => PropertyListing::where('status', 'published')->count(),
