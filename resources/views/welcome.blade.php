@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Redlion Development Incorporation</title>
+
+<!-- Tailwind CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+<!-- Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+body {
+  font-family: 'Inter', sans-serif;
+}
+.hero-bg {
+  background-image: url('images/hotel.png'); /* Replace with your image */
+  background-size: cover;
+  background-position: center;
+}
+</style>
+</head>
+
+<body class="bg-gray-950 text-white">
+
+<!-- ================= PREMIUM TAILWIND NAVBAR ================= -->
+<header id="navbar"
+class="fixed top-0 left-0 w-full z-50 transition-all duration-500 bg-black/40 backdrop-blur-md">
+
+    <div class="max-w-7xl mx-auto flex justify-between items-center px-6 py-4">
+
+        <!-- Logo -->
+        <a href="/" class="flex items-center gap-3 group">
+            <img src="images/logo.jpg" class="h-11 w-auto object-contain transition duration-500 group-hover:scale-105">
+
+            <div class="leading-tight">
+                <h1 class="text-lg md:text-xl font-bold tracking-wider text-white">
+                    REDLION
+                </h1>
+                <span class="text-xs text-gray-400 tracking-[0.25em]">
+                    DEVELOPMENT INC.
+                </span>
+            </div>
+        </a>
+
+        <!-- Desktop Menu -->
+        <nav class="hidden md:flex items-center gap-8 text-sm font-medium">
+
+            <!-- Nav Links -->
+            <a href="#" class="relative text-gray-300 hover:text-white transition group">
+                Home
+                <span class="absolute left-0 -bottom-1 w-0 h-[2px] bg-red-600 transition-all duration-300 group-hover:w-full"></span>
+            </a>
+
+            <a href="#" class="relative text-gray-300 hover:text-white transition group">
+                Properties
+                <span class="absolute left-0 -bottom-1 w-0 h-[2px] bg-red-600 transition-all duration-300 group-hover:w-full"></span>
+            </a>
+
+            <a href="#" class="relative text-gray-300 hover:text-white transition group">
+                About
+                <span class="absolute left-0 -bottom-1 w-0 h-[2px] bg-red-600 transition-all duration-300 group-hover:w-full"></span>
+            </a>
+
+            <a href="#" class="relative text-gray-300 hover:text-white transition group">
+                Contact
+                <span class="absolute left-0 -bottom-1 w-0 h-[2px] bg-red-600 transition-all duration-300 group-hover:w-full"></span>
+            </a>
+
+            <!-- Divider -->
+            <div class="h-6 w-px bg-gray-600"></div>
+
+             <!-- Login Up Button -->
+            <a href="auth/login"
+            class="px-5 py-2.5 bg-gradient-to-r from-red-600 to-red-700
+            rounded-full text-white font-semibold shadow-lg
+            hover:shadow-red-600/40 hover:scale-105 transition-all duration-300">
+                Login
+            </a>
+
+            <!-- Sign Up Button
+            <a href="auth/register"
+            class="px-5 py-2.5 bg-gradient-to-r from-red-600 to-red-700
+            rounded-full text-white font-semibold shadow-lg
+            hover:shadow-red-600/40 hover:scale-105 transition-all duration-300">
+                Sign Up
+            </a>    -->
+
+        </nav>
+
+        <!-- Mobile Button -->
+        <button id="menuBtn" class="md:hidden text-white focus:outline-none">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none"
+                viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+            </svg>
+        </button>
+
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobileMenu"
+    class="hidden md:hidden bg-black/95 backdrop-blur-lg border-t border-gray-800">
+
+        <div class="flex flex-col space-y-6 px-6 py-8 text-gray-300 text-base">
+
+            <a href="/welcome" class="hover:text-white transition">Home</a>
+            <a href="/properties" class="hover:text-white transition">Properties</a>
+            <a href="#" class="hover:text-white transition">About</a>
+            <a href="#" class="hover:text-white transition">Contact</a>
+
+            <div class="border-t border-gray-700 pt-6 space-y-4">
+                <a href="auth/login" class="block hover:text-white">Login</a>
+
+                <a href="auth/register"
+                class="block text-center py-3 bg-red-600 rounded-full text-white font-semibold">
+                    Sign Up
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+</header>
+
+<!-- ================= HERO SLIDER ================= -->
+<section class="relative h-screen overflow-hidden text-white">
+
+<!-- Slides -->
+<div id="slider" class="relative w-full h-full overflow-hidden">
+
+  <!-- Slide 1 -->
+  <div class="slide absolute inset-0 opacity-100 transition-opacity duration-1000">
+    <img src="images/hotel2.jpg"
+         class="w-full h-full object-contain md:object-cover object-center">
+  </div>
+
+  <!-- Slide 2 -->
+  <div class="slide absolute inset-0 opacity-0 transition-opacity duration-1000">
+    <img src="images/hotel3.jpg"
+         class="w-full h-full object-contain md:object-cover object-center">
+  </div>
+
+  <!-- Slide 3 -->
+  <div class="slide absolute inset-0 opacity-0 transition-opacity duration-1000">
+    <img src="images/hotel.png"
+         class="w-full h-full object-contain md:object-cover object-center">
+  </div>
+
+  <!-- Dark Overlay -->
+  <div class="absolute inset-0 bg-gradient-to-r from-black/50 via-black/60 to-black/30"></div>
+
+</div>
+
+  <!-- Content -->
+  <div class="absolute inset-0 flex items-center">
+    <div class="max-w-7xl mx-auto px-6">
+
+      <span class="bg-red-600/90 text-xs px-4 py-2 rounded-full uppercase tracking-wider">
+        Premium Development
+      </span>
+
+      <h1 class="mt-6 text-5xl md:text-7xl font-extrabold max-w-3xl leading-tight animate-fade">
+        Building Strong Foundations for Tomorrow
+      </h1>
+
+      <p class="mt-6 text-gray-300 text-lg max-w-xl">
+        Luxury residential & commercial developments across prime global locations.
+      </p>
+
+      <!-- Search Bar -->
+      <div class="mt-10 bg-white/10 backdrop-blur-lg p-4 rounded-2xl flex flex-col md:flex-row gap-4 max-w-3xl">
+        <input type="text" placeholder="Search Location"
+          class="flex-1 px-4 py-3 bg-transparent border border-white/20 rounded-lg focus:outline-none">
+        <select class="px-4 py-3 bg-transparent border border-white/20 rounded-lg">
+          <option>Property Type</option>
+          <option>Villa</option>
+          <option>Apartment</option>
+          <option>Commercial</option>
+        </select>
+        <button class="px-6 py-3 bg-red-600 rounded-lg hover:bg-red-700 transition">
+          Search
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Progress Bar -->
+  <div class="absolute bottom-0 left-0 w-full h-1 bg-white/10">
+    <div id="progress" class="h-full bg-red-600 w-0"></div>
+  </div>
+
+</section>
+<section class="py-20 bg-gray-900">
+  <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-4 gap-10 text-center">
+
+    <div>
+      <h3 class="text-4xl font-bold text-red-500">80+</h3>
+      <p class="text-gray-400 mt-2">Projects in Mindanao</p>
+    </div>
+
+    <div>
+      <h3 class="text-4xl font-bold text-red-500">12+</h3>
+      <p class="text-gray-400 mt-2">Years in the Philippines</p>
+    </div>
+
+    <div>
+      <h3 class="text-4xl font-bold text-red-500">400+</h3>
+      <p class="text-gray-400 mt-2">Happy Filipino Clients</p>
+    </div>
+
+    <div>
+      <h3 class="text-4xl font-bold text-red-500">6</h3>
+      <p class="text-gray-400 mt-2">Mindanao Cities Covered</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ================= FEATURED PROPERTIES ================= -->
+<section class="py-24 bg-gray-950">
+  <div class="max-w-7xl mx-auto px-6">
+
+    <h3 class="text-4xl font-bold mb-12">Featured Listings</h3>
+
+    <div class="grid md:grid-cols-3 gap-8">
+
+      <!-- Card -->
+      <div class="bg-gray-900 rounded-2xl overflow-hidden shadow-lg hover:-translate-y-2 transition">
+        <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c" class="h-64 w-full object-cover">
+        <div class="p-6">
+          <h4 class="text-xl font-semibold">Downtown Luxury Villa</h4>
+          <p class="text-gray-400 mt-2">4 Bedrooms • 5 Bathrooms</p>
+          <p class="mt-4 text-2xl font-bold">₱ 5.2M</p>
+        </div>
+      </div>
+
+      <div class="bg-gray-900 rounded-2xl overflow-hidden shadow-lg hover:-translate-y-2 transition">
+        <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c" class="h-64 w-full object-cover">
+        <div class="p-6">
+          <h4 class="text-xl font-semibold">East Horizon Residences – Cugman, CDO</h4>
+          <p class="text-gray-400 mt-2">3 Bedrooms • 4 Bathrooms</p>
+          <p class="mt-4 text-2xl font-bold">₱ 7.8M</p>
+        </div>
+      </div>
+
+      <div class="bg-gray-900 rounded-2xl overflow-hidden shadow-lg hover:-translate-y-2 transition">
+        <img src="https://images.unsplash.com/photo-1600573472591-ee6b68d14c68" class="h-64 w-full object-cover">
+        <div class="p-6">
+          <h4 class="text-xl font-semibold">Davao Prime Heights – Davao City</h4>
+          <p class="text-gray-400 mt-2">2 Bedrooms • 3 Bathrooms</p>
+          <p class="mt-4 text-2xl font-bold">₱ 2.9M</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ================= CALL TO ACTION ================= -->
+<section class="py-24 bg-gradient-to-r from-gray-900 to-gray-800 text-center">
+  <div class="max-w-3xl mx-auto px-6">
+    <h3 class="text-4xl font-bold">Looking for Your Dream Property?</h3>
+    <p class="text-gray-400 mt-4">
+      Discover premium properties in prime locations with world-class amenities.
+    </p>
+    <button class="mt-8 px-10 py-4 bg-white text-black rounded-xl font-semibold hover:scale-105 transition">
+      Contact Us
+    </button>
+  </div>
+</section>
+{{-- ================= LOCATION SECTION ================= --}}
+<section class="py-24 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-6">
+
+        <!-- Heading -->
+        <div class="text-center max-w-3xl mx-auto mb-16">
+            <h2 class="text-4xl md:text-5xl font-bold text-gray-900">
+                Explore Property Developments by Location
+            </h2>
+            <p class="mt-6 text-gray-500 text-lg">
+                Discover exclusive property development projects in the world's most sought-after destinations
+            </p>
+        </div>
+
+        <!-- Location Grid -->
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-8">
+
+            @php
+    $locations = [
+    ['city'=>'Cagayan de Oro','country'=>'Misamis Oriental','count'=>'45+','img'=>'/images/cagayan.jpg'],
+    ['city'=>'Davao City','country'=>'Davao del Sur','count'=>'38+','img'=>'/images/davao.jpg'],
+    ['city'=>'General Santos','country'=>'South Cotabato','count'=>'22+','img'=>'/images/gensan.jpg'],
+    ['city'=>'Butuan City','country'=>'Agusan del Norte','count'=>'18+','img'=>'/images/butuan.jpg'],
+    ['city'=>'Zamboanga City','country'=>'Zamboanga del Sur','count'=>'16+','img'=>'/images/zamboanga.jpg'],
+    ['city'=>'Iligan City','country'=>'Lanao del Norte','count'=>'14+','img'=>'/images/iligan.jpg'],
+    ];
+    @endphp
+
+            @foreach($locations as $location)
+            <div class="bg-white rounded-2xl shadow-md hover:shadow-xl transition duration-300 overflow-hidden group">
+
+                <!-- Image -->
+                <div class="relative h-48 overflow-hidden">
+                    <img src="{{ $location['img'] }}"
+                         class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
+
+                    <div class="absolute bottom-4 left-4 text-white">
+                        <p class="text-xs opacity-80">{{ $location['country'] }}</p>
+                        <h3 class="text-xl font-semibold">{{ $location['city'] }}</h3>
+                    </div>
+                </div>
+
+                <!-- Footer -->
+                <div class="flex items-center justify-between p-5">
+                    <span class="text-gray-600 text-sm">
+                        {{ $location['count'] }} Properties
+                    </span>
+                    <span class="text-gray-400 group-hover:translate-x-1 transition">
+                        →
+                    </span>
+                </div>
+
+            </div>
+            @endforeach
+
+        </div>
+
+        <!-- Country Filters -->
+        <div class="mt-14 flex flex-wrap justify-center gap-4">
+            @php
+            $countries = [
+            'Misamis Oriental (45)',
+            'Davao del Sur (38)',
+            'South Cotabato (22)',
+            'Agusan del Norte (18)',
+            'Zamboanga del Sur (16)',
+            'Lanao del Norte (14)'
+            ];
+            @endphp
+
+            @foreach($countries as $country)
+                <button class="px-5 py-2 bg-white border border-gray-200 rounded-full text-sm
+                               hover:bg-gray-900 hover:text-white transition">
+                    {{ $country }}
+                </button>
+            @endforeach
+        </div>
+
+    </div>
+</section>
+
+
+
+{{-- ================= WHY PROPERTY DEVELOPMENTS ================= --}}
+<section class="py-28 bg-white">
+    <div class="max-w-4xl mx-auto px-6 text-center">
+
+        <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-10">
+            Why Property Developments?
+        </h2>
+
+        <div class="space-y-6 text-gray-600 text-lg leading-relaxed">
+
+            <p>
+                <strong>Strategic property development purchases</strong> offer one of the most reliable paths
+                to wealth creation and modern living. Whether through pre-construction projects,
+                new build properties, or off-plan developments, buying directly from developers
+                provides both capital appreciation potential and access to the latest design innovations.
+            </p>
+
+            <p>
+                Property developments deliver unique advantages including flexible payment structures,
+                potential for significant capital growth, customization options, tax benefits, and
+                modern amenities. Our platform connects you with carefully vetted developments
+                from award-winning developers, ensuring quality and reliability at every step.
+            </p>
+
+            <p>
+                Our curated selection spans luxury apartments, premium villas, commercial properties,
+                and exclusive developments across prime global locations. Each opportunity is thoroughly
+                analyzed to provide you with transparent, data-driven purchasing decisions.
+            </p>
+
+        </div>
+
+    </div>
+</section>
+<!-- ================= ULTRA PREMIUM FOOTER ================= -->
+<footer class="bg-black text-gray-400 pt-20 pb-10 border-t border-gray-800">
+
+    <div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-4 gap-12">
+
+        <!-- Company Info -->
+        <div>
+            <h3 class="text-white text-xl font-semibold mb-4 tracking-wide">
+                REDLION DEVELOPMENT INC.
+            </h3>
+            <p class="text-sm leading-relaxed mb-6">
+                Premium real estate developments designed for modern living.
+                Building communities with vision and excellence.
+            </p>
+
+            <p class="text-sm">
+                📍 East Horizon, Cugman<br>
+                Cagayan de Oro City, Philippines
+            </p>
+            <p class="text-sm mt-2">
+                📞 +63 9XX XXX XXXX<br>
+                ✉️ info@redlionrealestate.com
+            </p>
+        </div>
+
+        <!-- Google Map -->
+        <div class="lg:col-span-2">
+            <h4 class="text-white font-semibold mb-4">Our Location</h4>
+            <div class="rounded-2xl overflow-hidden border border-gray-800 shadow-lg">
+                <iframe
+                    src="https://www.google.com/maps?q=East+Horizon+Cugman+Cagayan+de+Oro+City&output=embed"
+                    width="100%"
+                    height="250"
+                    style="border:0;"
+                    allowfullscreen=""
+                    loading="lazy">
+                </iframe>
+            </div>
+        </div>
+
+        <!-- Newsletter -->
+        <div>
+            <h4 class="text-white font-semibold mb-4">Newsletter</h4>
+            <p class="text-sm mb-4">
+                Subscribe to get updates on new properties and offers.
+            </p>
+
+            <form class="flex flex-col gap-3">
+                <input
+                    type="email"
+                    placeholder="Enter your email"
+                    class="px-4 py-3 rounded-full bg-gray-900 border border-gray-700
+                    focus:outline-none focus:ring-2 focus:ring-red-600
+                    text-sm text-white placeholder-gray-500"
+                >
+
+                <button
+                    type="submit"
+                    class="px-4 py-3 rounded-full bg-red-600 text-white font-semibold
+                    hover:bg-red-700 transition duration-300
+                    hover:shadow-[0_0_20px_rgba(220,38,38,0.6)]">
+                    Subscribe
+                </button>
+            </form>
+
+            <!-- Social Icons -->
+            <div class="flex gap-4 mt-6">
+
+                <a href="#"
+                class="p-3 bg-gray-900 rounded-full
+                hover:bg-red-600 transition duration-300
+                hover:shadow-[0_0_20px_rgba(220,38,38,0.7)]">
+                    <!-- Facebook -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M22 12a10 10 0 10-11.5 9.9v-7H7.5v-3h3V9.5c0-3 1.8-4.6 4.5-4.6 1.3 0 2.6.2 2.6.2v3h-1.5c-1.5 0-2 1-2 2v2.4h3.3l-.5 3h-2.8v7A10 10 0 0022 12z"/>
+                    </svg>
+                </a>
+
+                <a href="#"
+                class="p-3 bg-gray-900 rounded-full
+                hover:bg-red-600 transition duration-300
+                hover:shadow-[0_0_20px_rgba(220,38,38,0.7)]">
+                    <!-- Instagram -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M7 2C4.2 2 2 4.2 2 7v10c0 2.8 2.2 5 5 5h10c2.8 0 5-2.2 5-5V7c0-2.8-2.2-5-5-5H7zm5 5a5 5 0 110 10 5 5 0 010-10zm6.5-.8a1.3 1.3 0 110 2.6 1.3 1.3 0 010-2.6z"/>
+                    </svg>
+                </a>
+
+                <a href="#"
+                class="p-3 bg-gray-900 rounded-full
+                hover:bg-red-600 transition duration-300
+                hover:shadow-[0_0_20px_rgba(220,38,38,0.7)]">
+                    <!-- YouTube -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M21.6 7.2a3 3 0 00-2.1-2.1C17.8 4.5 12 4.5 12 4.5s-5.8 0-7.5.6a3 3 0 00-2.1 2.1A31.7 31.7 0 002 12a31.7 31.7 0 00.4 4.8 3 3 0 002.1 2.1c1.7.6 7.5.6 7.5.6s5.8 0 7.5-.6a3 3 0 002.1-2.1A31.7 31.7 0 0022 12a31.7 31.7 0 00-.4-4.8zM10 15.5v-7l6 3.5-6 3.5z"/>
+                    </svg>
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Bottom -->
+    <div class="mt-16 border-t border-gray-800 pt-6 text-center text-sm text-gray-500">
+        © <span id="year"></span> RedLion Development Incorporation. All rights reserved.
+    </div>
+
+</footer>
+
+
+<!-- ================= SCRIPT ================= -->
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const progress = document.getElementById('progress');
+  let current = 0;
+  const total = slides.length;
+  const duration = 3000;
+
+  function showSlide(index) {
+    slides.forEach(slide => slide.classList.remove('opacity-100'));
+    slides.forEach(slide => slide.classList.add('opacity-0'));
+
+    slides[index].classList.remove('opacity-0');
+    slides[index].classList.add('opacity-100');
+
+    progress.style.transition = "none";
+    progress.style.width = "0%";
+
+    setTimeout(() => {
+      progress.style.transition = `width ${duration}ms linear`;
+      progress.style.width = "100%";
+    }, 50);
+  }
+
+  function nextSlide() {
+    current = (current + 1) % total;
+    showSlide(current);
+  }
+
+  showSlide(current);
+  setInterval(nextSlide, duration);
+
+  // Navbar scroll effect
+  window.addEventListener("scroll", function() {
+    const nav = document.getElementById("navbar");
+    nav.classList.toggle("bg-black/80 backdrop-blur-lg", window.scrollY > 50);
+  });
+
+   const menuBtn = document.getElementById('menuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const navbar = document.getElementById('navbar');
+
+    menuBtn.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+    });
+
+    // Scroll effect
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 50) {
+            navbar.classList.remove('bg-black/40');
+            navbar.classList.add('bg-black/90', 'shadow-xl');
+        } else {
+            navbar.classList.remove('bg-black/90', 'shadow-xl');
+            navbar.classList.add('bg-black/40');
+        }
+    });
+
+    document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+
+</body>
+</html>
