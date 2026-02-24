@@ -53,7 +53,7 @@ class CustomerController extends Controller
             'joined_at' => now(),
         ]));
 
-        return redirect()->route('customer')->with('success', 'Customer created successfully.');
+        return redirect()->route('customers.index')->with('success', 'Customer created successfully.');
     }
 
     public function show(Customer $customer): View
@@ -87,6 +87,6 @@ class CustomerController extends Controller
     public function destroy(Customer $customer): RedirectResponse
     {
         $customer->delete();
-        return redirect()->route('customer')->with('success', 'Customer deleted successfully.');
+        return redirect()->route('customers.index')->with('success', 'Customer deleted successfully.');
     }
 }

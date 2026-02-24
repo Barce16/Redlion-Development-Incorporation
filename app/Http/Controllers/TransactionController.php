@@ -60,7 +60,7 @@ class TransactionController extends Controller
 
         Transaction::create($validated);
 
-        return redirect()->route('transaction')->with('success', 'Transaction created successfully.');
+        return redirect()->route('transactions.index')->with('success', 'Transaction created successfully.');
     }
 
     public function show(Transaction $transaction): View
@@ -99,6 +99,6 @@ class TransactionController extends Controller
     public function destroy(Transaction $transaction): RedirectResponse
     {
         $transaction->delete();
-        return redirect()->route('transaction')->with('success', 'Transaction deleted successfully.');
+        return redirect()->route('transactions.index')->with('success', 'Transaction deleted successfully.');
     }
 }

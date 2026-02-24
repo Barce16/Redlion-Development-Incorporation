@@ -72,7 +72,7 @@
                                     Delete Message
                                 </button>
                             </form>
-                            <a href="{{ route('message') }}" class="block w-full px-4 py-2 bg-gray-500 text-white rounded-lg
+                            <a href="{{ route('messages.index') }}" class="block w-full px-4 py-2 bg-gray-500 text-white rounded-lg
                                 font-medium hover:bg-gray-600 transition text-center text-sm">
                                 Back to Messages
                             </a>

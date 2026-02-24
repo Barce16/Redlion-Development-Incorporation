@@ -63,7 +63,7 @@ class MessageController extends Controller
 
         Message::create($validated);
 
-        return redirect()->route('message')->with('success', 'Message created successfully.');
+        return redirect()->route('messages.index')->with('success', 'Message created successfully.');
     }
 
     public function show(Message $message): View
@@ -110,6 +110,6 @@ class MessageController extends Controller
     public function destroy(Message $message): RedirectResponse
     {
         $message->delete();
-        return redirect()->route('message')->with('success', 'Message deleted successfully.');
+        return redirect()->route('messages.index')->with('success', 'Message deleted successfully.');
     }
 }

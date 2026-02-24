@@ -71,7 +71,7 @@
                         </div>
 
                         <div class="flex gap-4 justify-end">
-                            <a href="{{ route('message') }}" class="px-6 py-2 border border-gray-300 dark:border-gray-600
+                            <a href="{{ route('messages.index') }}" class="px-6 py-2 border border-gray-300 dark:border-gray-600
                                 text-gray-700 dark:text-gray-300 rounded-lg font-medium hover:bg-gray-50 dark:hover:bg-gray-700 transition">
                                 Cancel
                             </a>

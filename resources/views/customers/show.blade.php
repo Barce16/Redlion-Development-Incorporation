@@ -106,7 +106,7 @@
                                         Delete Customer
                                     </button>
                                 </form>
-                                <a href="{{ route('customer') }}" class="block w-full px-4 py-2 bg-gray-500 text-white rounded-lg
+                                <a href="{{ route('customers.index') }}" class="block w-full px-4 py-2 bg-gray-500 text-white rounded-lg
                                     font-medium hover:bg-gray-600 transition text-center text-sm">
                                     Back to List
                                 </a>
