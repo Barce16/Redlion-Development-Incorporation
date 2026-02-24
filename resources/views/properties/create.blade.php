@@ -9,8 +9,70 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <form action="{{ route('properties.store') }}" method="POST" class="space-y-6">
+                    <form action="{{ route('properties.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
                         @csrf
+
+                        <!-- Basic Information -->
+                        <div class="space-y-6">
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Basic Information</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <!-- Project Name -->
+                                <div>
+                                    <label for="project_name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                        Project Name
+                                    </label>
+                                    <input type="text" id="project_name" name="project_name" value="{{ old('project_name') }}"
+                                           class="block w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg
+                                           dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                           placeholder="e.g., Sunrise Residences">
+                                    @error('project_name')<span class="text-red-500 text-sm">{{ $message }}</span>@enderror
+                                </div>
+                                <!-- Developer Company -->
+                                <div>
+                                    <label for="developer_company" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                        Developer Company
+                                    </label>
+                                    <input type="text" id="developer_company" name="developer_company" value="{{ old('developer_company') }}"
+                                           class="block w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg
+                                           dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                           placeholder="e.g., Redlion Development Inc.">
+                                    @error('developer_company')<span class="text-red-500 text-sm">{{ $message }}</span>@enderror
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                <!-- City -->
+                                <div>
+                                    <label for="city" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                        City
+                                    </label>
+                                    <input type="text" id="city" name="city" value="{{ old('city') }}"
+                                           class="block w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg
+                                           dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    @error('city')<span class="text-red-500 text-sm">{{ $message }}</span>@enderror
+                                </div>
+                                <!-- Province -->
+                                <div>
+                                    <label for="province" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                        Province
+                                    </label>
+                                    <input type="text" id="province" name="province" value="{{ old('province') }}"
+                                           class="block w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg
+                                           dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    @error('province')<span class="text-red-500 text-sm">{{ $message }}</span>@enderror
+                                </div>
+                                <!-- Completion Status -->
+                                <div>
+                                    <label for="completion_percentage" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                        Completion Status (% done)
+                                    </label>
+                                    <input type="number" id="completion_percentage" name="completion_percentage" value="{{ old('completion_percentage', 0) }}" min="0" max="100"
+                                           class="block w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg
+                                           dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                           placeholder="0">
+                                    @error('completion_percentage')<span class="text-red-500 text-sm">{{ $message }}</span>@enderror
+                                </div>
+                            </div>
+                        </div>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <!-- Title -->
@@ -25,27 +87,12 @@
                                 @error('title')<span class="text-red-500 text-sm">{{ $message }}</span>@enderror
                             </div>
 
-                            <!-- Type -->
-                            <div>
-                                <label for="type" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                    Type
-                                </label>
-                                <select id="type" name="type" class="block w-full px-4 py-2 border border-gray-300
-                                    dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                    <option value="">Select Type</option>
-                                    <option value="house" {{ old('type') == 'house' ? 'selected' : '' }}>House</option>
-                                    <option value="apartment" {{ old('type') == 'apartment' ? 'selected' : '' }}>Apartment</option>
-                                    <option value="villa" {{ old('type') == 'villa' ? 'selected' : '' }}>Villa</option>
-                                    <option value="commercial" {{ old('type') == 'commercial' ? 'selected' : '' }}>Commercial</option>
-                                    <option value="land" {{ old('type') == 'land' ? 'selected' : '' }}>Land</option>
-                                </select>
-                                @error('type')<span class="text-red-500 text-sm">{{ $message }}</span>@enderror
-                            </div>
+                           
 
-                            <!-- Category -->
+                            <!-- Category (Project Type) -->
                             <div>
                                 <label for="category" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                    Category
+                                    Project Type
                                 </label>
                                 <select id="category" name="category" class="block w-full px-4 py-2 border border-gray-300
                                     dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
@@ -83,95 +130,94 @@
                             @error('description')<span class="text-red-500 text-sm">{{ $message }}</span>@enderror
                         </div>
 
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <!-- Stock -->
-                            <div>
-                                <label for="stock" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                    Stock
-                                </label>
-                                <input type="number" id="stock" name="stock" value="{{ old('stock', 1) }}"
-                                    class="block w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg
-                                    dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                @error('stock')<span class="text-red-500 text-sm">{{ $message }}</span>@enderror
-                            </div>
-
-                            <!-- Total Floors -->
-                            <div>
-                                <label for="total_floors" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                    Total Floors
-                                </label>
-                                <input type="number" id="total_floors" name="total_floors" value="{{ old('total_floors') }}"
-                                    class="block w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg
-                                    dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                @error('total_floors')<span class="text-red-500 text-sm">{{ $message }}</span>@enderror
-                            </div>
-
-                            <!-- Total Rooms -->
-                            <div>
-                                <label for="total_rooms" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                    Total Rooms
-                                </label>
-                                <input type="number" id="total_rooms" name="total_rooms" value="{{ old('total_rooms') }}"
-                                    class="block w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg
-                                    dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                @error('total_rooms')<span class="text-red-500 text-sm">{{ $message }}</span>@enderror
-                            </div>
-
-                            <!-- Area -->
-                            <div>
-                                <label for="area" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                    Area (sqft)
-                                </label>
-                                <input type="number" id="area" name="area" value="{{ old('area') }}" step="0.01"
-                                    class="block w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg
-                                    dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                @error('area')<span class="text-red-500 text-sm">{{ $message }}</span>@enderror
+                        <!-- Financial Details -->
+                        <div class="space-y-6">
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Financial Details</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                               
+                                <!-- Per Sqm Price -->
+                                <div>
+                                    <label for="price_per_sqm" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                        Per Sqm Price
+                                    </label>
+                                    <input type="number" id="price_per_sqm" name="price_per_sqm" value="{{ old('price_per_sqm') }}" step="0.01"
+                                           class="block w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg
+                                           dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                           placeholder="0.00">
+                                    @error('price_per_sqm')<span class="text-red-500 text-sm">{{ $message }}</span>@enderror
+                                </div>
+                                <!-- Reservation Fee -->
+                                <div>
+                                    <label for="reservation_fee" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                        Reservation Fee
+                                    </label>
+                                    <input type="number" id="reservation_fee" name="reservation_fee" value="{{ old('reservation_fee') }}" step="0.01"
+                                           class="block w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg
+                                           dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                           placeholder="0.00">
+                                    @error('reservation_fee')<span class="text-red-500 text-sm">{{ $message }}</span>@enderror
+                                </div>
+                                <!-- Payment Terms -->
+                                <div>
+                                    <label for="payment_terms" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                        Payment Terms
+                                    </label>
+                                    <select id="payment_terms" name="payment_terms"
+                                            class="block w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg
+                                            dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                        <option value="">Select Terms</option>
+                                        <option value="Installment" {{ old('payment_terms') == 'Installment' ? 'selected' : '' }}>Installment</option>
+                                        <option value="Bank Financing" {{ old('payment_terms') == 'Bank Financing' ? 'selected' : '' }}>Bank Financing</option>
+                                    </select>
+                                    @error('payment_terms')<span class="text-red-500 text-sm">{{ $message }}</span>@enderror
+                                </div>
                             </div>
                         </div>
 
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <!-- Country -->
-                            <div>
-                                <label for="country" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                    Country
-                                </label>
-                                <input type="text" id="country" name="country" value="{{ old('country') }}"
-                                    class="block w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg
-                                    dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                @error('country')<span class="text-red-500 text-sm">{{ $message }}</span>@enderror
-                            </div>
+                        
 
-                            <!-- City -->
-                            <div>
-                                <label for="city" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                    City
-                                </label>
-                                <input type="text" id="city" name="city" value="{{ old('city') }}"
-                                    class="block w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg
-                                    dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                @error('city')<span class="text-red-500 text-sm">{{ $message }}</span>@enderror
-                            </div>
+                        
 
-                            <!-- Zone -->
-                            <div>
-                                <label for="zone" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                    Zone
-                                </label>
-                                <input type="text" id="zone" name="zone" value="{{ old('zone') }}"
-                                    class="block w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg
-                                    dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                @error('zone')<span class="text-red-500 text-sm">{{ $message }}</span>@enderror
-                            </div>
-
-                            <!-- Street Address -->
-                            <div>
-                                <label for="street_address" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                    Street Address
-                                </label>
-                                <input type="text" id="street_address" name="street_address" value="{{ old('street_address') }}"
-                                    class="block w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg
-                                    dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                @error('street_address')<span class="text-red-500 text-sm">{{ $message }}</span>@enderror
+                        <!-- Plans & Design -->
+                        <div class="space-y-6">
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Plans & Design</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <!-- Architectural Floor Plan (PDF) -->
+                                <div>
+                                    <label for="floor_plan_pdf" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                        Architectural Floor Plan (PDF upload)
+                                    </label>
+                                    <input type="file" id="floor_plan_pdf" name="floor_plan_pdf" accept="application/pdf"
+                                           class="block w-full text-sm text-gray-700 dark:text-gray-300">
+                                    @error('floor_plan_pdf')<span class="text-red-500 text-sm">{{ $message }}</span>@enderror
+                                </div>
+                                <!-- Site Development Plan (PDF) -->
+                                <div>
+                                    <label for="site_plan_pdf" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                        Site Development Plan (PDF upload)
+                                    </label>
+                                    <input type="file" id="site_plan_pdf" name="site_plan_pdf" accept="application/pdf"
+                                           class="block w-full text-sm text-gray-700 dark:text-gray-300">
+                                    @error('site_plan_pdf')<span class="text-red-500 text-sm">{{ $message }}</span>@enderror
+                                </div>
+                                <!-- 3D Perspective Render / Image Gallery -->
+                                <div class="md:col-span-2">
+                                    <label for="project_images" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                        Image Gallery (renders, elevation, interior)
+                                    </label>
+                                    <input type="file" id="project_images" name="project_images[]" multiple accept="image/*"
+                                           class="block w-full text-sm text-gray-700 dark:text-gray-300">
+                                    @error('project_images.*')<span class="text-red-500 text-sm">{{ $message }}</span>@enderror
+                                </div>
+                                <!-- Downloadable brochure -->
+                                <div>
+                                    <label for="brochure_file" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                        Downloadable Brochure (PDF/DOC)
+                                    </label>
+                                    <input type="file" id="brochure_file" name="brochure_file" accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                                           class="block w-full text-sm text-gray-700 dark:text-gray-300">
+                                    @error('brochure_file')<span class="text-red-500 text-sm">{{ $message }}</span>@enderror
+                                </div>
                             </div>
                         </div>
 

@@ -47,22 +47,20 @@
                                     <p class="text-gray-500 dark:text-gray-400 text-sm">Price</p>
                                     <p class="text-gray-900 dark:text-white font-semibold text-lg">₱{{ number_format($property->price, 2) }}</p>
                                 </div>
-                                <div>
-                                    <p class="text-gray-500 dark:text-gray-400 text-sm">Stock</p>
-                                    <p class="text-gray-900 dark:text-white font-semibold">{{ $property->stock }}</p>
+                                
+                                <div class="col-span-2">
+                                    <p class="text-gray-500 dark:text-gray-400 text-sm">Project Name</p>
+                                    <p class="text-gray-900 dark:text-white font-semibold">{{ $property->project_name ?? 'N/A' }}</p>
                                 </div>
                                 <div>
-                                    <p class="text-gray-500 dark:text-gray-400 text-sm">Total Floors</p>
-                                    <p class="text-gray-900 dark:text-white font-semibold">{{ $property->total_floors ?? 'N/A' }}</p>
+                                    <p class="text-gray-500 dark:text-gray-400 text-sm">Developer Company</p>
+                                    <p class="text-gray-900 dark:text-white font-semibold">{{ $property->developer_company ?? 'N/A' }}</p>
                                 </div>
                                 <div>
-                                    <p class="text-gray-500 dark:text-gray-400 text-sm">Total Rooms</p>
-                                    <p class="text-gray-900 dark:text-white font-semibold">{{ $property->total_rooms ?? 'N/A' }}</p>
+                                    <p class="text-gray-500 dark:text-gray-400 text-sm">Completion Status</p>
+                                    <p class="text-gray-900 dark:text-white font-semibold">{{ $property->completion_percentage }}%</p>
                                 </div>
-                                <div>
-                                    <p class="text-gray-500 dark:text-gray-400 text-sm">Area (sqft)</p>
-                                    <p class="text-gray-900 dark:text-white font-semibold">{{ $property->area ?? 'N/A' }}</p>
-                                </div>
+                                
                                 <div>
                                     <p class="text-gray-500 dark:text-gray-400 text-sm">Status</p>
                                     <span class="px-2 py-1 rounded text-xs font-medium
@@ -94,22 +92,82 @@
                             <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Location</h3>
                             <div class="grid grid-cols-2 gap-4">
                                 <div>
-                                    <p class="text-gray-500 dark:text-gray-400 text-sm">Country</p>
-                                    <p class="text-gray-900 dark:text-white">{{ $property->country ?? 'N/A' }}</p>
-                                </div>
-                                <div>
                                     <p class="text-gray-500 dark:text-gray-400 text-sm">City</p>
                                     <p class="text-gray-900 dark:text-white">{{ $property->city ?? 'N/A' }}</p>
                                 </div>
                                 <div>
-                                    <p class="text-gray-500 dark:text-gray-400 text-sm">Zone</p>
-                                    <p class="text-gray-900 dark:text-white">{{ $property->zone ?? 'N/A' }}</p>
+                                    <p class="text-gray-500 dark:text-gray-400 text-sm">Province</p>
+                                    <p class="text-gray-900 dark:text-white">{{ $property->province ?? 'N/A' }}</p>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Financial Details -->
+                    <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                        <div class="p-6">
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Financial Details</h3>
+                            <div class="grid grid-cols-2 gap-4">
+                                
+                                <div>
+                                    <p class="text-gray-500 dark:text-gray-400 text-sm">Per Sqm Price</p>
+                                    <p class="text-gray-900 dark:text-white font-semibold">{{ $property->price_per_sqm ? ('₱' . number_format($property->price_per_sqm, 2)) : 'N/A' }}</p>
                                 </div>
                                 <div>
-                                    <p class="text-gray-500 dark:text-gray-400 text-sm">Street Address</p>
-                                    <p class="text-gray-900 dark:text-white">{{ $property->street_address ?? 'N/A' }}</p>
+                                    <p class="text-gray-500 dark:text-gray-400 text-sm">Reservation Fee</p>
+                                    <p class="text-gray-900 dark:text-white font-semibold">{{ $property->reservation_fee ? ('₱' . number_format($property->reservation_fee, 2)) : 'N/A' }}</p>
+                                </div>
+                                <div>
+                                    <p class="text-gray-500 dark:text-gray-400 text-sm">Payment Terms</p>
+                                    <p class="text-gray-900 dark:text-white font-semibold">{{ $property->payment_terms ?? 'N/A' }}</p>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+
+                    <!-- Plans & Design -->
+                    <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                        <div class="p-6">
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Plans & Design</h3>
+                            <div class="space-y-3">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-gray-600 dark:text-gray-400">Architectural Floor Plan:</span>
+                                    @if($property->floor_plan_pdf)
+                                        <a href="{{ asset('storage/' . $property->floor_plan_pdf) }}" target="_blank" class="text-blue-600 dark:text-blue-400 underline">Download PDF</a>
+                                    @else
+                                        <span class="text-gray-400">N/A</span>
+                                    @endif
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-gray-600 dark:text-gray-400">Site Development Plan:</span>
+                                    @if($property->site_plan_pdf)
+                                        <a href="{{ asset('storage/' . $property->site_plan_pdf) }}" target="_blank" class="text-blue-600 dark:text-blue-400 underline">Download PDF</a>
+                                    @else
+                                        <span class="text-gray-400">N/A</span>
+                                    @endif
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-gray-600 dark:text-gray-400">Brochure:</span>
+                                    @if($property->brochure_file)
+                                        <a href="{{ asset('storage/' . $property->brochure_file) }}" target="_blank" class="text-blue-600 dark:text-blue-400 underline">Download</a>
+                                    @else
+                                        <span class="text-gray-400">N/A</span>
+                                    @endif
+                                </div>
+                            </div>
+                            @if($property->images && $property->images->count())
+                                <div class="mt-6 grid grid-cols-2 md:grid-cols-3 gap-4">
+                                    @foreach($property->images as $img)
+                                        <div class="rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700">
+                                            <img src="{{ asset('storage/' . $img->image_path) }}" alt="{{ $img->caption ?? 'Project image' }}" class="w-full h-40 object-cover">
+                                            @if($img->caption)
+                                                <div class="p-2 text-xs text-gray-600 dark:text-gray-400">{{ $img->caption }}</div>
+                                            @endif
+                                        </div>
+                                    @endforeach
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </div>
