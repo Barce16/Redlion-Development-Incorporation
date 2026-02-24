@@ -11,12 +11,15 @@
                     <p class="text-gray-500 text-sm mt-1">Welcome back! Here's your property portfolio summary</p>
                 </div>
                 <div class="flex items-center gap-3">
-                    <button class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300">
-                        Export
-                    </button>
-                    <button class="px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-blue-500 to-green-500 rounded-lg hover:opacity-90">
+                    <a href="{{ route('properties.create') }}" class="px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg hover:opacity-90 transition">
                         + Add Property
-                    </button>
+                    </a>
+                    <a href="{{ route('customers.create') }}" class="px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-green-500 to-green-600 rounded-lg hover:opacity-90 transition">
+                        + Add Customer
+                    </a>
+                    <a href="{{ route('transactions.create') }}" class="px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-purple-500 to-purple-600 rounded-lg hover:opacity-90 transition">
+                        + New Transaction
+                    </a>
                 </div>
             </div>
 
@@ -28,12 +31,9 @@
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-gray-600 dark:text-gray-400 text-sm font-medium">Properties Managed</p>
-                            <p class="text-2xl font-bold text-gray-900 dark:text-white mt-2">0</p>
+                            <p class="text-2xl font-bold text-gray-900 dark:text-white mt-2">{{ $totalProperties }}</p>
                             <div class="flex items-center mt-2">
-                                <svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-                                </svg>
-                                <span class="text-sm text-green-600 dark:text-green-400 ml-1">12% Last year</span>
+                                <a href="{{ route('properties.index') }}" class="text-sm text-blue-600 dark:text-blue-400 hover:underline">View All →</a>
                             </div>
                         </div>
                         <div class="w-12 h-12 bg-gradient-to-br from-green-100 to-green-50 dark:from-green-900 dark:to-green-800 rounded-full flex items-center justify-center">
@@ -49,12 +49,9 @@
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-gray-600 dark:text-gray-400 text-sm font-medium">Asset Value</p>
-                            <p class="text-2xl font-bold text-gray-900 dark:text-white mt-2">₱0</p>
+                            <p class="text-2xl font-bold text-gray-900 dark:text-white mt-2">₱{{ number_format($totalValue, 0) }}</p>
                             <div class="flex items-center mt-2">
-                                <svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-                                </svg>
-                                <span class="text-sm text-green-600 dark:text-green-400 ml-1">7.2% Last year</span>
+                                <a href="{{ route('properties.index') }}" class="text-sm text-blue-600 dark:text-blue-400 hover:underline">Manage →</a>
                             </div>
                         </div>
                         <div class="w-12 h-12 bg-gradient-to-br from-blue-100 to-blue-50 dark:from-blue-900 dark:to-blue-800 rounded-full flex items-center justify-center">
@@ -69,17 +66,14 @@
                 <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6">
                     <div class="flex items-center justify-between">
                         <div>
-                            <p class="text-gray-600 dark:text-gray-400 text-sm font-medium">Properties Sold</p>
-                            <p class="text-2xl font-bold text-gray-900 dark:text-white mt-2">0</p>
+                            <p class="text-gray-600 dark:text-gray-400 text-sm font-medium">Sales Completed</p>
+                            <p class="text-2xl font-bold text-gray-900 dark:text-white mt-2">{{ $totalSales }}</p>
                             <div class="flex items-center mt-2">
-                                <svg class="w-4 h-4 text-amber-500" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-                                </svg>
-                                <span class="text-sm text-amber-600 dark:text-amber-400 ml-1">23.5% Last year</span>
+                                <a href="{{ route('transactions.index') }}" class="text-sm text-blue-600 dark:text-blue-400 hover:underline">View Sales →</a>
                             </div>
                         </div>
-                        <div class="w-12 h-12 bg-gradient-to-br from-amber-100 to-amber-50 dark:from-amber-900 dark:to-amber-800 rounded-full flex items-center justify-center">
-                            <svg class="w-6 h-6 text-amber-600 dark:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div class="w-12 h-12 bg-gradient-to-br from-purple-100 to-purple-50 dark:from-purple-900 dark:to-purple-800 rounded-full flex items-center justify-center">
+                            <svg class="w-6 h-6 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                             </svg>
                         </div>
@@ -90,17 +84,14 @@
                 <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6">
                     <div class="flex items-center justify-between">
                         <div>
-                            <p class="text-gray-600 dark:text-gray-400 text-sm font-medium">New Clients</p>
-                            <p class="text-2xl font-bold text-gray-900 dark:text-white mt-2">0</p>
+                            <p class="text-gray-600 dark:text-gray-400 text-sm font-medium">Total Customers</p>
+                            <p class="text-2xl font-bold text-gray-900 dark:text-white mt-2">{{ $totalCustomers }}</p>
                             <div class="flex items-center mt-2">
-                                <svg class="w-4 h-4 text-purple-500" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-                                </svg>
-                                <span class="text-sm text-purple-600 dark:text-purple-400 ml-1">5.9% Last year</span>
+                                <a href="{{ route('customers.index') }}" class="text-sm text-blue-600 dark:text-blue-400 hover:underline">Manage →</a>
                             </div>
                         </div>
-                        <div class="w-12 h-12 bg-gradient-to-br from-purple-100 to-purple-50 dark:from-purple-900 dark:to-purple-800 rounded-full flex items-center justify-center">
-                            <svg class="w-6 h-6 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div class="w-12 h-12 bg-gradient-to-br from-orange-100 to-orange-50 dark:from-orange-900 dark:to-orange-800 rounded-full flex items-center justify-center">
+                            <svg class="w-6 h-6 text-orange-600 dark:text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 12H9m6 0a6 6 0 11-12 0 6 6 0 0112 0z"/>
                             </svg>
                         </div>
@@ -220,173 +211,73 @@
                     <button class="text-sm text-blue-600 dark:text-blue-400 hover:underline font-medium">View All</button>
                 </div>
 
-                <!-- Properties Grid -->
+                <!-- Properties Grid (Dynamic) -->
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-
-                    <!-- Property Card 1 -->
-                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm overflow-hidden hover:shadow-lg transition-shadow">
-                        <div class="relative h-48 bg-gradient-to-br from-cyan-400 to-blue-500 flex items-center justify-center">
-                            <svg class="w-16 h-16 text-white opacity-20" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/>
-                            </svg>
-                        </div>
-                        <div class="p-4">
-                            <h4 class="font-semibold text-gray-900 dark:text-white">Sunset Retreat Villa</h4>
-                            <p class="text-sm text-gray-500 flex items-center mt-1">
-                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                                </svg>
-                                Austin, Texas
-                            </p>
-                            <div class="flex justify-between items-end mt-4">
-                                <div>
-                                    <p class="text-2xl font-bold text-gray-900 dark:text-white">₱0</p>
-                                    <p class="text-xs text-gray-500">per month</p>
-                                </div>
-                                <div class="text-right text-xs text-gray-600 dark:text-gray-400">
-                                    <p>🏠 3 bed</p>
-                                    <p>🚿 2 bath</p>
+                    @forelse($topProperties as $property)
+                        <a href="{{ route('properties.show', $property->id) }}" class="bg-white dark:bg-gray-800 rounded-xl shadow-sm overflow-hidden hover:shadow-lg transition-shadow block">
+                            <div class="relative h-48 bg-gradient-to-br from-blue-400 to-cyan-500 flex items-center justify-center">
+                                <div class="absolute inset-0 flex flex-col items-center justify-center text-white">
+                                    <p class="text-3xl font-bold">{{ $property->views ?? 0 }}</p>
+                                    <p class="text-sm">views</p>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-
-                    <!-- Property Card 2 -->
-                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm overflow-hidden hover:shadow-lg transition-shadow">
-                        <div class="relative h-48 bg-gradient-to-br from-green-400 to-emerald-500 flex items-center justify-center">
-                            <svg class="w-16 h-16 text-white opacity-20" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/>
-                            </svg>
-                        </div>
-                        <div class="p-4">
-                            <h4 class="font-semibold text-gray-900 dark:text-white">Riverside Haven</h4>
-                            <p class="text-sm text-gray-500 flex items-center mt-1">
-                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                                </svg>
-                                Portland, Oregon
-                            </p>
-                            <div class="flex justify-between items-end mt-4">
-                                <div>
-                                    <p class="text-2xl font-bold text-gray-900 dark:text-white">₱0</p>
-                                    <p class="text-xs text-gray-500">per month</p>
-                                </div>
-                                <div class="text-right text-xs text-gray-600 dark:text-gray-400">
-                                    <p>🏠 4 bed</p>
-                                    <p>🚿 3 bath</p>
+                            <div class="p-4">
+                                <h4 class="font-semibold text-gray-900 dark:text-white truncate">{{ $property->title }}</h4>
+                                <p class="text-sm text-gray-500 flex items-center mt-1">
+                                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                    </svg>
+                                    <span class="truncate">{{ $property->city ?? 'Location not set' }}</span>
+                                </p>
+                                <div class="flex justify-between items-end mt-4">
+                                    <div>
+                                        <p class="text-2xl font-bold text-gray-900 dark:text-white">₱{{ number_format($property->price, 0) }}</p>
+                                        <p class="text-xs text-gray-500">price</p>
+                                    </div>
+                                    <div class="text-right text-xs text-gray-600 dark:text-gray-400">
+                                        <p class="inline-block bg-blue-100 dark:bg-blue-900 px-2 py-1 rounded">{{ $property->type ?? 'Property' }}</p>
+                                    </div>
                                 </div>
                             </div>
+                        </a>
+                    @empty
+                        <div class="col-span-full bg-gray-50 dark:bg-gray-800 rounded-xl p-8 text-center">
+                            <p class="text-gray-600 dark:text-gray-400">No properties available yet.</p>
+                            <a href="{{ route('properties.create') }}" class="mt-2 inline-block text-blue-600 dark:text-blue-400 hover:underline">Add your first property →</a>
                         </div>
-                    </div>
-
-                    <!-- Property Card 3 -->
-                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm overflow-hidden hover:shadow-lg transition-shadow">
-                        <div class="relative h-48 bg-gradient-to-br from-purple-400 to-pink-500 flex items-center justify-center">
-                            <svg class="w-16 h-16 text-white opacity-20" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/>
-                            </svg>
-                        </div>
-                        <div class="p-4">
-                            <h4 class="font-semibold text-gray-900 dark:text-white">Mountain View Villa</h4>
-                            <p class="text-sm text-gray-500 flex items-center mt-1">
-                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                                </svg>
-                                Boulder, Colorado
-                            </p>
-                            <div class="flex justify-between items-end mt-4">
-                                <div>
-                                    <p class="text-2xl font-bold text-gray-900 dark:text-white">₱0</p>
-                                    <p class="text-xs text-gray-500">per month</p>
-                                </div>
-                                <div class="text-right text-xs text-gray-600 dark:text-gray-400">
-                                    <p>🏠 2 bed</p>
-                                    <p>🚿 2 bath</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Property Card 4 -->
-                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm overflow-hidden hover:shadow-lg transition-shadow">
-                        <div class="relative h-48 bg-gradient-to-br from-blue-400 to-cyan-500 flex items-center justify-center">
-                            <svg class="w-16 h-16 text-white opacity-20" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/>
-                            </svg>
-                        </div>
-                        <div class="p-4">
-                            <h4 class="font-semibold text-gray-900 dark:text-white">Ocean Breeze Cottage</h4>
-                            <p class="text-sm text-gray-500 flex items-center mt-1">
-                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                                </svg>
-                                San Diego, California
-                            </p>
-                            <div class="flex justify-between items-end mt-4">
-                                <div>
-                                    <p class="text-2xl font-bold text-gray-900 dark:text-white">₱0</p>
-                                    <p class="text-xs text-gray-500">per month</p>
-                                </div>
-                                <div class="text-right text-xs text-gray-600 dark:text-gray-400">
-                                    <p>🏠 3 bed</p>
-                                    <p>🚿 1 bath</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
+                    @endforelse
                 </div>
             </div>
 
             <!-- Reminders and Calendar Section -->
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
-                <!-- Reminders Section -->
+                <!-- Reminders Section (Dynamic Pending Transactions) -->
                 <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6">
                     <div class="flex items-center justify-between mb-6">
-                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Reminders</h3>
-                        <button class="text-blue-600 dark:text-blue-400 hover:text-blue-700 text-sm font-medium">+ Add</button>
+                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Pending Transactions</h3>
+                        <a href="{{ route('transactions.create') }}" class="text-blue-600 dark:text-blue-400 hover:text-blue-700 text-sm font-medium">+ New</a>
                     </div>
                     <div class="space-y-4">
-                        <!-- Reminder 1 -->
-                        <div class="flex items-start gap-4 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
-                            <div class="w-2 h-2 rounded-full bg-blue-500 mt-2"></div>
-                            <div class="flex-1">
-                                <p class="text-sm font-medium text-gray-900 dark:text-white">Follow up with client</p>
-                                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Today at 2:00 PM</p>
+                        @forelse($reminders as $reminder)
+                            <a href="{{ route('transactions.show', $reminder->id) }}" class="flex items-start gap-4 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800 hover:shadow-md transition-shadow block">
+                                <div class="w-2 h-2 rounded-full bg-blue-500 mt-2 flex-shrink-0"></div>
+                                <div class="flex-1 min-w-0">
+                                    <p class="text-sm font-medium text-gray-900 dark:text-white truncate">{{ $reminder->customer->name ?? 'Unknown Customer' }}</p>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                                        Amount: ₱{{ number_format($reminder->amount, 2) }} • Status: <span class="font-semibold text-orange-600">{{ ucfirst($reminder->status) }}</span>
+                                    </p>
+                                    @if($reminder->transaction_date)
+                                        <p class="text-xs text-gray-500 dark:text-gray-400">{{ $reminder->transaction_date->format('M d, Y') }}</p>
+                                    @endif
+                                </div>
+                            </a>
+                        @empty
+                            <div class="text-center py-8">
+                                <p class="text-sm text-gray-600 dark:text-gray-400">No pending transactions</p>
+                                <a href="{{ route('transactions.create') }}" class="mt-2 inline-block text-blue-600 dark:text-blue-400 hover:underline text-sm">Create one →</a>
                             </div>
-                            <button class="text-gray-400 hover:text-gray-600 text-lg">×</button>
-                        </div>
-
-                        <!-- Reminder 2 -->
-                        <div class="flex items-start gap-4 p-4 bg-amber-50 dark:bg-amber-900/20 rounded-lg border border-amber-200 dark:border-amber-800">
-                            <div class="w-2 h-2 rounded-full bg-amber-500 mt-2"></div>
-                            <div class="flex-1">
-                                <p class="text-sm font-medium text-gray-900 dark:text-white">Property inspection scheduled</p>
-                                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Tomorrow at 10:00 AM</p>
-                            </div>
-                            <button class="text-gray-400 hover:text-gray-600 text-lg">×</button>
-                        </div>
-
-                        <!-- Reminder 3 -->
-                        <div class="flex items-start gap-4 p-4 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800">
-                            <div class="w-2 h-2 rounded-full bg-green-500 mt-2"></div>
-                            <div class="flex-1">
-                                <p class="text-sm font-medium text-gray-900 dark:text-white">Review contract documents</p>
-                                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Friday at 3:00 PM</p>
-                            </div>
-                            <button class="text-gray-400 hover:text-gray-600 text-lg">×</button>
-                        </div>
-
-                        <!-- Reminder 4 -->
-                        <div class="flex items-start gap-4 p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg border border-purple-200 dark:border-purple-800">
-                            <div class="w-2 h-2 rounded-full bg-purple-500 mt-2"></div>
-                            <div class="flex-1">
-                                <p class="text-sm font-medium text-gray-900 dark:text-white">Team meeting</p>
-                                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Next Monday at 9:00 AM</p>
-                            </div>
-                            <button class="text-gray-400 hover:text-gray-600 text-lg">×</button>
-                        </div>
+                        @endforelse
                     </div>
                 </div>
 

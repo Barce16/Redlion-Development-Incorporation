@@ -29,42 +29,19 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    // Properties
-    Route::get('/property/add', [PropertyController::class, 'create'])->name('property-add');
-    Route::post('/properties', [PropertyController::class, 'store'])->name('properties.store');
-    Route::get('/properties/{property}', [PropertyController::class, 'show'])->name('properties.show');
-    Route::get('/properties/{property}/edit', [PropertyController::class, 'edit'])->name('properties.edit');
-    Route::put('/properties/{property}', [PropertyController::class, 'update'])->name('properties.update');
-    Route::delete('/properties/{property}', [PropertyController::class, 'destroy'])->name('properties.destroy');
+    // Properties (RESTful)
+    Route::resource('properties', PropertyController::class);
     Route::post('/properties/{property}/increment-views', [PropertyController::class, 'incrementViews'])->name('properties.increment-views');
     Route::post('/properties/{property}/increment-inquiries', [PropertyController::class, 'incrementInquiries'])->name('properties.increment-inquiries');
 
-    // Transactions
-    Route::get('/transaction', [TransactionController::class, 'index'])->name('transaction');
-    Route::get('/transaction/create', [TransactionController::class, 'create'])->name('transactions.create');
-    Route::post('/transactions', [TransactionController::class, 'store'])->name('transactions.store');
-    Route::get('/transactions/{transaction}', [TransactionController::class, 'show'])->name('transactions.show');
-    Route::get('/transactions/{transaction}/edit', [TransactionController::class, 'edit'])->name('transactions.edit');
-    Route::put('/transactions/{transaction}', [TransactionController::class, 'update'])->name('transactions.update');
-    Route::delete('/transactions/{transaction}', [TransactionController::class, 'destroy'])->name('transactions.destroy');
+    // Transactions (RESTful)
+    Route::resource('transactions', TransactionController::class);
 
-    // Customers
-    Route::get('/customer', [CustomerController::class, 'index'])->name('customer');
-    Route::get('/customers/create', [CustomerController::class, 'create'])->name('customers.create');
-    Route::post('/customers', [CustomerController::class, 'store'])->name('customers.store');
-    Route::get('/customers/{customer}', [CustomerController::class, 'show'])->name('customers.show');
-    Route::get('/customers/{customer}/edit', [CustomerController::class, 'edit'])->name('customers.edit');
-    Route::put('/customers/{customer}', [CustomerController::class, 'update'])->name('customers.update');
-    Route::delete('/customers/{customer}', [CustomerController::class, 'destroy'])->name('customers.destroy');
+    // Customers (RESTful)
+    Route::resource('customers', CustomerController::class);
 
-    // Messages
-    Route::get('/message', [MessageController::class, 'index'])->name('message');
-    Route::get('/messages/create', [MessageController::class, 'create'])->name('messages.create');
-    Route::post('/messages', [MessageController::class, 'store'])->name('messages.store');
-    Route::get('/messages/{message}', [MessageController::class, 'show'])->name('messages.show');
-    Route::get('/messages/{message}/edit', [MessageController::class, 'edit'])->name('messages.edit');
-    Route::put('/messages/{message}', [MessageController::class, 'update'])->name('messages.update');
-    Route::delete('/messages/{message}', [MessageController::class, 'destroy'])->name('messages.destroy');
+    // Messages (RESTful)
+    Route::resource('messages', MessageController::class);
 
     // Reports
     Route::get('/reports', [ReportController::class, 'index'])->name('reports');
