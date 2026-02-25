@@ -17,10 +17,10 @@ class ProjectImage extends Model
         'image_path',
         'image_type',
         'caption',
-        'sort_order'
+        'sort_order',
     ];
 
-    public function property()
+    public function property(): BelongsTo
     {
         return $this->belongsTo(PropertyListing::class, 'property_id');
     }

@@ -3,30 +3,6 @@
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
             {{ __('Add New Property') }}
         </h2>
-        <style>
-.upload-card {
-    @apply bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-md
-           border border-gray-200 dark:border-gray-700
-           transition hover:shadow-xl;
-}
-
-.upload-label {
-    @apply block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3;
-}
-
-.file-drop-area {
-    @apply relative flex flex-col items-center justify-center
-           border-2 border-dashed border-gray-300 dark:border-gray-600
-           rounded-xl p-6 cursor-pointer
-           bg-gradient-to-br from-gray-50 to-gray-100
-           dark:from-gray-900 dark:to-gray-800
-           hover:border-indigo-500 transition;
-}
-
-.file-input {
-    @apply absolute inset-0 opacity-0 cursor-pointer;
-}
-</style>
     </x-slot>
 
     <div class="py-12">
@@ -111,7 +87,7 @@
                                 @error('title')<span class="text-red-500 text-sm">{{ $message }}</span>@enderror
                             </div>
 
-
+                           
 
                             <!-- Category (Project Type) -->
                             <div>
@@ -158,7 +134,7 @@
                         <div class="space-y-6">
                             <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Financial Details</h3>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-
+                               
                                 <!-- Per Sqm Price -->
                                 <div>
                                     <label for="price_per_sqm" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -198,126 +174,52 @@
                             </div>
                         </div>
 
-                        <!-- ================= LUXURY IMAGE GALLERY ================= -->
-<div class="space-y-6">
-    <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-        Project Gallery
-    </h3>
+                        
 
-    <div
-        id="dropzone"
-        class="relative flex flex-col items-center justify-center w-full p-10 border-2 border-dashed
-        border-gray-300 dark:border-gray-600 rounded-2xl cursor-pointer
-        bg-gradient-to-br from-gray-50 to-gray-100
-        dark:from-gray-800 dark:to-gray-900
-        hover:border-indigo-500 hover:shadow-xl transition duration-300"
-    >
-        <input type="file"
-               id="project_images"
-               name="project_images[]"
-               multiple
-               accept="image/*"
-               class="absolute inset-0 opacity-0 cursor-pointer">
+                        
 
-        <div class="text-center space-y-3">
-            <div class="text-5xl text-indigo-500">📸</div>
-            <p class="text-lg font-medium text-gray-700 dark:text-gray-200">
-                Drag & Drop Images Here
-            </p>
-            <p class="text-sm text-gray-500">
-                or click to browse (Multiple allowed)
-            </p>
-            <p class="text-xs text-gray-400">
-                Auto-optimized to 1200x800px
-            </p>
-        </div>
-    </div>
-
-    <!-- Preview Grid -->
-    <div id="previewContainer"
-         class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
-    </div>
-
-    @error('project_images.*')
-        <span class="text-red-500 text-sm">{{ $message }}</span>
-    @enderror
-</div>
-
-                        <!-- ================= LUXURY PLANS & DOCUMENTS ================= -->
-<div class="space-y-8">
-
-    <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-        Plans & Documents <span class="text-sm text-gray-400">(Optional)</span>
-    </h3>
-
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-
-        <!-- Floor Plan -->
-        <div class="upload-card">
-            <label class="upload-label">
-                Architectural Floor Plan (PDF)
-            </label>
-
-            <div class="file-drop-area">
-                <input type="file" name="floor_plan_pdf" accept="application/pdf" class="file-input">
-                <div class="text-center space-y-2">
-                    <div class="text-3xl text-indigo-500">📐</div>
-                    <p class="file-message">Drag or click to upload PDF</p>
-                    <p class="file-name text-xs text-gray-400"></p>
-                </div>
-            </div>
-
-            @error('floor_plan_pdf')
-                <span class="text-red-500 text-sm">{{ $message }}</span>
-            @enderror
-        </div>
-
-        <!-- Site Plan -->
-        <div class="upload-card">
-            <label class="upload-label">
-                Site Development Plan (PDF)
-            </label>
-
-            <div class="file-drop-area">
-                <input type="file" name="site_plan_pdf" accept="application/pdf" class="file-input">
-                <div class="text-center space-y-2">
-                    <div class="text-3xl text-indigo-500">🗺️</div>
-                    <p class="file-message">Drag or click to upload PDF</p>
-                    <p class="file-name text-xs text-gray-400"></p>
-                </div>
-            </div>
-
-            @error('site_plan_pdf')
-                <span class="text-red-500 text-sm">{{ $message }}</span>
-            @enderror
-        </div>
-
-        <!-- Brochure -->
-        <div class="upload-card">
-            <label class="upload-label">
-                Project Brochure (PDF / DOC / DOCX)
-            </label>
-
-            <div class="file-drop-area">
-                <input type="file"
-                       name="brochure_file"
-                       accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-                       class="file-input">
-
-                <div class="text-center space-y-2">
-                    <div class="text-3xl text-indigo-500">📘</div>
-                    <p class="file-message">Drag or click to upload file</p>
-                    <p class="file-name text-xs text-gray-400"></p>
-                </div>
-            </div>
-
-            @error('brochure_file')
-                <span class="text-red-500 text-sm">{{ $message }}</span>
-            @enderror
-        </div>
-
-    </div>
-</div>
+                        <!-- Plans & Design -->
+                        <div class="space-y-6">
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Plans & Design</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <!-- Architectural Floor Plan (PDF) -->
+                                <div>
+                                    <label for="floor_plan_pdf" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                        Architectural Floor Plan (PDF upload)
+                                    </label>
+                                    <input type="file" id="floor_plan_pdf" name="floor_plan_pdf" accept="application/pdf"
+                                           class="block w-full text-sm text-gray-700 dark:text-gray-300">
+                                    @error('floor_plan_pdf')<span class="text-red-500 text-sm">{{ $message }}</span>@enderror
+                                </div>
+                                <!-- Site Development Plan (PDF) -->
+                                <div>
+                                    <label for="site_plan_pdf" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                        Site Development Plan (PDF upload)
+                                    </label>
+                                    <input type="file" id="site_plan_pdf" name="site_plan_pdf" accept="application/pdf"
+                                           class="block w-full text-sm text-gray-700 dark:text-gray-300">
+                                    @error('site_plan_pdf')<span class="text-red-500 text-sm">{{ $message }}</span>@enderror
+                                </div>
+                                <!-- 3D Perspective Render / Image Gallery -->
+                                <div class="md:col-span-2">
+                                    <label for="project_images" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                        Image Gallery (renders, elevation, interior)
+                                    </label>
+                                    <input type="file" id="project_images" name="project_images[]" multiple accept="image/*"
+                                           class="block w-full text-sm text-gray-700 dark:text-gray-300">
+                                    @error('project_images.*')<span class="text-red-500 text-sm">{{ $message }}</span>@enderror
+                                </div>
+                                <!-- Downloadable brochure -->
+                                <div>
+                                    <label for="brochure_file" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                        Downloadable Brochure (PDF/DOC)
+                                    </label>
+                                    <input type="file" id="brochure_file" name="brochure_file" accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                                           class="block w-full text-sm text-gray-700 dark:text-gray-300">
+                                    @error('brochure_file')<span class="text-red-500 text-sm">{{ $message }}</span>@enderror
+                                </div>
+                            </div>
+                        </div>
 
                         <!-- Status -->
                         <div>
@@ -350,80 +252,4 @@
             </div>
         </div>
     </div>
-    <script>
-document.addEventListener("DOMContentLoaded", function () {
-
-    const input = document.getElementById("project_images");
-    const previewContainer = document.getElementById("previewContainer");
-
-    input.addEventListener("change", function (e) {
-        previewContainer.innerHTML = "";
-
-        Array.from(e.target.files).forEach(file => {
-
-            if (!file.type.startsWith("image/")) return;
-
-            const reader = new FileReader();
-
-            reader.onload = function (event) {
-                const img = new Image();
-                img.src = event.target.result;
-
-                img.onload = function () {
-                    const canvas = document.createElement("canvas");
-                    const ctx = canvas.getContext("2d");
-
-                    const width = 1200;
-                    const height = 800;
-
-                    canvas.width = width;
-                    canvas.height = height;
-
-                    ctx.drawImage(img, 0, 0, width, height);
-
-                    const resizedData = canvas.toDataURL("image/jpeg", 0.9);
-
-                    // Preview Card
-                    const wrapper = document.createElement("div");
-                    wrapper.classList.add("relative", "group");
-
-                    wrapper.innerHTML = `
-                        <img src="${resizedData}"
-                             class="rounded-xl object-cover h-40 w-full shadow-md
-                             group-hover:scale-105 transition duration-300"/>
-                        <div class="absolute inset-0 bg-black/30 opacity-0
-                                    group-hover:opacity-100 transition
-                                    flex items-center justify-center text-white text-sm">
-                            Optimized 1200x800
-                        </div>
-                    `;
-
-                    previewContainer.appendChild(wrapper);
-                };
-            };
-
-            reader.readAsDataURL(file);
-        });
-    });
-});
-document.addEventListener("DOMContentLoaded", function () {
-
-    document.querySelectorAll(".file-input").forEach(input => {
-
-        input.addEventListener("change", function () {
-
-            const fileNameDisplay = this.closest(".file-drop-area")
-                                        .querySelector(".file-name");
-
-            if (this.files.length > 0) {
-                fileNameDisplay.textContent = "Selected: " + this.files[0].name;
-                fileNameDisplay.classList.remove("text-gray-400");
-                fileNameDisplay.classList.add("text-green-500");
-            }
-        });
-
-    });
-
-});
-</script>
 </x-app-layout>
