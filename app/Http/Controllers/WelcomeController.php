@@ -16,32 +16,55 @@ class WelcomeController extends Controller
             ->orderByDesc('count')
             ->get();
 
-        // Get featured properties (top 3 by views)
-        $featuredProperties = PropertyListing::orderByDesc('views')
+        // Get featured properties (top 3 by views) with images
+        $featuredProperties = PropertyListing::with('images')
+            ->orderByDesc('views')
             ->limit(3)
             ->get();
 
-        // Prepare locations array with images mapped to cities
-        $locationImages = [
-            'Cagayan de Oro' => '/images/cagayan.jpg',
-            'Davao City' => '/images/davao.jpg',
-            'General Santos' => '/images/gensan.jpg',
-            'Butuan City' => '/images/butuan.jpg',
-            'Zamboanga City' => '/images/zamboanga.jpg',
-            'Iligan City' => '/images/iligan.jpg',
-        ];
+        // Get premium developments (highest price properties with images)
+        $premiumDevelopments = PropertyListing::with('images')
+            ->where('status', 'active')
+            ->orderByDesc('price')
+            ->limit(4)
+            ->get();
 
-        $locations = $locationStats->map(function ($stat) use ($locationImages) {
+        // Prepare locations array with first property image from each city
+        $locations = $locationStats->map(function ($stat) {
+            $propertyInCity = PropertyListing::where('city', $stat->city)
+                ->with('images')
+                ->whereHas('images')
+                ->first();
+
+            $imageUrl = '/images/default.jpg';
+            if ($propertyInCity && $propertyInCity->images->isNotEmpty()) {
+                $imageUrl = '/storage/' . $propertyInCity->images->first()->image_path;
+            }
+
             return [
                 'city' => $stat->city,
                 'count' => $stat->count . '+',
-                'img' => $locationImages[$stat->city] ?? '/images/default.jpg',
+                'img' => $imageUrl,
             ];
         })->take(6);
 
         return view('welcome', [
             'locations' => $locations,
             'featuredProperties' => $featuredProperties,
+            'premiumDevelopments' => $premiumDevelopments,
+        ]);
+    }
+
+    public function premiumDevelopments(): View
+    {
+        // Get premium developments (highest price properties with images)
+        $premiumDevelopments = PropertyListing::with('images')
+            ->orderByDesc('price')
+            ->limit(12)
+            ->get();
+
+        return view('premium-developments', [
+            'premiumDevelopments' => $premiumDevelopments,
         ]);
     }
 }

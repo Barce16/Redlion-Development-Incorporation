@@ -11,6 +11,7 @@ use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [WelcomeController::class, 'index'])->name('home');
+Route::get('/premium-developments', [WelcomeController::class, 'premiumDevelopments'])->name('premium-developments');
 
 Route::get('/auth/login', function () {
     return view('login');

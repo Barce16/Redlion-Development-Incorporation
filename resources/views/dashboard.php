@@ -133,28 +133,28 @@
                         <div class="flex items-center justify-between">
                             <div class="flex items-center">
                                 <div class="w-3 h-3 rounded-full bg-blue-500 mr-2"></div>
-                                <span class="text-sm text-gray-600 dark:text-gray-400">Accepted</span>
+                                <span class="text-sm text-gray-600 dark:text-gray-400">Inquire</span>
                             </div>
                             <span class="text-sm font-semibold text-gray-900 dark:text-white">0</span>
                         </div>
                         <div class="flex items-center justify-between">
                             <div class="flex items-center">
                                 <div class="w-3 h-3 rounded-full bg-amber-500 mr-2"></div>
-                                <span class="text-sm text-gray-600 dark:text-gray-400">Rejected</span>
+                                <span class="text-sm text-gray-600 dark:text-gray-400">Customer</span>
                             </div>
                             <span class="text-sm font-semibold text-gray-900 dark:text-white">0</span>
                         </div>
                         <div class="flex items-center justify-between">
                             <div class="flex items-center">
                                 <div class="w-3 h-3 rounded-full bg-orange-500 mr-2"></div>
-                                <span class="text-sm text-gray-600 dark:text-gray-400">Clients</span>
+                                <span class="text-sm text-gray-600 dark:text-gray-400">Transactions</span>
                             </div>
                             <span class="text-sm font-semibold text-gray-900 dark:text-white">0</span>
                         </div>
                         <div class="flex items-center justify-between">
                             <div class="flex items-center">
                                 <div class="w-3 h-3 rounded-full bg-emerald-500 mr-2"></div>
-                                <span class="text-sm text-gray-600 dark:text-gray-400">others</span>
+                                <span class="text-sm text-gray-600 dark:text-gray-400">Others</span>
                             </div>
                             <span class="text-sm font-semibold text-gray-900 dark:text-white">0</span>
                         </div>
