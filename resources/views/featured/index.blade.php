@@ -62,10 +62,58 @@
     <x-modal name="manage-hero">
         <div class="p-6 max-h-[90vh] overflow-y-auto">
             <h3 class="text-lg font-semibold mb-2">Manage Hero Image</h3>
-            <p class="text-sm text-gray-600 dark:text-gray-400 mb-6">Upload the hero image for the welcome page.</p>
 
-            <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg mb-6">
-                <h4 class="font-semibold text-sm mb-4 text-gray-900 dark:text-white">Upload Hero Image</h4>
+            <!-- List View -->
+            <div id="hero-list-view" class="space-y-4">
+                <p class="text-sm text-gray-600 dark:text-gray-400 mb-6">Upload the hero image for the welcome page. Hero only has one image at a time.</p>
+
+                @if($heroImages->count())
+                    <div>
+                        <h4 class="font-semibold text-sm mb-3 text-gray-900 dark:text-white">Current Hero Image</h4>
+                        <table class="w-full text-sm">
+                            <thead>
+                                <tr class="border-b">
+                                    <th class="p-2 text-left">Preview</th>
+                                    <th class="p-2 text-left">Caption</th>
+                                    <th class="p-2 text-left">Status</th>
+                                    <th class="p-2 text-center">Edit</th>
+                                    <th class="p-2 text-center">Delete</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($heroImages as $img)
+                                    <tr class="border-b" data-id="{{ $img->id }}" data-caption="{{ $img->caption ?? '' }}" data-published="{{ $img->is_published ? 'true' : 'false' }}" data-schedule="{{ $img->scheduled_publish_at?->format('Y-m-d H:i') ?? '' }}" data-meta="{{ json_encode($img->meta ?? []) }}">
+                                        <td class="p-2"><img src="{{ asset('storage/' . $img->image_path) }}" class="h-10 w-16 object-cover rounded"></td>
+                                        <td class="p-2">{{ $img->caption ?? '—' }}</td>
+                                        <td class="p-2">
+                                            @if(!$img->is_published)
+                                                <span class="text-xs px-2 py-1 bg-yellow-100 text-yellow-800 rounded">Draft</span>
+                                            @elseif($img->scheduled_publish_at?->isFuture())
+                                                <span class="text-xs px-2 py-1 bg-blue-100 text-blue-800 rounded">Scheduled</span>
+                                            @else
+                                                <span class="text-xs px-2 py-1 bg-green-100 text-green-800 rounded">Published</span>
+                                            @endif
+                                        </td>
+                                        <td class="p-2 text-center"><button type="button" onclick="switchToEditMode('hero', this.closest('tr'))" class="text-blue-600 hover:underline font-medium">Edit</button></td>
+                                        <td class="p-2 text-center"><button type="button" onclick="deleteImage({{ $img->id }})" class="text-red-600 hover:underline">Delete</button></td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                    <button type="button" onclick="switchToUploadMode('hero')" class="mt-6 px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg font-semibold text-sm">Replace Hero Image</button>
+                @else
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">No hero image yet. Upload one below.</p>
+                @endif
+            </div>
+
+            <!-- Upload Mode -->
+            <div id="hero-upload-mode" style="display:none;" class="space-y-4">
+                <div class="flex items-center justify-between mb-4">
+                    <h4 class="font-semibold text-gray-900 dark:text-white">Upload Hero Image</h4>
+                    <button type="button" onclick="switchToListMode('hero')" class="text-sm text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">✕ Back to List</button>
+                </div>
+
                 <form id="hero-form" class="space-y-4">
                     <input type="hidden" id="hero-edit-id" value="">
 
@@ -136,44 +184,88 @@
                         <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Leave empty to publish immediately</p>
                     </div>
 
-                    <button type="button" onclick="uploadImage('hero')" class="w-full px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg font-semibold text-sm">Upload</button>
-                </form>
-
-                @if($heroImages->count())
-                    <div class="mt-6">
-                        <h4 class="font-semibold text-sm mb-3 text-gray-900 dark:text-white">Current Hero Image</h4>
-                        <table class="w-full text-sm">
-                            <thead>
-                                <tr class="border-b">
-                                    <th class="p-2 text-left">Preview</th>
-                                    <th class="p-2 text-left">Caption</th>
-                                    <th class="p-2 text-left">Status</th>
-                                    <th class="p-2 text-center">Edit</th>
-                                    <th class="p-2 text-center">Delete</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($heroImages as $img)
-                                    <tr class="border-b" data-id="{{ $img->id }}" data-caption="{{ $img->caption ?? '' }}" data-published="{{ $img->is_published ? 'true' : 'false' }}" data-schedule="{{ $img->scheduled_publish_at?->format('Y-m-d H:i') ?? '' }}" data-meta="{{ json_encode($img->meta ?? []) }}">
-                                        <td class="p-2"><img src="{{ asset('storage/' . $img->image_path) }}" class="h-10 w-16 object-cover rounded"></td>
-                                        <td class="p-2">{{ $img->caption ?? '—' }}</td>
-                                        <td class="p-2">
-                                            @if(!$img->is_published)
-                                                <span class="text-xs px-2 py-1 bg-yellow-100 text-yellow-800 rounded">Draft</span>
-                                            @elseif($img->scheduled_publish_at?->isFuture())
-                                                <span class="text-xs px-2 py-1 bg-blue-100 text-blue-800 rounded">Scheduled</span>
-                                            @else
-                                                <span class="text-xs px-2 py-1 bg-green-100 text-green-800 rounded">Published</span>
-                                            @endif
-                                        </td>
-                                        <td class="p-2 text-center"><button type="button" onclick="startEdit('hero', this.closest('tr'))" class="text-blue-600 hover:underline">Edit</button></td>
-                                        <td class="p-2 text-center"><button type="button" onclick="deleteImage({{ $img->id }})" class="text-red-600 hover:underline">Delete</button></td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                    <div class="flex gap-3">
+                        <button type="button" onclick="uploadImage('hero')" class="flex-1 px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg font-semibold text-sm">Upload</button>
+                        <button type="button" onclick="switchToListMode('hero')" class="flex-1 px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-800 rounded-lg font-semibold text-sm">Cancel</button>
                     </div>
-                @endif
+                </form>
+            </div>
+
+            <!-- Edit Mode -->
+            <div id="hero-edit-mode" style="display:none;" class="space-y-4">
+                <div class="flex items-center justify-between mb-4 p-3 bg-red-100 dark:bg-red-900/20 rounded-lg border border-red-200 dark:border-red-700">
+                    <h4 class="font-semibold text-gray-900 dark:text-white">✏️ Editing Hero Image</h4>
+                    <button type="button" onclick="switchToListMode('hero')" class="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white font-medium">Cancel</button>
+                </div>
+
+                <form id="hero-edit-form" class="space-y-4">
+                    <!-- Image preview for editing -->
+                    <div id="hero-edit-preview" class="bg-gray-100 dark:bg-gray-800 rounded-lg p-4 text-center">
+                        <img id="hero-edit-img" src="" class="max-h-64 mx-auto rounded">
+                    </div>
+
+                    <!-- Change image option -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Change Image (Optional)</label>
+                        <input type="file" id="hero-edit-image" name="image" accept="image/*" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-800 dark:text-white text-sm" onchange="previewSingleImage(event, 'hero-edit-img')">
+                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Leave blank to keep existing image</p>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Caption</label>
+                        <textarea id="hero-edit-desc" placeholder="Add a caption..." class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-800 dark:text-white text-sm" rows="2"></textarea>
+                    </div>
+
+                    <!-- Property Details -->
+                    <div class="border-t border-gray-300 dark:border-gray-600 pt-4">
+                        <h5 class="text-sm font-semibold text-gray-900 dark:text-white mb-3">Property Details (Optional)</h5>
+
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">SQM</label>
+                                <input type="number" id="hero-edit-sqm" placeholder="e.g., 250" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-800 dark:text-white text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Location</label>
+                                <input type="text" id="hero-edit-location" placeholder="e.g., Makati" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-800 dark:text-white text-sm">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3 mt-3">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Price (₱M)</label>
+                                <input type="number" id="hero-edit-price" placeholder="e.g., 5.5" step="0.1" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-800 dark:text-white text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Property Type</label>
+                                <select id="hero-edit-type" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-800 dark:text-white text-sm">
+                                    <option value="">Select Type</option>
+                                    <option value="condo">Condo</option>
+                                    <option value="house">House</option>
+                                    <option value="land">Land</option>
+                                    <option value="commercial">Commercial</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            <input type="checkbox" id="hero-edit-published" class="mr-2"> Publish
+                        </label>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Schedule Publish (Optional)</label>
+                        <input type="datetime-local" id="hero-edit-schedule" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-800 dark:text-white text-sm">
+                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Leave empty to publish immediately</p>
+                    </div>
+
+                    <div class="flex gap-3">
+                        <button type="button" onclick="updateImage('hero')" class="flex-1 px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold text-sm">Save Changes</button>
+                        <button type="button" onclick="switchToListMode('hero')" class="flex-1 px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-800 rounded-lg font-semibold text-sm">Cancel</button>
+                    </div>
+                </form>
             </div>
         </div>
     </x-modal>
@@ -381,10 +473,60 @@
     <x-modal name="manage-premium">
         <div class="p-6 max-h-[90vh] overflow-y-auto">
             <h3 class="text-lg font-semibold mb-2">Manage Premium Images</h3>
-            <p class="text-sm text-gray-600 dark:text-gray-400 mb-6">Upload premium section images. Drag to reorder.</p>
 
-            <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg mb-6">
-                <h4 class="font-semibold text-sm mb-4 text-gray-900 dark:text-white">Upload Premium Images</h4>
+            <!-- List View -->
+            <div id="premium-list-view" class="space-y-4">
+                <p class="text-sm text-gray-600 dark:text-gray-400 mb-6">Upload premium section images. Drag rows to reorder or click Edit to modify.</p>
+
+                @if($premiumImages->count())
+                    <div>
+                        <h4 class="font-semibold text-sm mb-3 text-gray-900 dark:text-white">Current Premium Images (Drag to Reorder)</h4>
+                        <table id="premium-table" class="w-full text-sm">
+                            <thead>
+                                <tr class="border-b">
+                                    <th class="p-2 w-8">↕️</th>
+                                    <th class="p-2 text-left">Preview</th>
+                                    <th class="p-2 text-left">Caption</th>
+                                    <th class="p-2 text-left">Status</th>
+                                    <th class="p-2 text-center">Edit</th>
+                                    <th class="p-2 text-center">Delete</th>
+                                </tr>
+                            </thead>
+                            <tbody id="premium-tbody">
+                                @foreach($premiumImages as $img)
+                                    <tr class="border-b hover:bg-gray-100 dark:hover:bg-gray-600 cursor-move" draggable="true" ondragstart="handleDragStart(event)" ondragover="handleDragOver(event)" ondrop="handleDrop(event, 'premium')" ondragend="handleDragEnd(event)" data-id="{{ $img->id }}" data-caption="{{ $img->caption ?? '' }}" data-published="{{ $img->is_published ? 'true' : 'false' }}" data-meta="{{ json_encode($img->meta ?? []) }}">
+                                        <td class="p-2 text-gray-400">⋮⋮</td>
+                                        <td class="p-2"><img src="{{ asset('storage/' . $img->image_path) }}" class="h-10 w-16 object-cover rounded"></td>
+                                        <td class="p-2 truncate">{{ $img->caption ?? '—' }}</td>
+                                        <td class="p-2">
+                                            @if(!$img->is_published)
+                                                <span class="text-xs px-2 py-1 bg-yellow-100 text-yellow-800 rounded">Draft</span>
+                                            @else
+                                                <span class="text-xs px-2 py-1 bg-green-100 text-green-800 rounded">Published</span>
+                                            @endif
+                                        </td>
+                                        <td class="p-2 text-center"><button type="button" onclick="switchToEditMode('premium', this.closest('tr'))" class="text-blue-600 hover:underline font-medium">Edit</button></td>
+                                        <td class="p-2 text-center"><button type="button" onclick="deleteImage({{ $img->id }})" class="text-red-600 hover:underline">Delete</button></td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Add New Button -->
+                    <button type="button" onclick="switchToUploadMode('premium')" class="mt-6 px-4 py-2 bg-purple-500 hover:bg-purple-600 text-white rounded-lg font-semibold text-sm">+ Add New Premium Image</button>
+                @else
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">No premium images yet. Add one below.</p>
+                @endif
+            </div>
+
+            <!-- Upload Mode -->
+            <div id="premium-upload-mode" style="display:none;" class="space-y-4">
+                <div class="flex items-center justify-between mb-4">
+                    <h4 class="font-semibold text-gray-900 dark:text-white">Add New Premium Image</h4>
+                    <button type="button" onclick="switchToListMode('premium')" class="text-sm text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">✕ Back to List</button>
+                </div>
+
                 <form id="premium-form" class="space-y-4">
                     <input type="hidden" id="premium-edit-id" value="">
 
@@ -446,44 +588,82 @@
                         </label>
                     </div>
 
-                    <button type="button" onclick="uploadImage('premium')" class="w-full px-4 py-2 bg-purple-500 hover:bg-purple-600 text-white rounded-lg font-semibold text-sm">Upload</button>
-                </form>
-
-                @if($premiumImages->count())
-                    <div class="mt-6">
-                        <h4 class="font-semibold text-sm mb-3 text-gray-900 dark:text-white">Current Premium Images (Drag to Reorder)</h4>
-                        <table id="premium-table" class="w-full text-sm">
-                            <thead>
-                                <tr class="border-b">
-                                    <th class="p-2 w-8">↕️</th>
-                                    <th class="p-2 text-left">Preview</th>
-                                    <th class="p-2 text-left">Caption</th>
-                                    <th class="p-2 text-left">Status</th>
-                                    <th class="p-2 text-center">Edit</th>
-                                    <th class="p-2 text-center">Delete</th>
-                                </tr>
-                            </thead>
-                            <tbody id="premium-tbody">
-                                @foreach($premiumImages as $img)
-                                    <tr class="border-b hover:bg-gray-100 dark:hover:bg-gray-600 cursor-move" draggable="true" ondragstart="handleDragStart(event)" ondragover="handleDragOver(event)" ondrop="handleDrop(event, 'premium')" ondragend="handleDragEnd(event)" data-id="{{ $img->id }}" data-caption="{{ $img->caption ?? '' }}" data-published="{{ $img->is_published ? 'true' : 'false' }}" data-meta="{{ json_encode($img->meta ?? []) }}">
-                                        <td class="p-2 text-gray-400">⋮⋮</td>
-                                        <td class="p-2"><img src="{{ asset('storage/' . $img->image_path) }}" class="h-10 w-16 object-cover rounded"></td>
-                                        <td class="p-2 truncate">{{ $img->caption ?? '—' }}</td>
-                                        <td class="p-2">
-                                            @if(!$img->is_published)
-                                                <span class="text-xs px-2 py-1 bg-yellow-100 text-yellow-800 rounded">Draft</span>
-                                            @else
-                                                <span class="text-xs px-2 py-1 bg-green-100 text-green-800 rounded">Published</span>
-                                            @endif
-                                        </td>
-                                        <td class="p-2 text-center"><button type="button" onclick="startEdit('premium', this.closest('tr'))" class="text-blue-600 hover:underline">Edit</button></td>
-                                        <td class="p-2 text-center"><button type="button" onclick="deleteImage({{ $img->id }})" class="text-red-600 hover:underline">Delete</button></td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                    <div class="flex gap-3">
+                        <button type="button" onclick="uploadImage('premium')" class="flex-1 px-4 py-2 bg-purple-500 hover:bg-purple-600 text-white rounded-lg font-semibold text-sm">Upload</button>
+                        <button type="button" onclick="switchToListMode('premium')" class="flex-1 px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-800 rounded-lg font-semibold text-sm">Cancel</button>
                     </div>
-                @endif
+                </form>
+            </div>
+
+            <!-- Edit Mode -->
+            <div id="premium-edit-mode" style="display:none;" class="space-y-4">
+                <div class="flex items-center justify-between mb-4 p-3 bg-purple-100 dark:bg-purple-900/20 rounded-lg border border-purple-200 dark:border-purple-700">
+                    <h4 class="font-semibold text-gray-900 dark:text-white">✏️ Editing Premium Image</h4>
+                    <button type="button" onclick="switchToListMode('premium')" class="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white font-medium">Cancel</button>
+                </div>
+
+                <form id="premium-edit-form" class="space-y-4">
+                    <!-- Image preview for editing -->
+                    <div id="premium-edit-preview" class="bg-gray-100 dark:bg-gray-800 rounded-lg p-4 text-center">
+                        <img id="premium-edit-img" src="" class="max-h-64 mx-auto rounded">
+                    </div>
+
+                    <!-- Change image option -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Change Image (Optional)</label>
+                        <input type="file" id="premium-edit-image" name="image" accept="image/*" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-800 dark:text-white text-sm" onchange="previewSingleImage(event, 'premium-edit-img')">
+                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Leave blank to keep existing image</p>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Caption</label>
+                        <textarea id="premium-edit-desc" placeholder="Add a caption..." class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-800 dark:text-white text-sm" rows="2"></textarea>
+                    </div>
+
+                    <!-- Property Details -->
+                    <div class="border-t border-gray-300 dark:border-gray-600 pt-4">
+                        <h5 class="text-sm font-semibold text-gray-900 dark:text-white mb-3">Property Details (Optional)</h5>
+
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">SQM</label>
+                                <input type="number" id="premium-edit-sqm" placeholder="e.g., 250" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-800 dark:text-white text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Location</label>
+                                <input type="text" id="premium-edit-location" placeholder="e.g., Makati" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-800 dark:text-white text-sm">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3 mt-3">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Price (₱M)</label>
+                                <input type="number" id="premium-edit-price" placeholder="e.g., 5.5" step="0.1" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-800 dark:text-white text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Property Type</label>
+                                <select id="premium-edit-type" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-800 dark:text-white text-sm">
+                                    <option value="">Select Type</option>
+                                    <option value="condo">Condo</option>
+                                    <option value="house">House</option>
+                                    <option value="land">Land</option>
+                                    <option value="commercial">Commercial</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            <input type="checkbox" id="premium-edit-published" class="mr-2"> Publish
+                        </label>
+                    </div>
+
+                    <div class="flex gap-3">
+                        <button type="button" onclick="updateImage('premium')" class="flex-1 px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold text-sm">Save Changes</button>
+                        <button type="button" onclick="switchToListMode('premium')" class="flex-1 px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-800 rounded-lg font-semibold text-sm">Cancel</button>
+                    </div>
+                </form>
             </div>
         </div>
     </x-modal>
@@ -764,6 +944,7 @@
             const id = row.dataset.id;
             const caption = row.dataset.caption || '';
             const published = (row.dataset.published || '') === 'true';
+            const schedule = row.dataset.schedule || '';
             const meta = row.dataset.meta ? JSON.parse(row.dataset.meta) : {};
             const imgPath = row.querySelector('img').src;
 
@@ -772,6 +953,13 @@
             document.getElementById(`${type}-edit-desc`).value = caption;
             document.getElementById(`${type}-edit-published`).checked = published;
             document.getElementById(`${type}-edit-img`).src = imgPath;
+
+            // Populate schedule if it exists and is hero
+            if (schedule && document.getElementById(`${type}-edit-schedule`)) {
+                // Convert 'Y-m-d H:i' format to datetime-local 'YYYY-MM-DDTHH:mm'
+                const [datePart, timePart] = schedule.split(' ');
+                document.getElementById(`${type}-edit-schedule`).value = `${datePart}T${timePart}`;
+            }
 
             // Populate property details
             document.getElementById(`${type}-edit-sqm`).value = meta.sqm || '';
@@ -811,6 +999,7 @@
             const fileInput = document.getElementById(`${type}-edit-image`);
             const descInput = document.getElementById(`${type}-edit-desc`);
             const publishedCheckbox = document.getElementById(`${type}-edit-published`);
+            const scheduleInput = document.getElementById(`${type}-edit-schedule`);
 
             // Property detail fields
             const sqmInput = document.getElementById(`${type}-edit-sqm`);
@@ -827,6 +1016,12 @@
 
             formData.append('caption', descInput.value);
             formData.append('is_published', publishedCheckbox.checked ? 'true' : 'false');
+
+            // Handle schedule if it exists
+            if (scheduleInput && scheduleInput.value) {
+                const formatted = scheduleInput.value.replace('T', ' ');
+                formData.append('scheduled_publish_at', formatted);
+            }
 
             // Add property details if provided
             if (sqmInput && sqmInput.value) {
