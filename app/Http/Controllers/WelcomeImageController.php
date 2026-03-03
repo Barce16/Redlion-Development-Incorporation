@@ -26,6 +26,8 @@ class WelcomeImageController extends Controller
             'caption' => 'nullable|string|max:255',
             'is_published' => 'nullable|in:true,false,1,0',  // Accept string or numeric boolean
             'scheduled_publish_at' => 'nullable|date_format:Y-m-d H:i',
+            'meta' => 'nullable|array',
+            'meta.*' => 'nullable|string|max:255',
         ]);
 
         // Normalize boolean field
@@ -67,12 +69,13 @@ class WelcomeImageController extends Controller
                 'type' => $validated['type'],
                 'image_path' => $path,
                 'caption' => $validated['caption'] ?? null,
+                'meta' => $validated['meta'] ?? null,
                 'sort_order' => $maxSort,
                 'is_published' => (bool) ($validated['is_published'] ?? true),
                 'scheduled_publish_at' => $validated['scheduled_publish_at'] ?? null,
             ]);
 
-            \Log::info('WelcomeImage created', ['id' => $welcome->id, 'path' => $welcome->image_path, 'published' => $welcome->is_published]);
+            \Log::info('WelcomeImage created', ['id' => $welcome->id, 'path' => $welcome->image_path, 'published' => $welcome->is_published, 'meta' => $welcome->meta]);
 
             $images[] = $welcome->id;
         }
@@ -92,6 +95,8 @@ class WelcomeImageController extends Controller
             'caption' => 'nullable|string|max:255',
             'is_published' => 'nullable|in:true,false,1,0',  // Accept both string and numeric boolean
             'scheduled_publish_at' => 'nullable|date_format:Y-m-d H:i',
+            'meta' => 'nullable|array',
+            'meta.*' => 'nullable|string|max:255',
         ]);
 
         // Normalize boolean field
@@ -108,6 +113,10 @@ class WelcomeImageController extends Controller
 
         if (array_key_exists('caption', $validated)) {
             $welcomeImage->caption = $validated['caption'];
+        }
+
+        if (array_key_exists('meta', $validated)) {
+            $welcomeImage->meta = $validated['meta'] ?: null;
         }
 
         if (array_key_exists('is_published', $validated)) {

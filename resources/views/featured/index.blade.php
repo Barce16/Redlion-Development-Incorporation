@@ -91,6 +91,39 @@
                         <textarea id="hero-desc" placeholder="Add a caption..." class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-800 dark:text-white text-sm" rows="2"></textarea>
                     </div>
 
+                    <!-- Property Details -->
+                    <div class="border-t border-gray-300 dark:border-gray-600 pt-4">
+                        <h5 class="text-sm font-semibold text-gray-900 dark:text-white mb-3">Property Details (Optional)</h5>
+                        
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">SQM</label>
+                                <input type="number" id="hero-sqm" placeholder="e.g., 250" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-800 dark:text-white text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Location</label>
+                                <input type="text" id="hero-location" placeholder="e.g., Makati" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-800 dark:text-white text-sm">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3 mt-3">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Price (₱M)</label>
+                                <input type="number" id="hero-price" placeholder="e.g., 5.5" step="0.1" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-800 dark:text-white text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Property Type</label>
+                                <select id="hero-type" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-800 dark:text-white text-sm">
+                                    <option value="">Select Type</option>
+                                    <option value="condo">Condo</option>
+                                    <option value="house">House</option>
+                                    <option value="land">Land</option>
+                                    <option value="commercial">Commercial</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
                     <div>
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                             <input type="checkbox" id="hero-published" checked class="mr-2"> Publish Immediately
@@ -121,7 +154,7 @@
                             </thead>
                             <tbody>
                                 @foreach($heroImages as $img)
-                                    <tr class="border-b" data-caption="{{ $img->caption ?? '' }}" data-published="{{ $img->is_published ? 'true' : 'false' }}" data-schedule="{{ $img->scheduled_publish_at?->format('Y-m-d H:i') ?? '' }}">
+                                    <tr class="border-b" data-id="{{ $img->id }}" data-caption="{{ $img->caption ?? '' }}" data-published="{{ $img->is_published ? 'true' : 'false' }}" data-schedule="{{ $img->scheduled_publish_at?->format('Y-m-d H:i') ?? '' }}" data-meta="{{ json_encode($img->meta ?? []) }}">
                                         <td class="p-2"><img src="{{ asset('storage/' . $img->image_path) }}" class="h-10 w-16 object-cover rounded"></td>
                                         <td class="p-2">{{ $img->caption ?? '—' }}</td>
                                         <td class="p-2">
@@ -175,6 +208,39 @@
                         <textarea id="featured-desc" placeholder="Add a caption..." class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-800 dark:text-white text-sm" rows="2"></textarea>
                     </div>
 
+                    <!-- Property Details -->
+                    <div class="border-t border-gray-300 dark:border-gray-600 pt-4">
+                        <h5 class="text-sm font-semibold text-gray-900 dark:text-white mb-3">Property Details (Optional)</h5>
+
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">SQM</label>
+                                <input type="number" id="featured-sqm" placeholder="e.g., 250" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-800 dark:text-white text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Location</label>
+                                <input type="text" id="featured-location" placeholder="e.g., Makati" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-800 dark:text-white text-sm">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3 mt-3">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Price (₱M)</label>
+                                <input type="number" id="featured-price" placeholder="e.g., 5.5" step="0.1" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-800 dark:text-white text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Property Type</label>
+                                <select id="featured-type" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-800 dark:text-white text-sm">
+                                    <option value="">Select Type</option>
+                                    <option value="condo">Condo</option>
+                                    <option value="house">House</option>
+                                    <option value="land">Land</option>
+                                    <option value="commercial">Commercial</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
                     <div>
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                             <input type="checkbox" id="featured-published" checked class="mr-2"> Publish Immediately
@@ -200,7 +266,7 @@
                             </thead>
                             <tbody id="featured-tbody">
                                 @foreach($featuredImages as $img)
-                                    <tr class="border-b hover:bg-gray-100 dark:hover:bg-gray-600 cursor-move" draggable="true" ondragstart="handleDragStart(event)" ondragover="handleDragOver(event)" ondrop="handleDrop(event, 'featured')" ondragend="handleDragEnd(event)" data-id="{{ $img->id }}" data-caption="{{ $img->caption ?? '' }}" data-published="{{ $img->is_published ? 'true' : 'false' }}">
+                                    <tr class="border-b hover:bg-gray-100 dark:hover:bg-gray-600 cursor-move" draggable="true" ondragstart="handleDragStart(event)" ondragover="handleDragOver(event)" ondrop="handleDrop(event, 'featured')" ondragend="handleDragEnd(event)" data-id="{{ $img->id }}" data-caption="{{ $img->caption ?? '' }}" data-published="{{ $img->is_published ? 'true' : 'false' }}" data-meta="{{ json_encode($img->meta ?? []) }}">
                                         <td class="p-2 text-gray-400">⋮⋮</td>
                                         <td class="p-2"><img src="{{ asset('storage/' . $img->image_path) }}" class="h-10 w-16 object-cover rounded"></td>
                                         <td class="p-2 truncate">{{ $img->caption ?? '—' }}</td>
@@ -253,6 +319,39 @@
                         <textarea id="premium-desc" placeholder="Add a caption..." class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-800 dark:text-white text-sm" rows="2"></textarea>
                     </div>
 
+                    <!-- Property Details -->
+                    <div class="border-t border-gray-300 dark:border-gray-600 pt-4">
+                        <h5 class="text-sm font-semibold text-gray-900 dark:text-white mb-3">Property Details (Optional)</h5>
+
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">SQM</label>
+                                <input type="number" id="premium-sqm" placeholder="e.g., 250" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-800 dark:text-white text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Location</label>
+                                <input type="text" id="premium-location" placeholder="e.g., Makati" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-800 dark:text-white text-sm">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3 mt-3">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Price (₱M)</label>
+                                <input type="number" id="premium-price" placeholder="e.g., 5.5" step="0.1" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-800 dark:text-white text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Property Type</label>
+                                <select id="premium-type" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-800 dark:text-white text-sm">
+                                    <option value="">Select Type</option>
+                                    <option value="condo">Condo</option>
+                                    <option value="house">House</option>
+                                    <option value="land">Land</option>
+                                    <option value="commercial">Commercial</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
                     <div>
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                             <input type="checkbox" id="premium-published" checked class="mr-2"> Publish Immediately
@@ -278,7 +377,7 @@
                             </thead>
                             <tbody id="premium-tbody">
                                 @foreach($premiumImages as $img)
-                                    <tr class="border-b hover:bg-gray-100 dark:hover:bg-gray-600 cursor-move" draggable="true" ondragstart="handleDragStart(event)" ondragover="handleDragOver(event)" ondrop="handleDrop(event, 'premium')" ondragend="handleDragEnd(event)" data-id="{{ $img->id }}" data-caption="{{ $img->caption ?? '' }}" data-published="{{ $img->is_published ? 'true' : 'false' }}">
+                                    <tr class="border-b hover:bg-gray-100 dark:hover:bg-gray-600 cursor-move" draggable="true" ondragstart="handleDragStart(event)" ondragover="handleDragOver(event)" ondrop="handleDrop(event, 'premium')" ondragend="handleDragEnd(event)" data-id="{{ $img->id }}" data-caption="{{ $img->caption ?? '' }}" data-published="{{ $img->is_published ? 'true' : 'false' }}" data-meta="{{ json_encode($img->meta ?? []) }}">
                                         <td class="p-2 text-gray-400">⋮⋮</td>
                                         <td class="p-2"><img src="{{ asset('storage/' . $img->image_path) }}" class="h-10 w-16 object-cover rounded"></td>
                                         <td class="p-2 truncate">{{ $img->caption ?? '—' }}</td>
@@ -383,6 +482,12 @@
             const publishedCheckbox = document.getElementById(`${type}-published`);
             const scheduleInput = document.getElementById(`${type}-schedule`);
 
+            // Property detail fields
+            const sqmInput = document.getElementById(`${type}-sqm`);
+            const locationInput = document.getElementById(`${type}-location`);
+            const priceInput = document.getElementById(`${type}-price`);
+            const typeInput = document.getElementById(`${type}-type`);
+
             let files = [];
             if (fileInput && fileInput.files.length > 0) {
                 files = Array.from(fileInput.files);
@@ -417,6 +522,20 @@
                 const formatted = scheduleInput.value.replace('T', ' ');
                 formData.append('scheduled_publish_at', formatted);
                 console.log('Scheduled publish at:', formatted);
+            }
+
+            // Add property details if provided
+            if (sqmInput && sqmInput.value) {
+                formData.append('meta[sqm]', sqmInput.value);
+            }
+            if (locationInput && locationInput.value) {
+                formData.append('meta[location]', locationInput.value);
+            }
+            if (priceInput && priceInput.value) {
+                formData.append('meta[price]', priceInput.value);
+            }
+            if (typeInput && typeInput.value) {
+                formData.append('meta[property_type]', typeInput.value);
             }
 
             if (!editId) formData.append('type', type);
@@ -476,9 +595,26 @@
             const caption = row.dataset.caption || row.closest('tr').dataset.caption || '';
             const published = (row.dataset.published || row.closest('tr').dataset.published) === 'true';
 
+            // Get meta data from data attributes
+            const meta = row.dataset.meta ? JSON.parse(row.dataset.meta) : {};
+
             document.getElementById(`${type}-desc`).value = caption;
             document.getElementById(`${type}-edit-id`).value = id;
             document.getElementById(`${type}-published`).checked = published;
+
+            // Populate property details if they exist
+            if (document.getElementById(`${type}-sqm`)) {
+                document.getElementById(`${type}-sqm`).value = meta.sqm || '';
+            }
+            if (document.getElementById(`${type}-location`)) {
+                document.getElementById(`${type}-location`).value = meta.location || '';
+            }
+            if (document.getElementById(`${type}-price`)) {
+                document.getElementById(`${type}-price`).value = meta.price || '';
+            }
+            if (document.getElementById(`${type}-type`)) {
+                document.getElementById(`${type}-type`).value = meta.property_type || '';
+            }
 
             // Hide file input for edit
             const dropzone = document.getElementById(`${type}-dropzone`);
