@@ -5,74 +5,32 @@
         </h2>
     </x-slot>
 
-    <div class="py-12" x-data="{ selectedIds: [] }">
+    <div class="py-12" x-data="{}">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <!-- Enhanced Dashboard Stats -->
-            <div class="grid grid-cols-1 md:grid-cols-5 gap-4 mb-8">
-                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-4">
-                    <div class="text-xs font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wider">Total Images</div>
-                    <div class="text-3xl font-bold text-gray-900 dark:text-white mt-2">{{ $stats['total_images'] }}</div>
-                </div>
-
-                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-4">
-                    <div class="text-xs font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wider">Published</div>
-                    <div class="text-3xl font-bold text-green-600 mt-2">{{ $stats['hero']['published'] + $stats['featured']['published'] + $stats['premium']['published'] }}</div>
-                </div>
-
-                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-4">
-                    <div class="text-xs font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wider">Draft</div>
-                    <div class="text-3xl font-bold text-yellow-600 mt-2">{{ $stats['hero']['draft'] + $stats['featured']['draft'] + $stats['premium']['draft'] }}</div>
-                </div>
-
-                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-4">
-                    <div class="text-xs font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wider">Total Views</div>
-                    <div class="text-3xl font-bold text-blue-600 mt-2">{{ number_format($stats['total_views']) }}</div>
-                </div>
-
-                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-4">
-                    <div class="text-xs font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wider">Total Clicks</div>
-                    <div class="text-3xl font-bold text-purple-600 mt-2">{{ number_format($stats['total_clicks']) }}</div>
-                </div>
-            </div>
-
-            <!-- Search & Filter Bar -->
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-6 mb-8">
-                <h3 class="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Search & Filter</h3>
-                <form method="GET" action="{{ route('featured.index') }}" class="space-y-4">
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Search by Caption, Location, or Alt Text</label>
-                            <input type="text" name="search" value="{{ $search }}" placeholder="Search..." class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white text-sm">
-                        </div>
-
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Status</label>
-                            <select name="filter_status" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white text-sm">
-                                <option value="all" {{ $filterStatus === 'all' ? 'selected' : '' }}>All Statuses</option>
-                                <option value="published" {{ $filterStatus === 'published' ? 'selected' : '' }}>Published Only</option>
-                                <option value="draft" {{ $filterStatus === 'draft' ? 'selected' : '' }}>Draft Only</option>
-                            </select>
-                        </div>
-
-                        <div class="flex items-end">
-                            <button type="submit" class="w-full px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-semibold text-sm">
-                                🔍 Search
-                            </button>
-                        </div>
+            <!-- Image stats -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-6">
+                    <div class="text-gray-600 dark:text-gray-400 text-sm font-medium">Hero Images</div>
+                    <div class="text-3xl font-bold text-gray-900 dark:text-white mt-2">
+                        {{ $heroImages->count() }}
                     </div>
+                </div>
 
-                    @if ($search || $filterStatus !== 'all')
-                        <div class="text-sm">
-                            <a href="{{ route('featured.index') }}" class="text-blue-500 hover:text-blue-700 dark:text-blue-400">← Clear all filters</a>
-                        </div>
-                    @endif
-                </form>
+                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-6">
+                    <div class="text-gray-600 dark:text-gray-400 text-sm font-medium">Featured Images</div>
+                    <div class="text-3xl font-bold text-blue-600 mt-2">{{ $featuredImages->count() }}</div>
+                </div>
+
+                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-6">
+                    <div class="text-gray-600 dark:text-gray-400 text-sm font-medium">Premium Images</div>
+                    <div class="text-3xl font-bold text-purple-600 mt-2">{{ $premiumImages->count() }}</div>
+                </div>
             </div>
 
             <!-- Info message -->
             <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700 rounded-lg p-4 mb-8">
                 <p class="text-sm text-blue-800 dark:text-blue-200">
-                    💡 <strong>Features:</strong> Drag-and-drop reorder • Alt text & SEO • Bulk operations • View/Click analytics • Filter & search
+                    💡 <strong>New features:</strong> Drag-and-drop reorder • Bulk upload • Image preview • Schedule publishing (coming soon)
                 </p>
             </div>
 
@@ -99,6 +57,7 @@
             </div>
         </div>
     </div>
+
     <!-- Hero Modal -->
     <x-modal name="manage-hero">
         <div class="p-6 max-h-[90vh] overflow-y-auto">
