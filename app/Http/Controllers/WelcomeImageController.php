@@ -192,4 +192,54 @@ class WelcomeImageController extends Controller
 
         return response()->json(['success' => true]);
     }
+
+    /**
+     * Bulk publish images
+     */
+    public function bulkPublish(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'ids' => 'required|array',
+            'ids.*' => 'integer|exists:welcome_images,id',
+        ]);
+
+        WelcomeImage::whereIn('id', $validated['ids'])->update(['is_published' => true]);
+
+        return response()->json(['success' => true, 'message' => 'Images published']);
+    }
+
+    /**
+     * Bulk unpublish images
+     */
+    public function bulkUnpublish(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'ids' => 'required|array',
+            'ids.*' => 'integer|exists:welcome_images,id',
+        ]);
+
+        WelcomeImage::whereIn('id', $validated['ids'])->update(['is_published' => false]);
+
+        return response()->json(['success' => true, 'message' => 'Images unpublished']);
+    }
+
+    /**
+     * Bulk delete images
+     */
+    public function bulkDelete(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'ids' => 'required|array',
+            'ids.*' => 'integer|exists:welcome_images,id',
+        ]);
+
+        $images = WelcomeImage::whereIn('id', $validated['ids'])->get();
+
+        foreach ($images as $image) {
+            Storage::disk('public')->delete($image->image_path);
+            $image->delete();
+        }
+
+        return response()->json(['success' => true, 'message' => count($images) . ' images deleted']);
+    }
 }

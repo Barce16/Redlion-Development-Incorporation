@@ -66,6 +66,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::patch('/welcome-images/{welcomeImage}/move', [\App\Http\Controllers\WelcomeImageController::class, 'move'])->name('welcome-images.move');
     Route::post('/welcome-images/reorder', [\App\Http\Controllers\WelcomeImageController::class, 'reorder'])->name('welcome-images.reorder');
 
+    // Bulk operations
+    Route::post('/welcome-images/bulk/publish', [\App\Http\Controllers\WelcomeImageController::class, 'bulkPublish'])->name('welcome-images.bulk-publish');
+    Route::post('/welcome-images/bulk/unpublish', [\App\Http\Controllers\WelcomeImageController::class, 'bulkUnpublish'])->name('welcome-images.bulk-unpublish');
+    Route::post('/welcome-images/bulk/delete', [\App\Http\Controllers\WelcomeImageController::class, 'bulkDelete'])->name('welcome-images.bulk-delete');
+
 
     // Transactions (RESTful)
     Route::resource('transactions', TransactionController::class);
