@@ -106,7 +106,7 @@ body {
 </header>
 
 <!-- ================= MODERN HERO SECTION ================= -->
-<section class="relative min-h-screen overflow-hidden">
+<section class="relative h-screen pt-16 overflow-hidden">
     <!-- Animated Background -->
     <div class="absolute inset-0 grid-pattern opacity-30"></div>
     <div class="absolute -top-40 -right-40 w-96 h-96 bg-red-100 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
@@ -164,7 +164,7 @@ body {
                 <div class="absolute inset-0 bg-gradient-to-br from-red-600 to-red-700 rounded-3xl blur-3xl opacity-30"></div>
                 <div class="relative bg-gradient-to-br from-red-50 to-red-100 rounded-3xl p-8 overflow-hidden">
                     <div class="absolute inset-0 grid-pattern opacity-10"></div>
-                    <div class="relative h-80 bg-gradient-to-br from-red-600 to-red-700 rounded-2xl flex items-center justify-center overflow-hidden">
+                    <div class="relative h-full bg-gradient-to-br from-red-600 to-red-700 rounded-2xl flex items-center justify-center overflow-hidden">
                         @if(isset($heroRecord) && $heroRecord && $heroRecord->image_path)
                             <img src="{{ asset('storage/' . $heroRecord->image_path) }}"
                                  alt="Hero image"
