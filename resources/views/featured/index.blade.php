@@ -833,6 +833,9 @@
             const locationInput = document.getElementById(`${type}-location`);
             const priceInput = document.getElementById(`${type}-price`);
             const typeInput = document.getElementById(`${type}-type`);
+            const altInput = document.getElementById(`${type}-alt`);
+            const propInput = document.getElementById(`${type}-property`);
+            const tagsInput = document.getElementById(`${type}-tags`);
 
             let files = [];
             if (fileInput && fileInput.files.length > 0) {
@@ -853,6 +856,12 @@
                 }
             }
             formData.append('caption', descInput ? descInput.value : '');
+            if (altInput) formData.append('alt_text', altInput.value);
+            if (propInput) formData.append('property_listing_id', propInput.value);
+            if (tagsInput) {
+                const tags = tagsInput.value.split(',').map(t => t.trim()).filter(t => t);
+                tags.forEach((tag, idx) => formData.append(`tags[${idx}]`, tag));
+            }
 
             // Send boolean as string (Laravel will cast it properly)
             const isPublished = publishedCheckbox ? (publishedCheckbox.checked ? 'true' : 'false') : 'true';
@@ -870,25 +879,20 @@
                 console.log('Scheduled publish at:', formatted);
             }
 
-            // Add property details if provided
-            if (sqmInput && sqmInput.value) {
-                formData.append('meta[sqm]', sqmInput.value);
-            }
-            if (locationInput && locationInput.value) {
-                formData.append('meta[location]', locationInput.value);
-            }
-            if (priceInput && priceInput.value) {
-                formData.append('meta[price]', priceInput.value);
-            }
-            if (typeInput && typeInput.value) {
-                formData.append('meta[property_type]', typeInput.value);
-            }
+            // Add property details if provided (always include to avoid wiping existing)
+            if (sqmInput) formData.append('meta[sqm]', sqmInput.value);
+            if (locationInput) formData.append('meta[location]', locationInput.value);
+            if (priceInput) formData.append('meta[price]', priceInput.value);
+            if (typeInput) formData.append('meta[property_type]', typeInput.value);
 
             if (!editId) formData.append('type', type);
             formData.append('_token', csrfToken);
 
             // Log form data for debugging
             console.log('Uploading with is_published:', isPublished, 'type:', type);
+            for (let pair of formData.entries()) {
+                console.log('uploadFormData', pair[0], pair[1]);
+            }
 
             let url = '/welcome-images';
             let method = 'POST';
