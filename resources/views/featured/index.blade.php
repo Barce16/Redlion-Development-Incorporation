@@ -182,10 +182,60 @@
     <x-modal name="manage-featured">
         <div class="p-6 max-h-[90vh] overflow-y-auto">
             <h3 class="text-lg font-semibold mb-2">Manage Featured Images</h3>
-            <p class="text-sm text-gray-600 dark:text-gray-400 mb-6">Upload featured carousel images. Drag rows to reorder.</p>
 
-            <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg mb-6">
-                <h4 class="font-semibold text-sm mb-4 text-gray-900 dark:text-white">Upload Featured Images</h4>
+            <!-- View Mode / List View -->
+            <div id="featured-list-view" class="space-y-4">
+                <p class="text-sm text-gray-600 dark:text-gray-400 mb-6">Upload featured carousel images. Drag rows to reorder or click Edit to modify.</p>
+
+                @if($featuredImages->count())
+                    <div>
+                        <h4 class="font-semibold text-sm mb-3 text-gray-900 dark:text-white">Current Featured Images (Drag to Reorder)</h4>
+                        <table id="featured-table" class="w-full text-sm">
+                            <thead>
+                                <tr class="border-b">
+                                    <th class="p-2 w-8">↕️</th>
+                                    <th class="p-2 text-left">Preview</th>
+                                    <th class="p-2 text-left">Caption</th>
+                                    <th class="p-2 text-left">Status</th>
+                                    <th class="p-2 text-center">Edit</th>
+                                    <th class="p-2 text-center">Delete</th>
+                                </tr>
+                            </thead>
+                            <tbody id="featured-tbody">
+                                @foreach($featuredImages as $img)
+                                    <tr class="border-b hover:bg-gray-100 dark:hover:bg-gray-600 cursor-move" draggable="true" ondragstart="handleDragStart(event)" ondragover="handleDragOver(event)" ondrop="handleDrop(event, 'featured')" ondragend="handleDragEnd(event)" data-id="{{ $img->id }}" data-caption="{{ $img->caption ?? '' }}" data-published="{{ $img->is_published ? 'true' : 'false' }}" data-meta="{{ json_encode($img->meta ?? []) }}">
+                                        <td class="p-2 text-gray-400">⋮⋮</td>
+                                        <td class="p-2"><img src="{{ asset('storage/' . $img->image_path) }}" class="h-10 w-16 object-cover rounded"></td>
+                                        <td class="p-2 truncate">{{ $img->caption ?? '—' }}</td>
+                                        <td class="p-2">
+                                            @if(!$img->is_published)
+                                                <span class="text-xs px-2 py-1 bg-yellow-100 text-yellow-800 rounded">Draft</span>
+                                            @else
+                                                <span class="text-xs px-2 py-1 bg-green-100 text-green-800 rounded">Published</span>
+                                            @endif
+                                        </td>
+                                        <td class="p-2 text-center"><button type="button" onclick="switchToEditMode('featured', this.closest('tr'))" class="text-blue-600 hover:underline font-medium">Edit</button></td>
+                                        <td class="p-2 text-center"><button type="button" onclick="deleteImage({{ $img->id }})" class="text-red-600 hover:underline">Delete</button></td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Add New Button -->
+                    <button type="button" onclick="switchToUploadMode('featured')" class="mt-6 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-semibold text-sm">+ Add New Featured Image</button>
+                @else
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">No featured images yet. Add one below.</p>
+                @endif
+            </div>
+
+            <!-- Upload Mode -->
+            <div id="featured-upload-mode" style="display:none;" class="space-y-4">
+                <div class="flex items-center justify-between mb-4">
+                    <h4 class="font-semibold text-gray-900 dark:text-white">Add New Featured Image</h4>
+                    <button type="button" onclick="switchToListMode('featured')" class="text-sm text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">✕ Back to List</button>
+                </div>
+
                 <form id="featured-form" class="space-y-4">
                     <input type="hidden" id="featured-edit-id" value="">
 
@@ -204,7 +254,7 @@
                     <div id="featured-preview-grid" class="grid grid-cols-3 gap-4" style="display:none;"></div>
 
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Caption (for single edit)</label>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Caption</label>
                         <textarea id="featured-desc" placeholder="Add a caption..." class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-800 dark:text-white text-sm" rows="2"></textarea>
                     </div>
 
@@ -247,44 +297,82 @@
                         </label>
                     </div>
 
-                    <button type="button" onclick="uploadImage('featured')" class="w-full px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-semibold text-sm">Upload</button>
-                </form>
-
-                @if($featuredImages->count())
-                    <div class="mt-6">
-                        <h4 class="font-semibold text-sm mb-3 text-gray-900 dark:text-white">Current Featured Images (Drag to Reorder)</h4>
-                        <table id="featured-table" class="w-full text-sm">
-                            <thead>
-                                <tr class="border-b">
-                                    <th class="p-2 w-8">↕️</th>
-                                    <th class="p-2 text-left">Preview</th>
-                                    <th class="p-2 text-left">Caption</th>
-                                    <th class="p-2 text-left">Status</th>
-                                    <th class="p-2 text-center">Edit</th>
-                                    <th class="p-2 text-center">Delete</th>
-                                </tr>
-                            </thead>
-                            <tbody id="featured-tbody">
-                                @foreach($featuredImages as $img)
-                                    <tr class="border-b hover:bg-gray-100 dark:hover:bg-gray-600 cursor-move" draggable="true" ondragstart="handleDragStart(event)" ondragover="handleDragOver(event)" ondrop="handleDrop(event, 'featured')" ondragend="handleDragEnd(event)" data-id="{{ $img->id }}" data-caption="{{ $img->caption ?? '' }}" data-published="{{ $img->is_published ? 'true' : 'false' }}" data-meta="{{ json_encode($img->meta ?? []) }}">
-                                        <td class="p-2 text-gray-400">⋮⋮</td>
-                                        <td class="p-2"><img src="{{ asset('storage/' . $img->image_path) }}" class="h-10 w-16 object-cover rounded"></td>
-                                        <td class="p-2 truncate">{{ $img->caption ?? '—' }}</td>
-                                        <td class="p-2">
-                                            @if(!$img->is_published)
-                                                <span class="text-xs px-2 py-1 bg-yellow-100 text-yellow-800 rounded">Draft</span>
-                                            @else
-                                                <span class="text-xs px-2 py-1 bg-green-100 text-green-800 rounded">Published</span>
-                                            @endif
-                                        </td>
-                                        <td class="p-2 text-center"><button type="button" onclick="startEdit('featured', this.closest('tr'))" class="text-blue-600 hover:underline">Edit</button></td>
-                                        <td class="p-2 text-center"><button type="button" onclick="deleteImage({{ $img->id }})" class="text-red-600 hover:underline">Delete</button></td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                    <div class="flex gap-3">
+                        <button type="button" onclick="uploadImage('featured')" class="flex-1 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-semibold text-sm">Upload</button>
+                        <button type="button" onclick="switchToListMode('featured')" class="flex-1 px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-800 rounded-lg font-semibold text-sm">Cancel</button>
                     </div>
-                @endif
+                </form>
+            </div>
+
+            <!-- Edit Mode -->
+            <div id="featured-edit-mode" style="display:none;" class="space-y-4">
+                <div class="flex items-center justify-between mb-4 p-3 bg-blue-100 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-700">
+                    <h4 class="font-semibold text-gray-900 dark:text-white">✏️ Editing Featured Image</h4>
+                    <button type="button" onclick="switchToListMode('featured')" class="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white font-medium">Cancel</button>
+                </div>
+
+                <form id="featured-edit-form" class="space-y-4">
+                    <!-- Image preview for editing -->
+                    <div id="featured-edit-preview" class="bg-gray-100 dark:bg-gray-800 rounded-lg p-4 text-center">
+                        <img id="featured-edit-img" src="" class="max-h-64 mx-auto rounded">
+                    </div>
+
+                    <!-- Change image option -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Change Image (Optional)</label>
+                        <input type="file" id="featured-edit-image" name="image" accept="image/*" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-800 dark:text-white text-sm" onchange="previewSingleImage(event, 'featured-edit-img')">
+                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Leave blank to keep existing image</p>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Caption</label>
+                        <textarea id="featured-edit-desc" placeholder="Add a caption..." class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-800 dark:text-white text-sm" rows="2"></textarea>
+                    </div>
+
+                    <!-- Property Details -->
+                    <div class="border-t border-gray-300 dark:border-gray-600 pt-4">
+                        <h5 class="text-sm font-semibold text-gray-900 dark:text-white mb-3">Property Details (Optional)</h5>
+
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">SQM</label>
+                                <input type="number" id="featured-edit-sqm" placeholder="e.g., 250" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-800 dark:text-white text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Location</label>
+                                <input type="text" id="featured-edit-location" placeholder="e.g., Makati" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-800 dark:text-white text-sm">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3 mt-3">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Price (₱M)</label>
+                                <input type="number" id="featured-edit-price" placeholder="e.g., 5.5" step="0.1" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-800 dark:text-white text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Property Type</label>
+                                <select id="featured-edit-type" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-800 dark:text-white text-sm">
+                                    <option value="">Select Type</option>
+                                    <option value="condo">Condo</option>
+                                    <option value="house">House</option>
+                                    <option value="land">Land</option>
+                                    <option value="commercial">Commercial</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            <input type="checkbox" id="featured-edit-published" class="mr-2"> Publish
+                        </label>
+                    </div>
+
+                    <div class="flex gap-3">
+                        <button type="button" onclick="updateImage('featured')" class="flex-1 px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold text-sm">Save Changes</button>
+                        <button type="button" onclick="switchToListMode('featured')" class="flex-1 px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-800 rounded-lg font-semibold text-sm">Cancel</button>
+                    </div>
+                </form>
             </div>
         </div>
     </x-modal>
@@ -590,39 +678,6 @@
                 });
         }
 
-        function startEdit(type, row) {
-            const id = row.dataset.id || row.closest('tr').dataset.id;
-            const caption = row.dataset.caption || row.closest('tr').dataset.caption || '';
-            const published = (row.dataset.published || row.closest('tr').dataset.published) === 'true';
-
-            // Get meta data from data attributes
-            const meta = row.dataset.meta ? JSON.parse(row.dataset.meta) : {};
-
-            document.getElementById(`${type}-desc`).value = caption;
-            document.getElementById(`${type}-edit-id`).value = id;
-            document.getElementById(`${type}-published`).checked = published;
-
-            // Populate property details if they exist
-            if (document.getElementById(`${type}-sqm`)) {
-                document.getElementById(`${type}-sqm`).value = meta.sqm || '';
-            }
-            if (document.getElementById(`${type}-location`)) {
-                document.getElementById(`${type}-location`).value = meta.location || '';
-            }
-            if (document.getElementById(`${type}-price`)) {
-                document.getElementById(`${type}-price`).value = meta.price || '';
-            }
-            if (document.getElementById(`${type}-type`)) {
-                document.getElementById(`${type}-type`).value = meta.property_type || '';
-            }
-
-            // Hide file input for edit
-            const dropzone = document.getElementById(`${type}-dropzone`);
-            if (dropzone) dropzone.style.opacity = '0.5';
-
-            document.querySelector(`#${type}-form`)?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        }
-
         function deleteImage(id) {
             if (!confirm('Delete this image permanently?')) return;
             fetch(`/welcome-images/${id}`, {
@@ -687,6 +742,140 @@
             })
                 .then(r => r.json())
                 .catch(e => console.error('Reorder failed:', e));
+        }
+
+        // ===== Mode Switching Functions =====
+        function switchToUploadMode(type) {
+            // Hide all modes
+            document.getElementById(`${type}-list-view`).style.display = 'none';
+            document.getElementById(`${type}-edit-mode`).style.display = 'none';
+            // Show upload mode
+            document.getElementById(`${type}-upload-mode`).style.display = 'block';
+            // Clear form
+            document.getElementById(`${type}-form`).reset();
+            document.getElementById(`${type}-edit-id`).value = '';
+            document.getElementById(`${type}-preview-grid`).style.display = 'none';
+            // Scroll to top
+            document.querySelector(`[x-modal-name="manage-${type}"]`)?.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function switchToEditMode(type, row) {
+            // Get image data from row
+            const id = row.dataset.id;
+            const caption = row.dataset.caption || '';
+            const published = (row.dataset.published || '') === 'true';
+            const meta = row.dataset.meta ? JSON.parse(row.dataset.meta) : {};
+            const imgPath = row.querySelector('img').src;
+
+            // Populate edit form
+            document.getElementById(`${type}-edit-id`).value = id;
+            document.getElementById(`${type}-edit-desc`).value = caption;
+            document.getElementById(`${type}-edit-published`).checked = published;
+            document.getElementById(`${type}-edit-img`).src = imgPath;
+
+            // Populate property details
+            document.getElementById(`${type}-edit-sqm`).value = meta.sqm || '';
+            document.getElementById(`${type}-edit-location`).value = meta.location || '';
+            document.getElementById(`${type}-edit-price`).value = meta.price || '';
+            document.getElementById(`${type}-edit-type`).value = meta.property_type || '';
+
+            // Clear image file input
+            document.getElementById(`${type}-edit-image`).value = '';
+
+            // Hide all modes
+            document.getElementById(`${type}-list-view`).style.display = 'none';
+            document.getElementById(`${type}-upload-mode`).style.display = 'none';
+            // Show edit mode
+            document.getElementById(`${type}-edit-mode`).style.display = 'block';
+        }
+
+        function switchToListMode(type) {
+            // Hide all other modes
+            document.getElementById(`${type}-upload-mode`).style.display = 'none';
+            document.getElementById(`${type}-edit-mode`).style.display = 'none';
+            // Show list mode
+            document.getElementById(`${type}-list-view`).style.display = 'block';
+            // Clear forms
+            document.getElementById(`${type}-form`).reset();
+            document.getElementById(`${type}-edit-form`).reset();
+            document.getElementById(`${type}-edit-id`).value = '';
+        }
+
+        function updateImage(type) {
+            const editId = document.getElementById(`${type}-edit-id`).value;
+            if (!editId) {
+                alert('No image selected');
+                return;
+            }
+
+            const fileInput = document.getElementById(`${type}-edit-image`);
+            const descInput = document.getElementById(`${type}-edit-desc`);
+            const publishedCheckbox = document.getElementById(`${type}-edit-published`);
+
+            // Property detail fields
+            const sqmInput = document.getElementById(`${type}-edit-sqm`);
+            const locationInput = document.getElementById(`${type}-edit-location`);
+            const priceInput = document.getElementById(`${type}-edit-price`);
+            const typeInput = document.getElementById(`${type}-edit-type`);
+
+            const formData = new FormData();
+
+            // Only add image if one was selected
+            if (fileInput.files.length > 0) {
+                formData.append('image', fileInput.files[0]);
+            }
+
+            formData.append('caption', descInput.value);
+            formData.append('is_published', publishedCheckbox.checked ? 'true' : 'false');
+
+            // Add property details if provided
+            if (sqmInput && sqmInput.value) {
+                formData.append('meta[sqm]', sqmInput.value);
+            }
+            if (locationInput && locationInput.value) {
+                formData.append('meta[location]', locationInput.value);
+            }
+            if (priceInput && priceInput.value) {
+                formData.append('meta[price]', priceInput.value);
+            }
+            if (typeInput && typeInput.value) {
+                formData.append('meta[property_type]', typeInput.value);
+            }
+
+            formData.append('_token', csrfToken);
+
+            fetch(`/welcome-images/${editId}`, {
+                method: 'PATCH',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken
+                }
+            })
+                .then(r => r.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Image updated successfully');
+                        location.reload();
+                    } else {
+                        alert(data.message || 'Update failed');
+                    }
+                })
+                .catch(e => {
+                    console.error('Update error:', e);
+                    alert(`Update failed: ${e.message}`);
+                });
+        }
+
+        function previewSingleImage(event, imgId) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    document.getElementById(imgId).src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
         }
     </script>
 </x-app-layout>
