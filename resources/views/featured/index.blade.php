@@ -104,6 +104,7 @@
                     <button type="button" onclick="switchToUploadMode('hero')" class="mt-6 px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg font-semibold text-sm">Replace Hero Image</button>
                 @else
                     <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">No hero image yet. Upload one below.</p>
+                    <button type="button" onclick="switchToUploadMode('hero')" class="mt-2 px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg font-semibold text-sm">Upload Hero Image</button>
                 @endif
             </div>
 
@@ -344,6 +345,7 @@
                     <button type="button" onclick="switchToUploadMode('featured')" class="mt-6 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-semibold text-sm">+ Add New Featured Image</button>
                 @else
                     <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">No featured images yet. Add one below.</p>
+                    <button type="button" onclick="switchToUploadMode('featured')" class="mt-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-semibold text-sm">+ Add New Featured Image</button>
                 @endif
             </div>
 
@@ -569,6 +571,7 @@
                     <button type="button" onclick="switchToUploadMode('premium')" class="mt-6 px-4 py-2 bg-purple-500 hover:bg-purple-600 text-white rounded-lg font-semibold text-sm">+ Add New Premium Image</button>
                 @else
                     <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">No premium images yet. Add one below.</p>
+                    <button type="button" onclick="switchToUploadMode('premium')" class="mt-2 px-4 py-2 bg-purple-500 hover:bg-purple-600 text-white rounded-lg font-semibold text-sm">+ Add New Premium Image</button>
                 @endif
             </div>
 
