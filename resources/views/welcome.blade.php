@@ -106,14 +106,14 @@ body {
 </header>
 
 <!-- ================= MODERN HERO SECTION ================= -->
-<section class="relative pt-32 pb-24 overflow-hidden">
+<section class="relative min-h-screen overflow-hidden">
     <!-- Animated Background -->
     <div class="absolute inset-0 grid-pattern opacity-30"></div>
     <div class="absolute -top-40 -right-40 w-96 h-96 bg-red-100 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
     <div class="absolute -bottom-40 -left-40 w-96 h-96 bg-red-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
 
-    <div class="relative max-w-7xl mx-auto px-6">
-        <div class="grid lg:grid-cols-2 gap-12 items-center">
+    <div class="relative max-w-7xl mx-auto px-6 h-full">
+        <div class="grid lg:grid-cols-2 gap-12 items-center h-full">
             <!-- Left Content -->
             <div class="space-y-8">
                 <div class="inline-block">
