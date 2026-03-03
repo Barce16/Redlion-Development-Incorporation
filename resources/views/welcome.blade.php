@@ -179,6 +179,40 @@ body {
                             </svg>
                         @endif
                     </div>
+
+                    <!-- Hero Property Details -->
+                    @if(isset($heroRecord) && $heroRecord && $heroRecord->meta)
+                        <div class="mt-4 p-3 bg-white dark:bg-gray-800 rounded-lg space-y-2">
+                            @if($heroRecord->caption)
+                                <h4 class="font-semibold text-gray-900 dark:text-white">{{ $heroRecord->caption }}</h4>
+                            @endif
+                            <div class="text-sm space-y-1">
+                                @if($heroRecord->meta['location'] ?? null)
+                                    <div class="flex items-center text-gray-600 dark:text-gray-400">
+                                        <span class="mr-2">📍</span>
+                                        <span>{{ $heroRecord->meta['location'] }}</span>
+                                    </div>
+                                @endif
+                                @if($heroRecord->meta['sqm'] ?? null)
+                                    <div class="flex items-center text-gray-600 dark:text-gray-400">
+                                        <span class="mr-2">📐</span>
+                                        <span>{{ $heroRecord->meta['sqm'] }} sqm</span>
+                                    </div>
+                                @endif
+                                @if($heroRecord->meta['price'] ?? null)
+                                    <div class="flex items-center text-gray-900 dark:text-white font-semibold">
+                                        <span class="mr-2">💰</span>
+                                        <span class="text-red-600">₱{{ $heroRecord->meta['price'] }}M</span>
+                                    </div>
+                                @endif
+                                @if($heroRecord->meta['property_type'] ?? null)
+                                    <div class="mt-2 inline-block px-2 py-1 bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-200 rounded text-xs font-semibold capitalize">
+                                        {{ $heroRecord->meta['property_type'] }}
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
@@ -261,11 +295,42 @@ body {
             <div class="relative h-64 overflow-hidden img-fade">
               <img src="{{ asset('storage/' . $img->image_path) }}" class="w-full h-full object-cover">
             </div>
-            @if($img->caption)
-              <div class="p-4">
-                <p class="text-sm text-gray-700">{{ $img->caption }}</p>
-              </div>
-            @endif
+            <div class="p-4">
+              @if($img->caption)
+                <p class="text-sm font-semibold text-gray-900 mb-2">{{ $img->caption }}</p>
+              @endif
+
+              @if($img->meta)
+                <div class="space-y-2 text-sm">
+                  @if($img->meta['location'] ?? null)
+                    <div class="flex items-center text-gray-600">
+                      <span class="font-medium mr-2">📍</span>
+                      <span>{{ $img->meta['location'] }}</span>
+                    </div>
+                  @endif
+
+                  @if($img->meta['sqm'] ?? null)
+                    <div class="flex items-center text-gray-600">
+                      <span class="font-medium mr-2">📐</span>
+                      <span>{{ $img->meta['sqm'] }} sqm</span>
+                    </div>
+                  @endif
+
+                  @if($img->meta['price'] ?? null)
+                    <div class="flex items-center text-gray-800 font-semibold">
+                      <span class="font-medium mr-2">💰</span>
+                      <span class="text-blue-600">₱{{ $img->meta['price'] }}M</span>
+                    </div>
+                  @endif
+
+                  @if($img->meta['property_type'] ?? null)
+                    <div class="mt-3 inline-block px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-semibold capitalize">
+                      {{ $img->meta['property_type'] }}
+                    </div>
+                  @endif
+                </div>
+              @endif
+            </div>
           </div>
         @endforeach
         <div class="shrink-0 w-6"></div>
@@ -552,6 +617,21 @@ body {
                     Premium Development
                   @endif
                 </h3>
+
+                <!-- Property Details -->
+                @if($premiumImages->first()->meta)
+                  <div class="mt-3 space-y-1 text-sm">
+                    @if($premiumImages->first()->meta['location'] ?? null)
+                      <p class="text-gray-200">📍 {{ $premiumImages->first()->meta['location'] }}</p>
+                    @endif
+                    @if($premiumImages->first()->meta['sqm'] ?? null)
+                      <p class="text-gray-200">📐 {{ $premiumImages->first()->meta['sqm'] }} sqm</p>
+                    @endif
+                    @if($premiumImages->first()->meta['price'] ?? null)
+                      <p class="text-yellow-300 font-semibold">💰 ₱{{ $premiumImages->first()->meta['price'] }}M</p>
+                    @endif
+                  </div>
+                @endif
               </div>
             </div>
 
@@ -564,6 +644,16 @@ body {
               <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
               <div class="absolute bottom-2 left-2 right-2">
                 <p class="text-white text-sm font-bold truncate">{{ $img->caption ?? 'Premium' }}</p>
+                @if($img->meta)
+                  <div class="text-xs text-gray-200 mt-1 space-y-0.5">
+                    @if($img->meta['location'] ?? null)
+                      <p>📍 {{ $img->meta['location'] }}</p>
+                    @endif
+                    @if($img->meta['price'] ?? null)
+                      <p class="text-yellow-300 font-semibold">₱{{ $img->meta['price'] }}M</p>
+                    @endif
+                  </div>
+                @endif
               </div>
             </div>
             @endforeach

@@ -94,7 +94,7 @@
                     <!-- Property Details -->
                     <div class="border-t border-gray-300 dark:border-gray-600 pt-4">
                         <h5 class="text-sm font-semibold text-gray-900 dark:text-white mb-3">Property Details (Optional)</h5>
-                        
+
                         <div class="grid grid-cols-2 gap-3">
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">SQM</label>
