@@ -69,7 +69,7 @@
                                 @error('title')<span class="text-red-500 text-sm">{{ $message }}</span>@enderror
                             </div>
 
-                            
+
 
                             <!-- Category (Project Type) -->
                             <div>
@@ -113,7 +113,7 @@
                         <div class="space-y-6">
                             <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Financial Details</h3>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                
+
                                 <div>
                                     <label for="price_per_sqm" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Per Sqm Price</label>
                                     <input type="number" id="price_per_sqm" name="price_per_sqm" value="{{ old('price_per_sqm', $property->price_per_sqm) }}" step="0.01"
@@ -139,7 +139,7 @@
                             </div>
                         </div>
 
-                        
+
 
                         <!-- Plans & Design -->
                         <div class="space-y-6">
@@ -160,6 +160,18 @@
                                     @endif
                                     <input type="file" id="site_plan_pdf" name="site_plan_pdf" accept="application/pdf" class="block w-full text-sm mt-2">
                                     @error('site_plan_pdf')<span class="text-red-500 text-sm">{{ $message }}</span>@enderror
+                                </div>
+                                <div class="md:col-span-2">
+                                    <label for="hero_image" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Hero Image (for Welcome Page Display)</label>
+                                    @if($property->hero_image)
+                                        <div class="mb-3">
+                                            <img src="{{ asset('storage/' . $property->hero_image) }}" alt="Hero Image" class="max-h-48 rounded-lg">
+                                            <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">Currently set</p>
+                                        </div>
+                                    @endif
+                                    <input type="file" id="hero_image" name="hero_image" accept="image/*" class="block w-full text-sm">
+                                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">This image will be displayed in the hero section of the welcome page</p>
+                                    @error('hero_image')<span class="text-red-500 text-sm">{{ $message }}</span>@enderror
                                 </div>
                                 <div class="md:col-span-2">
                                     <label for="project_images" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Image Gallery (add more)</label>

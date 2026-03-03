@@ -6,276 +6,377 @@
 <title>Redlion Development Incorporation</title>
 
 <!-- Tailwind CDN -->
-<script>
-  tailwind.config = {
-    darkMode: 'class'
-  }
-</script>
 <script src="https://cdn.tailwindcss.com"></script>
 
 <!-- Google Font -->
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
 <style>
 body {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
-.hero-bg {
-  background-image: url('images/hotel.png'); /* Replace with your image */
-  background-size: cover;
-  background-position: center;
+.hero-gradient {
+  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+}
+.red-glow {
+  box-shadow: 0 0 60px rgba(220, 38, 38, 0.3);
+}
+.grid-pattern {
+  background-image:
+    linear-gradient(90deg, rgba(220, 38, 38, 0.05) 1px, transparent 1px),
+    linear-gradient(rgba(220, 38, 38, 0.05) 1px, transparent 1px);
+  background-size: 50px 50px;
 }
 </style>
 </head>
 
-<body class="bg-white text-gray-900 dark:bg-gray-950 dark:text-white transition-colors duration-500">
+<body class="bg-white text-gray-900">
 
-<!-- ================= PREMIUM TAILWIND NAVBAR ================= -->
-<header id="navbar"
-class="fixed top-0 left-0 w-full z-50 transition-all duration-500 bg-black/40 backdrop-blur-md">
-
+<!-- ================= MODERN NAVBAR ================= -->
+<header id="navbar" class="fixed top-0 left-0 w-full z-50 transition-all duration-500 bg-white/80 backdrop-blur-xl border-b border-red-100">
     <div class="max-w-7xl mx-auto flex justify-between items-center px-6 py-4">
-
         <!-- Logo -->
         <a href="/" class="flex items-center gap-3 group">
-            <img src="images/logo.jpg" class="h-11 w-auto object-contain transition duration-500 group-hover:scale-105">
-
+            <div class="w-10 h-10 rounded-lg hero-gradient flex items-center justify-center text-white font-bold text-lg">
+                R
+            </div>
             <div class="leading-tight">
-                <h1 class="text-lg md:text-xl font-bold tracking-wider text-white">
-                    REDLION
-                </h1>
-                <span class="text-xs text-gray-400 tracking-[0.25em]">
-                    DEVELOPMENT INC.
-                </span>
+                <h1 class="text-lg font-bold tracking-tight text-gray-900">REDLION</h1>
+                <span class="text-xs text-red-600 font-semibold tracking-wider">DEVELOPMENTS</span>
             </div>
         </a>
 
         <!-- Desktop Menu -->
         <nav class="hidden md:flex items-center gap-8 text-sm font-medium">
-
-            <!-- Nav Links -->
-            <a href="/" class="relative text-gray-300 hover:text-white transition group">
+            <a href="/" class="text-gray-700 hover:text-red-600 transition relative group">
                 Home
-                <span class="absolute left-0 -bottom-1 w-0 h-[2px] bg-red-600 transition-all duration-300 group-hover:w-full"></span>
+                <span class="absolute left-0 -bottom-1 w-0 h-0.5 bg-red-600 transition-all duration-300 group-hover:w-full"></span>
             </a>
-
-            <a href="{{ route('properties.index') }}" class="relative text-gray-300 hover:text-white transition group">
+            <a href="{{ route('properties.index') }}" class="text-gray-700 hover:text-red-600 transition relative group">
                 Properties
-                <span class="absolute left-0 -bottom-1 w-0 h-[2px] bg-red-600 transition-all duration-300 group-hover:w-full"></span>
+                <span class="absolute left-0 -bottom-1 w-0 h-0.5 bg-red-600 transition-all duration-300 group-hover:w-full"></span>
             </a>
-
-            <a href="{{ route('premium-developments') }}" class="relative text-yellow-400 hover:text-yellow-300 transition group font-semibold">
-                Premium Developments
-                <span class="absolute left-0 -bottom-1 w-0 h-[2px] bg-yellow-500 transition-all duration-300 group-hover:w-full"></span>
+            <a href="{{ route('premium-developments') }}" class="text-gray-700 hover:text-red-600 transition relative group">
+                Premium
+                <span class="absolute left-0 -bottom-1 w-0 h-0.5 bg-red-600 transition-all duration-300 group-hover:w-full"></span>
             </a>
-
-            <a href="#" class="relative text-gray-300 hover:text-white transition group">
-                About
-                <span class="absolute left-0 -bottom-1 w-0 h-[2px] bg-red-600 transition-all duration-300 group-hover:w-full"></span>
-            </a>
-
-            <a href="#" class="relative text-gray-300 hover:text-white transition group">
+            <a href="#" class="text-gray-700 hover:text-red-600 transition relative group">
                 Contact
-                <span class="absolute left-0 -bottom-1 w-0 h-[2px] bg-red-600 transition-all duration-300 group-hover:w-full"></span>
+                <span class="absolute left-0 -bottom-1 w-0 h-0.5 bg-red-600 transition-all duration-300 group-hover:w-full"></span>
             </a>
 
-            <!-- Divider -->
-            <div class="h-6 w-px bg-gray-600"></div>
+            <div class="h-5 w-px bg-gray-300"></div>
 
-             <!-- Login Up Button -->
-            <a href="auth/login"
-            class="px-5 py-2.5 bg-gradient-to-r from-red-600 to-red-700
-            rounded-full text-white font-semibold shadow-lg
-            hover:shadow-red-600/40 hover:scale-105 transition-all duration-300">
+            <a href="auth/login" class="px-6 py-2.5 hero-gradient text-white font-semibold rounded-lg hover:shadow-lg hover:shadow-red-500/50 transition-all duration-300 transform hover:scale-105">
                 Login
             </a>
-
-            <!-- Sign Up Button
-            <a href="auth/register"
-            class="px-5 py-2.5 bg-gradient-to-r from-red-600 to-red-700
-            rounded-full text-white font-semibold shadow-lg
-            hover:shadow-red-600/40 hover:scale-105 transition-all duration-300">
-                Sign Up
-            </a>    -->
-
         </nav>
 
         <!-- Mobile Button -->
-        <button id="menuBtn" class="md:hidden text-white focus:outline-none">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none"
-                viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round"
-                stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+        <button id="menuBtn" class="md:hidden text-gray-900 focus:outline-none">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
             </svg>
         </button>
-
     </div>
 
     <!-- Mobile Menu -->
-    <div id="mobileMenu"
-    class="hidden md:hidden bg-black/95 backdrop-blur-lg border-t border-gray-800">
-
-        <div class="flex flex-col space-y-6 px-6 py-8 text-gray-300 text-base">
-
-            <a href="/welcome" class="hover:text-white transition">Home</a>
-            <a href="/properties" class="hover:text-white transition">Properties</a>
-            <a href="#" class="hover:text-white transition">About</a>
-            <a href="#" class="hover:text-white transition">Contact</a>
-
-            <div class="border-t border-gray-700 pt-6 space-y-4">
-                <a href="auth/login" class="block hover:text-white">Login</a>
-
-                <a href="auth/register"
-                class="block text-center py-3 bg-red-600 rounded-full text-white font-semibold">
-                    Sign Up
-                </a>
+    <div id="mobileMenu" class="hidden md:hidden bg-white border-t border-red-100">
+        <div class="flex flex-col space-y-4 px-6 py-6 text-gray-700">
+            <a href="/" class="hover:text-red-600 transition font-medium">Home</a>
+            <a href="{{ route('properties.index') }}" class="hover:text-red-600 transition font-medium">Properties</a>
+            <a href="{{ route('premium-developments') }}" class="hover:text-red-600 transition font-medium">Premium</a>
+            <a href="#" class="hover:text-red-600 transition font-medium">Contact</a>
+            <div class="border-t border-gray-200 pt-4 space-y-3">
+                <a href="auth/login" class="block text-center py-2.5 hero-gradient text-white font-semibold rounded-lg">Login</a>
             </div>
-
         </div>
     </div>
-
 </header>
 
-<!-- ================= HERO SLIDER ================= -->
-<section class="relative h-screen overflow-hidden text-white">
+<!-- ================= MODERN HERO SECTION ================= -->
+<section class="relative pt-32 pb-24 overflow-hidden">
+    <!-- Animated Background -->
+    <div class="absolute inset-0 grid-pattern opacity-30"></div>
+    <div class="absolute -top-40 -right-40 w-96 h-96 bg-red-100 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
+    <div class="absolute -bottom-40 -left-40 w-96 h-96 bg-red-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
 
-<!-- Slides -->
-<div id="slider" class="relative w-full h-full overflow-hidden">
+    <div class="relative max-w-7xl mx-auto px-6">
+        <div class="grid lg:grid-cols-2 gap-12 items-center">
+            <!-- Left Content -->
+            <div class="space-y-8">
+                <div class="inline-block">
+                    <span class="inline-block px-4 py-2 bg-red-50 border border-red-200 rounded-full text-sm font-semibold text-red-600">
+                        🏆 Award-Winning Developer
+                    </span>
+                </div>
 
-  <!-- Slide 1 -->
-  <div class="slide absolute inset-0 opacity-100 transition-opacity duration-1000">
-    <img src="images/hotel2.jpg"
-         class="w-full h-full object-contain md:object-cover object-center">
-  </div>
+                <h1 class="text-6xl lg:text-7xl font-black leading-tight text-gray-900">
+                    Building Your
+                    <span class="bg-gradient-to-r from-red-600 to-red-700 bg-clip-text text-transparent">
+                        Dream Home
+                    </span>
+                </h1>
 
-  <!-- Slide 2 -->
-  <div class="slide absolute inset-0 opacity-0 transition-opacity duration-1000">
-    <img src="images/hotel3.jpg"
-         class="w-full h-full object-contain md:object-cover object-center">
-  </div>
+                <p class="text-xl text-gray-600 leading-relaxed max-w-lg">
+                    Discover premium residential and commercial developments crafted with precision. Your journey to owning a luxury property starts here.
+                </p>
 
-  <!-- Slide 3 -->
-  <div class="slide absolute inset-0 opacity-0 transition-opacity duration-1000">
-    <img src="images/hotel.png"
-         class="w-full h-full object-contain md:object-cover object-center">
-  </div>
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <a href="{{ route('properties.index') }}" class="px-8 py-4 hero-gradient text-white font-semibold rounded-xl hover:shadow-2xl hover:shadow-red-500/40 transition-all duration-300 transform hover:scale-105 text-center">
+                        Explore Properties
+                    </a>
+                    <button class="px-8 py-4 border-2 border-red-600 text-red-600 font-semibold rounded-xl hover:bg-red-50 transition-all duration-300">
+                        Schedule Tour
+                    </button>
+                </div>
 
-  <!-- Dark Overlay -->
-  <div class="absolute inset-0 bg-gradient-to-r from-black/50 via-black/60 to-black/30"></div>
+                <!-- Stats -->
+                <div class="grid grid-cols-3 gap-4 pt-8 border-t border-gray-200">
+                    <div>
+                        <div class="text-3xl font-black text-red-600">500+</div>
+                        <p class="text-sm text-gray-600 mt-1">Properties</p>
+                    </div>
+                    <div>
+                        <div class="text-3xl font-black text-red-600">50K+</div>
+                        <p class="text-sm text-gray-600 mt-1">Happy Clients</p>
+                    </div>
+                    <div>
+                        <div class="text-3xl font-black text-red-600">20+</div>
+                        <p class="text-sm text-gray-600 mt-1">Years Experience</p>
+                    </div>
+                </div>
+            </div>
 
-</div>
-
-  <!-- Content -->
-  <div class="absolute inset-0 flex items-center">
-    <div class="max-w-7xl mx-auto px-6">
-
-      <span class="bg-red-600/90 text-xs px-4 py-2 rounded-full uppercase tracking-wider">
-        Premium Development
-      </span>
-
-      <h1 class="mt-6 text-5xl md:text-7xl font-extrabold max-w-3xl leading-tight animate-fade">
-        Building Strong Foundations for Tomorrow
-      </h1>
-
-      <p class="mt-6 text-gray-300 text-lg max-w-xl">
-        Luxury residential & commercial developments across prime global locations.
-      </p>
-
-      <!-- Search Bar -->
-      <div class="mt-10 bg-black/30 backdrop-blur-lg p-4 rounded-2xl flex flex-col md:flex-row gap-4 max-w-3xl">
-        <input type="text" placeholder="Search Location"
-          class="flex-1 px-4 py-3 bg-transparent border border-white/20 rounded-lg focus:outline-none">
-        <select class="px-4 py-3 bg-transparent border border-white/20 rounded-lg text-gray-400 focus:outline-none">
-          <option>Property Type</option>
-          <option>Villa</option>
-          <option>Apartment</option>
-          <option>Commercial</option>
-        </select>
-        <button class="px-6 py-3 bg-red-600 rounded-lg hover:bg-red-700 transition">
-          Search
-        </button>
-      </div>
-
+            <!-- Right Hero Image -->
+            <div class="relative hidden lg:block">
+                <div class="absolute inset-0 bg-gradient-to-br from-red-600 to-red-700 rounded-3xl blur-3xl opacity-30"></div>
+                <div class="relative bg-gradient-to-br from-red-50 to-red-100 rounded-3xl p-8 overflow-hidden">
+                    <div class="absolute inset-0 grid-pattern opacity-10"></div>
+                    <div class="relative h-80 bg-gradient-to-br from-red-600 to-red-700 rounded-2xl flex items-center justify-center">
+                        <svg class="w-32 h-32 text-white opacity-30" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-
-  <!-- Progress Bar -->
-  <div class="absolute bottom-0 left-0 w-full h-1 bg-white/10">
-    <div id="progress" class="h-full bg-red-600 w-0"></div>
-  </div>
-
-</section>
-<section class="py-20 bg-gray-900">
-  <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-4 gap-10 text-center">
-
-    <div>
-      <h3 class="text-4xl font-bold text-red-500">80+</h3>
-      <p class="text-gray-400 mt-2">Projects in Mindanao</p>
-    </div>
-
-    <div>
-      <h3 class="text-4xl font-bold text-red-500">12+</h3>
-      <p class="text-gray-400 mt-2">Years in the Philippines</p>
-    </div>
-
-    <div>
-      <h3 class="text-4xl font-bold text-red-500">400+</h3>
-      <p class="text-gray-400 mt-2">Happy Filipino Clients</p>
-    </div>
-
-    <div>
-      <h3 class="text-4xl font-bold text-red-500">6</h3>
-      <p class="text-gray-400 mt-2">Mindanao Cities Covered</p>
-    </div>
-
-  </div>
 </section>
 
-<!-- ================= FEATURED PROPERTIES ================= -->
-<section class="py-24 bg-gray-900">
+<!-- ================= FEATURED PROPERTIES (3 ITEMS + DB IMAGES) ================= -->
+<section class="py-20 bg-gray-50">
   <div class="max-w-7xl mx-auto px-6">
 
-    <h3 class="text-4xl text-red-500 font-bold mb-12">Featured Listings</h3>
+    <div class="flex justify-between items-end mb-10">
+      <div>
+        <h2 class="text-4xl md:text-5xl font-black text-gray-900 mb-2">
+          Featured <span class="text-red-600">Listings</span>
+        </h2>
+        <p class="text-gray-600">Premium properties handpicked for you</p>
+      </div>
 
-    <div class="grid md:grid-cols-3 gap-8">
+      <div class="hidden sm:flex items-center gap-3">
+        <button type="button" data-prev
+          class="h-10 w-10 rounded-full border border-gray-200 bg-white/70 backdrop-blur-md shadow-sm hover:shadow-md transition grid place-items-center">
+          <svg class="w-5 h-5 text-gray-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
 
-      @forelse($featuredProperties as $property)
-      <!-- Card (Dynamic) -->
-      <a href="{{ route('properties.show', $property->id) }}" class="bg-gray-700 rounded-2xl overflow-hidden shadow-lg hover:-translate-y-2 transition block group">
-        <div class="h-64 w-full object-cover bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center relative overflow-hidden">
-          @if($property->images->isNotEmpty())
-            <img src="/storage/{{ $property->images->first()->image_path }}"
-                 alt="{{ $property->title }}"
-                 class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
-          @elseif($property->views)
-            <div class="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-blue-500 to-purple-600">
-              <div class="text-center text-white">
-                <p class="text-3xl font-bold">{{ $property->views }}</p>
-                <p class="text-sm">views</p>
-              </div>
-            </div>
-          @else
-            <svg class="w-20 h-20 text-white opacity-30" fill="currentColor" viewBox="0 0 20 20">
-              <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/>
-            </svg>
-          @endif
-        </div>
-        <div class="p-6">
-          <h4 class="text-xl font-semibold text-white truncate group-hover:text-red-500 transition">{{ $property->title }}</h4>
-          <p class="text-gray-400 mt-2">
-            @if($property->total_rooms){{ $property->total_rooms }} Bedroom{{ $property->total_rooms > 1 ? 's' : '' }} • @endif
-            {{ $property->city ?? 'Location TBA' }}
-          </p>
-          <p class="mt-4 text-2xl font-bold text-white">₱ {{ number_format($property->price / 1000000, 1) }}M</p>
-        </div>
-      </a>
-      @empty
-      <div class="col-span-full text-center py-12 text-gray-400">
+        <button type="button" data-next
+          class="h-10 w-10 rounded-full border border-gray-200 bg-white/70 backdrop-blur-md shadow-sm hover:shadow-md transition grid place-items-center">
+          <svg class="w-5 h-5 text-gray-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
+
+        <a href="{{ route('properties.index') }}"
+          class="ml-2 text-red-600 hover:text-red-700 font-semibold">View All →</a>
+      </div>
+    </div>
+
+    <style>
+        /* fade for readability */
+  .img-fade:after{
+    content:"";
+    position:absolute; inset:0;
+    background: linear-gradient(to top, rgba(0,0,0,.55), rgba(0,0,0,.10) 45%, rgba(0,0,0,0) 70%);
+    pointer-events:none;
+  }
+
+  /* focus effect */
+  .focus-card{
+    transform: scale(.94);
+    opacity: .88;
+    filter: saturate(.95);
+    transition: transform .25s ease, opacity .25s ease, filter .25s ease;
+  }
+  .focus-card.is-active{
+    transform: scale(1);
+    opacity: 1;
+    filter: saturate(1.05);
+  }
+
+  /* snap helpers */
+  .snap-x { scroll-snap-type: x mandatory; }
+  .snap-center { scroll-snap-align: center; }
+  .no-scrollbar::-webkit-scrollbar { display:none; }
+  .no-scrollbar { scrollbar-width:none; }
+
+      @keyframes shimmer { 0% { background-position: -600px 0 } 100% { background-position: 600px 0 } }
+      .shimmer {
+        background: linear-gradient(90deg, rgba(229,231,235,.65) 25%, rgba(243,244,246,.95) 37%, rgba(229,231,235,.65) 63%);
+        background-size: 1200px 100%;
+        animation: shimmer 1.2s infinite linear;
+      }
+    </style>
+
+    @if($featuredProperties->count() > 0)
+
+      <!-- CAROUSEL TRACK (3 items + peek next) -->
+       <div id="featuredTrack"
+     class="flex gap-6 overflow-x-auto no-scrollbar snap-x pb-4 px-6"
+     style="scroll-behavior:smooth; scroll-padding-left:1.5rem; scroll-padding-right:1.5rem;">
+
+        @foreach($featuredProperties as $property)
+          <!-- image src will be resolved inside the card below -->
+
+           <a href="{{ route('properties.show', $property->id) }}"
+   class="focus-card snap-center shrink-0
+          w-[90%] sm:w-[70%] md:w-[48%] lg:w-[30%]
+          group block rounded-3xl overflow-hidden
+          border border-gray-200 bg-white
+          shadow hover:shadow-xl transition">
+
+  <!-- FULL IMAGE -->
+  <div class="relative h-64 overflow-hidden img-fade">
+    @php
+      $img = $property->images->first();
+      $src = $img ? asset('storage/' . $img->image_path) : null;
+    @endphp
+
+    @if($src)
+      <img src="{{ $src }}"
+           class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+    @else
+      <div class="w-full h-full bg-gray-200"></div>
+    @endif
+
+    <!-- price badge -->
+    <div class="absolute bottom-4 left-4">
+      <span class="px-4 py-2 rounded-xl text-white font-black bg-black/50 backdrop-blur">
+        ₱{{ number_format($property->price / 1000000, 1) }}M
+      </span>
+    </div>
+  </div>
+
+  <!-- DIVIDER LINE -->
+  <div class="border-t border-gray-200"></div>
+
+  <!-- CONTENT BELOW IMAGE -->
+  <div class="p-6 flex flex-col">
+
+    <p class="text-[11px] font-extrabold tracking-widest text-red-600 uppercase">
+      {{ $property->project_name ?? 'Featured' }}
+    </p>
+
+    <h3 class="text-2xl font-black text-gray-900 mt-2 leading-tight">
+      {{ $property->title }}
+    </h3>
+
+    <div class="mt-2 flex items-center gap-2 text-gray-500">
+      <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M12 10.5a3 3 0 100-6 3 3 0 000 6z" />
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M19.5 10.5c0 7-7.5 11-7.5 11s-7.5-4-7.5-11a7.5 7.5 0 1115 0z" />
+      </svg>
+      <span class="text-sm">{{ $property->city }}</span>
+    </div>
+
+  </div>
+
+  <!-- BOTTOM STATS STRIP -->
+  <div class="border-t border-gray-200">
+    <div class="grid grid-cols-3 text-center">
+      <div class="py-4">
+        <p class="text-xs text-gray-500 font-semibold">Rooms</p>
+        <p class="text-sm font-extrabold text-gray-900 mt-1">{{ $property->total_rooms ?? '—' }}</p>
+      </div>
+
+      <div class="py-4 border-x border-gray-200">
+        <p class="text-xs text-gray-500 font-semibold">Floors</p>
+        <p class="text-sm font-extrabold text-gray-900 mt-1">{{ $property->total_floors ?? '—' }}</p>
+      </div>
+
+      <div class="py-4">
+        <p class="text-xs text-gray-500 font-semibold">Area</p>
+        <p class="text-sm font-extrabold text-gray-900 mt-1">
+          {{ $property->area ?? '—' }} sqm
+        </p>
+      </div>
+    </div>
+  </div>
+
+</a>
+        @endforeach
+
+        <!-- spacer so last card can center -->
+        <div class="shrink-0 w-6"></div>
+      </div>
+
+      <!-- JS: carousel controls + drag-to-scroll -->
+      <script>
+        (function () {
+  const track = document.getElementById('featuredTrack');
+  if (!track) return;
+
+  const cards = () => Array.from(track.querySelectorAll('.focus-card'));
+
+  function setActiveCard() {
+    const list = cards();
+    if (!list.length) return;
+
+    const center = track.scrollLeft + track.clientWidth / 2;
+
+    let best = null;
+    let bestDist = Infinity;
+
+    list.forEach(card => {
+      const cardCenter = card.offsetLeft + card.offsetWidth / 2;
+      const dist = Math.abs(cardCenter - center);
+      if (dist < bestDist) { bestDist = dist; best = card; }
+    });
+
+    list.forEach(c => c.classList.remove('is-active'));
+    best?.classList.add('is-active');
+  }
+
+  // Initial + on scroll (throttled)
+  let raf = null;
+  const onScroll = () => {
+    if (raf) return;
+    raf = requestAnimationFrame(() => {
+      setActiveCard();
+      raf = null;
+    });
+  };
+
+  track.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', setActiveCard);
+
+  // Run once after render
+  setTimeout(setActiveCard, 50);
+})();
+      </script>
+
+    @else
+      <div class="text-center py-12 text-gray-500">
         <p>No featured properties available yet.</p>
       </div>
-      @endforelse
+    @endif
 
-    </div>
   </div>
 </section>
 
@@ -456,350 +557,302 @@ class="fixed top-0 left-0 w-full z-50 transition-all duration-500 bg-black/40 ba
   </div>
 </section>
 
-<!-- ================= PREMIUM DEVELOPMENTS ================= -->
-<section class="py-24 bg-black">
-  <div class="max-w-7xl mx-auto px-6">
-
-    <h3 class="text-4xl text-yellow-500 font-bold mb-12">Premium Developments</h3>
-
-    <div class="grid md:grid-cols-4 gap-6">
-
-      @forelse($premiumDevelopments as $property)
-      <!-- Premium Card -->
-      <a href="{{ route('properties.show', $property->id) }}" class="group relative overflow-hidden rounded-2xl shadow-xl hover:shadow-2xl transition">
-        <!-- Image Container -->
-        <div class="relative h-80 overflow-hidden">
-          @if($property->images->isNotEmpty())
-            <img src="/storage/{{ $property->images->first()->image_path }}"
-                 alt="{{ $property->title }}"
-                 class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
-          @else
-            <div class="w-full h-full bg-gradient-to-br from-yellow-600 to-orange-600 flex items-center justify-center">
-              <svg class="w-20 h-20 text-white opacity-30" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/>
-              </svg>
-            </div>
-          @endif
-
-          <!-- Overlay -->
-          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
-
-          <!-- Badge -->
-          <div class="absolute top-4 right-4 bg-yellow-500 text-black px-4 py-2 rounded-full text-xs font-bold">
-            {{$property->completion_percentage ?? 0}}% Complete
-          </div>
-
+<!-- ================= CTA SECTION ================= -->
+<section class="py-20 bg-gradient-to-r from-red-600 to-red-700 text-white">
+    <div class="max-w-4xl mx-auto text-center px-6">
+        <h2 class="text-5xl font-black mb-4">Ready to Invest?</h2>
+        <p class="text-lg text-red-50 mb-8">
+            Find your perfect property today. Our team is here to help you every step of the way.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <button class="px-8 py-4 bg-white text-red-600 font-bold rounded-lg hover:bg-gray-100 transition">
+                Schedule Consultation
+            </button>
+            <a href="{{ route('properties.index') }}" class="px-8 py-4 border-2 border-white text-white font-bold rounded-lg hover:bg-white/10 transition">
+                Browse Properties
+            </a>
         </div>
-
-        <!-- Content -->
-        <div class="absolute bottom-0 left-0 right-0 p-6 text-white">
-          <p class="text-sm text-yellow-400 font-semibold">{{ $property->project_name ?? $property->title }}</p>
-          <h4 class="text-lg font-bold mt-2 group-hover:text-yellow-400 transition">{{ $property->title }}</h4>
-          <p class="text-sm text-gray-300 mt-1">{{ $property->city ?? 'Location TBA' }}</p>
-
-          <div class="flex justify-between items-center mt-4 pt-4 border-t border-gray-600">
-            <span class="text-2xl font-bold">₱{{ number_format($property->price / 1000000, 1) }}M</span>
-            <span class="text-xs bg-yellow-500/20 text-yellow-300 px-2 py-1 rounded">{{ $property->type ?? 'Property' }}</span>
-          </div>
-        </div>
-      </a>
-      @empty
-      <div class="col-span-full text-center py-12 text-gray-500">
-        <p>Premium developments will appear here soon.</p>
-      </div>
-      @endforelse
-
     </div>
-  </div>
 </section>
 
-<!-- ================= CALL TO ACTION ================= -->
-<section class="py-24 bg-gradient-to-r from-gray-100 to-gray-500 text-center">
-  <div class="max-w-3xl mx-auto px-6">
-    <h3 class="text-4xl font-bold">Looking for Your Dream Property?</h3>
-    <p class="text mt-4">
-      Discover premium properties in prime locations with world-class amenities.
-    </p>
-    <button class="mt-8 px-10 py-4 bg-red-600 text-white rounded-xl font-semibold hover:scale-105 transition">
-      Contact Us
-    </button>
-  </div>
-</section>
-{{-- ================= LOCATION SECTION ================= --}}
+<!-- ================= LOCATION SECTION ================= -->
 <section class="py-24 bg-gray-50">
     <div class="max-w-7xl mx-auto px-6">
-
-        <!-- Heading -->
         <div class="text-center max-w-3xl mx-auto mb-16">
-            <h2 class="text-4xl md:text-5xl font-bold text-gray-900">
-                Explore Property Developments by Location
+            <h2 class="text-4xl md:text-5xl font-black text-gray-900 mb-4">
+                Properties by <span class="text-red-600">Location</span>
             </h2>
-            <p class="mt-6 text-gray-500 text-lg">
-                Discover exclusive property development projects in the world's most sought-after destinations
+            <p class="text-gray-600 text-lg">
+                Discover exceptional developments across prime destinations
             </p>
         </div>
 
-        <!-- Location Grid (Dynamic from Database) -->
+        <!-- Location Grid -->
         <div class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-8">
-
             @forelse($locations as $location)
             <a href="{{ route('properties.index') }}?city={{ urlencode($location['city']) }}"
-               class="bg-white rounded-2xl shadow-md hover:shadow-xl transition duration-300 overflow-hidden group block">
-
-                <!-- Image -->
+               class="group bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden">
                 <div class="relative h-48 overflow-hidden">
                     <img src="{{ $location['img'] }}"
                          alt="{{ $location['city'] }}"
-                         class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-
+                         class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
                     <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
-
                     <div class="absolute bottom-4 left-4 text-white">
-                        <h3 class="text-xl font-semibold">{{ $location['city'] }}</h3>
+                        <h3 class="text-xl font-bold">{{ $location['city'] }}</h3>
                     </div>
                 </div>
-
-                <!-- Footer -->
                 <div class="flex items-center justify-between p-5">
-                    <span class="text-gray-600 text-sm">
-                        {{ $location['count'] }} Properties
-                    </span>
-                    <span class="text-gray-400 group-hover:translate-x-1 transition">
-                        →
-                    </span>
+                    <span class="text-gray-600 text-sm font-medium">{{ $location['count'] }} Properties</span>
+                    <span class="text-red-600 group-hover:translate-x-1 transition font-bold">→</span>
                 </div>
-
             </a>
             @empty
             <div class="col-span-full text-center py-12 text-gray-500">
-                <p>No properties available yet. Check back soon for new developments!</p>
+                <p>No properties available yet.</p>
             </div>
             @endforelse
-
         </div>
 
-        <!-- Country/City Filters (Dynamic) -->
+        <!-- Quick Filters -->
         @if($locations->count() > 0)
-        <div class="mt-14 flex flex-wrap justify-center gap-4">
+        <div class="mt-14 flex flex-wrap justify-center gap-3">
             @foreach($locations as $location)
                 <a href="{{ route('properties.index') }}?city={{ urlencode($location['city']) }}"
-                   class="px-5 py-2 bg-white border border-gray-900 rounded-full text-sm
-                           hover:bg-red-700 hover:text-white transition">
-                    {{ $location['city'] }} ({{ $location['count'] }})
+                   class="px-5 py-2.5 bg-white border-2 border-gray-300 text-gray-700 rounded-full text-sm font-medium
+                           hover:border-red-600 hover:bg-red-50 transition">
+                    {{ $location['city'] }}
                 </a>
             @endforeach
         </div>
         @endif
-
     </div>
 </section>
 
-
-
-{{-- ================= WHY PROPERTY DEVELOPMENTS ================= --}}
-<section class="py-28 bg-white">
-    <div class="max-w-4xl mx-auto px-6 text-center">
-
-        <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-10">
-            Why Property Developments?
+<!-- ================= WHY CHOOSE US ================= -->
+<section class="py-24 bg-white">
+    <div class="max-w-7xl mx-auto px-6">
+        <h2 class="text-4xl md:text-5xl font-black text-gray-900 text-center mb-16">
+            Why Choose <span class="text-red-600">Redlion</span>?
         </h2>
 
-        <div class="space-y-6 text-gray-600 text-lg leading-relaxed">
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <!-- Feature 1 -->
+            <div class="bg-red-50 rounded-2xl p-8 border border-red-100 hover:border-red-300 transition">
+                <div class="w-14 h-14 bg-red-600 rounded-lg flex items-center justify-center mb-4 text-white text-2xl">🏗️</div>
+                <h3 class="text-xl font-bold text-gray-900 mb-3">Quality Built</h3>
+                <p class="text-gray-600">Each project is crafted with premium materials and expert construction standards.</p>
+            </div>
 
-            <p>
-                <strong>Strategic property development purchases</strong> offer one of the most reliable paths
-                to wealth creation and modern living. Whether through pre-construction projects,
-                new build properties, or off-plan developments, buying directly from developers
-                provides both capital appreciation potential and access to the latest design innovations.
-            </p>
+            <!-- Feature 2 -->
+            <div class="bg-red-50 rounded-2xl p-8 border border-red-100 hover:border-red-300 transition">
+                <div class="w-14 h-14 bg-red-600 rounded-lg flex items-center justify-center mb-4 text-white text-2xl">📍</div>
+                <h3 class="text-xl font-bold text-gray-900 mb-3">Prime Locations</h3>
+                <p class="text-gray-600">Strategically positioned properties in high-demand areas with strong growth potential.</p>
+            </div>
 
-            <p>
-                Property developments deliver unique advantages including flexible payment structures,
-                potential for significant capital growth, customization options, tax benefits, and
-                modern amenities. Our platform connects you with carefully vetted developments
-                from award-winning developers, ensuring quality and reliability at every step.
-            </p>
+            <!-- Feature 3 -->
+            <div class="bg-red-50 rounded-2xl p-8 border border-red-100 hover:border-red-300 transition">
+                <div class="w-14 h-14 bg-red-600 rounded-lg flex items-center justify-center mb-4 text-white text-2xl">💰</div>
+                <h3 class="text-xl font-bold text-gray-900 mb-3">Flexible Payments</h3>
+                <p class="text-gray-600">Multiple payment schemes and financing options to suit your budget.</p>
+            </div>
 
-            <p>
-                Our curated selection spans luxury apartments, premium villas, commercial properties,
-                and exclusive developments across prime global locations. Each opportunity is thoroughly
-                analyzed to provide you with transparent, data-driven purchasing decisions.
-            </p>
-
+            <!-- Feature 4 -->
+            <div class="bg-red-50 rounded-2xl p-8 border border-red-100 hover:border-red-300 transition">
+                <div class="w-14 h-14 bg-red-600 rounded-lg flex items-center justify-center mb-4 text-white text-2xl">🤝</div>
+                <h3 class="text-xl font-bold text-gray-900 mb-3">Expert Support</h3>
+                <p class="text-gray-600">Dedicated team to guide you through every step of your property journey.</p>
+            </div>
         </div>
-
     </div>
 </section>
-<!-- ================= ULTRA PREMIUM FOOTER ================= -->
-<footer class="bg-black text-gray-400 pt-20 pb-10 border-t border-gray-800">
+<!-- ================= PUBLIC INQUIRY FORM ================= -->
+<section id="inquiry" class="py-20 bg-white">
+    <div class="max-w-2xl mx-auto px-6">
+        <h2 class="text-3xl font-bold text-gray-900 mb-6">Send Us an Inquiry</h2>
+        @if(session('success'))
+            <div class="mb-4 p-4 bg-green-100 text-green-800 rounded">{{ session('success') }}</div>
+        @endif
+        <form action="{{ route('inquiries.store') }}" method="POST" class="space-y-4">
+            @csrf
+            <div>
+                <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
+                <input id="name" name="name" type="text" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" value="{{ old('name') }}">
+                @error('name')<p class="text-red-600 text-sm">{{ $message }}</p>@enderror
+            </div>
+            <div>
+                <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                <input id="email" name="email" type="email" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" value="{{ old('email') }}">
+                @error('email')<p class="text-red-600 text-sm">{{ $message }}</p>@enderror
+            </div>
+            <div>
+                <label for="phone" class="block text-sm font-medium text-gray-700">Contact Number</label>
+                <input id="phone" name="phone" type="text" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" value="{{ old('phone') }}">
+                @error('phone')<p class="text-red-600 text-sm">{{ $message }}</p>@enderror
+            </div>
+            <div>
+                <label for="property_id" class="block text-sm font-medium text-gray-700">Property</label>
+                <select id="property_id" name="property_id" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                    @foreach(\App\Models\PropertyListing::all() as $prop)
+                        <option value="{{ $prop->id }}" {{ old('property_id') == $prop->id ? 'selected' : '' }}>{{ $prop->title }}</option>
+                    @endforeach
+                </select>
+                @error('property_id')<p class="text-red-600 text-sm">{{ $message }}</p>@enderror
+            </div>
+            <div>
+                <label for="message" class="block text-sm font-medium text-gray-700">Message</label>
+                <textarea id="message" name="message" rows="4" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">{{ old('message') }}</textarea>
+                @error('message')<p class="text-red-600 text-sm">{{ $message }}</p>@enderror
+            </div>
+            <button type="submit" class="px-6 py-3 hero-gradient text-white rounded-lg">Send Inquiry</button>
+        </form>
+    </div>
+</section>
 
+<!-- small script to handle inquiries from property cards -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.inquire-btn').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                var propId = this.dataset.id;
+                var select = document.getElementById('property_id');
+                if(select) {
+                    select.value = propId;
+                }
+                window.location.hash = 'inquiry';
+            });
+        });
+    });
+</script>
+
+
+<!-- ================= FOOTER ================= -->
+<footer class="bg-gray-900 text-gray-400 pt-20 pb-10 border-t border-gray-800">
     <div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-4 gap-12">
-
         <!-- Company Info -->
         <div>
-            <h3 class="text-white text-xl font-semibold mb-4 tracking-wide">
-                REDLION DEVELOPMENT INC.
-            </h3>
+            <h3 class="text-white text-xl font-bold">REDLION</h3>
+            <h6 class="text-sm text-red-600 uppercase tracking-wide mb-4">Real Estate Development</h6>
             <p class="text-sm leading-relaxed mb-6">
-                Premium real estate developments designed for modern living.
-                Building communities with vision and excellence.
+                Premium real estate developments designed for modern living and exceptional investment returns.
             </p>
-
             <p class="text-sm">
                 📍 East Horizon, Cugman<br>
                 Cagayan de Oro City, Philippines
             </p>
-            <p class="text-sm mt-2">
+            <p class="text-sm mt-3">
                 📞 +63 9XX XXX XXXX<br>
                 ✉️ info@redlionrealestate.com
             </p>
         </div>
 
+        <!-- Quick Links -->
+        <div>
+            <h4 class="text-white font-bold mb-6">Quick Links</h4>
+            <ul class="space-y-3 text-sm">
+                <li><a href="/" class="hover:text-red-600 transition">Home</a></li>
+                <li><a href="{{ route('properties.index') }}" class="hover:text-red-600 transition">Properties</a></li>
+                <li><a href="{{ route('premium-developments') }}" class="hover:text-red-600 transition">Premium</a></li>
+                <li><a href="#" class="hover:text-red-600 transition">Contact</a></li>
+            </ul>
+        </div>
+
         <!-- Google Map -->
         <div class="lg:col-span-2">
-            <h4 class="text-white font-semibold mb-4">Our Location</h4>
-            <div class="rounded-2xl overflow-hidden border border-gray-800 shadow-lg">
+            <h4 class="text-white font-bold mb-4">Our Location</h4>
+            <div class="rounded-xl overflow-hidden border border-gray-700">
                 <iframe
                     src="https://www.google.com/maps?q=East+Horizon+Cugman+Cagayan+de+Oro+City&output=embed"
                     width="100%"
-                    height="250"
+                    height="200"
                     style="border:0;"
                     allowfullscreen=""
                     loading="lazy">
                 </iframe>
             </div>
         </div>
+    </div>
 
-        <!-- Newsletter -->
-        <div>
-            <h4 class="text-white font-semibold mb-4">Newsletter</h4>
-            <p class="text-sm mb-4">
-                Subscribe to get updates on new properties and offers.
-            </p>
-
-            <form class="flex flex-col gap-3">
-                <input
-                    type="email"
-                    placeholder="Enter your email"
-                    class="px-4 py-3 rounded-full bg-gray-900 border border-gray-700
-                    focus:outline-none focus:ring-2 focus:ring-red-600
-                    text-sm text-white placeholder-gray-500"
-                >
-
-                <button
-                    type="submit"
-                    class="px-4 py-3 rounded-full bg-red-600 text-white font-semibold
-                    hover:bg-red-700 transition duration-300
-                    hover:shadow-[0_0_20px_rgba(220,38,38,0.6)]">
-                    Subscribe
-                </button>
-            </form>
-
-            <!-- Social Icons -->
-            <div class="flex gap-4 mt-6">
-
-                <a href="#"
-                class="p-3 bg-gray-900 rounded-full
-                hover:bg-red-600 transition duration-300
-                hover:shadow-[0_0_20px_rgba(220,38,38,0.7)]">
-                    <!-- Facebook -->
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M22 12a10 10 0 10-11.5 9.9v-7H7.5v-3h3V9.5c0-3 1.8-4.6 4.5-4.6 1.3 0 2.6.2 2.6.2v3h-1.5c-1.5 0-2 1-2 2v2.4h3.3l-.5 3h-2.8v7A10 10 0 0022 12z"/>
-                    </svg>
-                </a>
-
-                <a href="#"
-                class="p-3 bg-gray-900 rounded-full
-                hover:bg-red-600 transition duration-300
-                hover:shadow-[0_0_20px_rgba(220,38,38,0.7)]">
-                    <!-- Instagram -->
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M7 2C4.2 2 2 4.2 2 7v10c0 2.8 2.2 5 5 5h10c2.8 0 5-2.2 5-5V7c0-2.8-2.2-5-5-5H7zm5 5a5 5 0 110 10 5 5 0 010-10zm6.5-.8a1.3 1.3 0 110 2.6 1.3 1.3 0 010-2.6z"/>
-                    </svg>
-                </a>
-
-                <a href="#"
-                class="p-3 bg-gray-900 rounded-full
-                hover:bg-red-600 transition duration-300
-                hover:shadow-[0_0_20px_rgba(220,38,38,0.7)]">
-                    <!-- YouTube -->
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M21.6 7.2a3 3 0 00-2.1-2.1C17.8 4.5 12 4.5 12 4.5s-5.8 0-7.5.6a3 3 0 00-2.1 2.1A31.7 31.7 0 002 12a31.7 31.7 0 00.4 4.8 3 3 0 002.1 2.1c1.7.6 7.5.6 7.5.6s5.8 0 7.5-.6a3 3 0 002.1-2.1A31.7 31.7 0 0022 12a31.7 31.7 0 00-.4-4.8zM10 15.5v-7l6 3.5-6 3.5z"/>
-                    </svg>
-                </a>
-
+    <!-- Newsletter & Social -->
+    <div class="max-w-7xl mx-auto px-6 mt-12 pt-8 border-t border-gray-800">
+        <div class="grid md:grid-cols-2 gap-8 items-center">
+            <!-- Newsletter -->
+            <div>
+                <h4 class="text-white font-bold mb-3">Subscribe to Our Newsletter</h4>
+                <form class="flex gap-2">
+                    <input
+                        type="email"
+        placeholder="Enter your email"
+                        class="flex-1 px-4 py-3 rounded-lg bg-gray-800 border border-gray-700 text-white text-sm placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-600"
+                    >
+                    <button
+                        type="submit"
+                        class="px-6 py-3 bg-red-600 text-white font-medium rounded-lg hover:bg-red-700 transition">
+                        Subscribe
+                    </button>
+                </form>
             </div>
 
+            <!-- Social Icons -->
+            <div class="flex gap-4 md:justify-end">
+                <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-red-600 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M22 12a10 10 0 10-11.5 9.9v-7H7.5v-3h3V9.5c0-3 1.8-4.6 4.5-4.6 1.3 0 2.6.2 2.6.2v3h-1.5c-1.5 0-2 1-2 2v2.4h3.3l-.5 3h-2.8v7A10 10 0 0022 12z"/></svg>
+                </a>
+                <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-red-600 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M7 2C4.2 2 2 4.2 2 7v10c0 2.8 2.2 5 5 5h10c2.8 0 5-2.2 5-5V7c0-2.8-2.2-5-5-5H7zm5 5a5 5 0 110 10 5 5 0 010-10zm6.5-.8a1.3 1.3 0 110 2.6 1.3 1.3 0 010-2.6z"/></svg>
+                </a>
+                <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-red-600 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M21.6 7.2a3 3 0 00-2.1-2.1C17.8 4.5 12 4.5 12 4.5s-5.8 0-7.5.6a3 3 0 00-2.1 2.1A31.7 31.7 0 002 12a31.7 31.7 0 00.4 4.8 3 3 0 002.1 2.1c1.7.6 7.5.6 7.5.6s5.8 0 7.5-.6a3 3 0 002.1-2.1A31.7 31.7 0 0022 12a31.7 31.7 0 00-.4-4.8zM10 15.5v-7l6 3.5-6 3.5z"/></svg>
+                </a>
+            </div>
         </div>
-
     </div>
 
-    <!-- Bottom -->
-    <div class="mt-16 border-t border-gray-800 pt-6 text-center text-sm text-gray-500">
-        © <span id="year"></span> RedLion Development Incorporation. All rights reserved.
+    <!-- Copyright -->
+    <div class="max-w-7xl mx-auto px-6 mt-8 pt-8 border-t border-gray-800 text-center text-sm text-gray-500">
+        © 2026 REDLION Development Incorporation. All rights reserved.
     </div>
-
 </footer>
 
-
-<!-- ================= SCRIPT ================= -->
+<!-- ================= SCRIPTS ================= -->
 <script>
-  const slides = document.querySelectorAll('.slide');
-  const progress = document.getElementById('progress');
-  let current = 0;
-  const total = slides.length;
-  const duration = 5000;
+  const menuBtn = document.getElementById('menuBtn');
+  const mobileMenu = document.getElementById('mobileMenu');
+  const navbar = document.getElementById('navbar');
 
-  function showSlide(index) {
-    slides.forEach(slide => slide.classList.remove('opacity-100'));
-    slides.forEach(slide => slide.classList.add('opacity-0'));
-
-    slides[index].classList.remove('opacity-0');
-    slides[index].classList.add('opacity-100');
-
-    progress.style.transition = "none";
-    progress.style.width = "0%";
-
-    setTimeout(() => {
-      progress.style.transition = `width ${duration}ms linear`;
-      progress.style.width = "100%";
-    }, 50);
-  }
-
-  function nextSlide() {
-    current = (current + 1) % total;
-    showSlide(current);
-  }
-
-  showSlide(current);
-  setInterval(nextSlide, duration);
-
-  // Navbar scroll effect
-  window.addEventListener("scroll", function() {
-    const nav = document.getElementById("navbar");
-    nav.classList.toggle("bg-black/80 backdrop-blur-lg", window.scrollY > 50);
+  menuBtn.addEventListener('click', () => {
+    mobileMenu.classList.toggle('hidden');
   });
 
-   const menuBtn = document.getElementById('menuBtn');
-    const mobileMenu = document.getElementById('mobileMenu');
-    const navbar = document.getElementById('navbar');
+  // Navbar scroll effect
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 50) {
+      navbar.classList.add('shadow-lg');
+    } else {
+      navbar.classList.remove('shadow-lg');
+    }
+  });
 
-    menuBtn.addEventListener('click', () => {
-        mobileMenu.classList.toggle('hidden');
-    });
 
-    // Scroll effect
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 50) {
-            navbar.classList.remove('bg-black/40');
-            navbar.classList.add('bg-black/90', 'shadow-xl');
-        } else {
-            navbar.classList.remove('bg-black/90', 'shadow-xl');
-            navbar.classList.add('bg-black/40');
-        }
-    });
+</script>
+<script>
+(function () {
+  const track = document.getElementById('featuredTrack');
+  if (!track) return;
 
-    document.getElementById("year").textContent = new Date().getFullYear();
+  const prevBtn = document.querySelector('[data-prev]');
+  const nextBtn = document.querySelector('[data-next]');
+
+  const getStep = () => {
+    const card = track.querySelector('a.snap-center');
+    if (!card) return track.clientWidth * 0.9;
+    const gap = parseFloat(getComputedStyle(track).columnGap || getComputedStyle(track).gap || 24);
+    return card.getBoundingClientRect().width + gap;
+  };
+
+  prevBtn?.addEventListener('click', () => track.scrollBy({ left: -getStep(), behavior: 'smooth' }));
+  nextBtn?.addEventListener('click', () => track.scrollBy({ left:  getStep(), behavior: 'smooth' }));
+})();
 </script>
 
 </body>

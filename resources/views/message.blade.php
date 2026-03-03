@@ -11,18 +11,22 @@
                     <p class="text-gray-500 text-sm mt-1">Manage and respond to all messages</p>
                 </div>
                 <div class="flex items-center gap-3">
-                    <div class="relative">
-                        <input type="text" placeholder="Search messages..." class="pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400">
-                        <svg class="w-5 h-5 absolute left-3 top-2.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-                        </svg>
-                    </div>
-                    <select class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 text-sm font-medium hover:border-gray-400 dark:hover:border-gray-500 transition">
-                        <option>All Messages</option>
-                        <option>Unread</option>
-                        <option>Read</option>
-                        <option>Archived</option>
-                    </select>
+                    <form method="GET" action="{{ route('messages.index') }}" class="flex items-center gap-3">
+                        <div class="relative">
+                            <input name="q" type="text" placeholder="Search messages..." value="{{ $q ?? '' }}" class="pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400">
+                            <svg class="w-5 h-5 absolute left-3 top-2.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                            </svg>
+                        </div>
+                        <select name="status" class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 text-sm font-medium hover:border-gray-400 dark:hover:border-gray-500 transition">
+                            <option value="" {{ empty($status) ? 'selected' : '' }}>All Messages</option>
+                            <option value="unread" {{ ($status ?? '') === 'unread' ? 'selected' : '' }}>Unread</option>
+                            <option value="read" {{ ($status ?? '') === 'read' ? 'selected' : '' }}>Read</option>
+                            <option value="answered" {{ ($status ?? '') === 'answered' ? 'selected' : '' }}>Answered</option>
+                            <option value="archived" {{ ($status ?? '') === 'archived' ? 'selected' : '' }}>Archived</option>
+                        </select>
+                        <button type="submit" class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition">Filter</button>
+                    </form>
                 </div>
             </div>
 
@@ -33,8 +37,8 @@
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-gray-600 dark:text-gray-400 text-sm font-medium">Total Messages</p>
-                            <p class="text-2xl font-bold text-gray-900 dark:text-white mt-2">1,842</p>
-                            <p class="text-xs text-green-600 dark:text-green-400 mt-1">↓ 12% from last month</p>
+                            <p class="text-2xl font-bold text-gray-900 dark:text-white mt-2">{{ number_format($totalMessages) }}</p>
+                            <p class="text-xs text-green-600 dark:text-green-400 mt-1">&nbsp;</p>
                         </div>
                         <div class="w-12 h-12 bg-gradient-to-br from-blue-100 to-blue-50 dark:from-blue-900 dark:to-blue-800 rounded-full flex items-center justify-center">
                             <svg class="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -49,7 +53,7 @@
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-gray-600 dark:text-gray-400 text-sm font-medium">Unread</p>
-                            <p class="text-2xl font-bold text-gray-900 dark:text-white mt-2">24</p>
+                            <p class="text-2xl font-bold text-gray-900 dark:text-white mt-2">{{ $unreadMessages }}</p>
                             <p class="text-xs text-yellow-600 dark:text-yellow-400 mt-1">Need your attention</p>
                         </div>
                         <div class="w-12 h-12 bg-gradient-to-br from-yellow-100 to-yellow-50 dark:from-yellow-900 dark:to-yellow-800 rounded-full flex items-center justify-center">
@@ -65,8 +69,8 @@
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-gray-600 dark:text-gray-400 text-sm font-medium">Avg Response Time</p>
-                            <p class="text-2xl font-bold text-gray-900 dark:text-white mt-2">2.3h</p>
-                            <p class="text-xs text-green-600 dark:text-green-400 mt-1">↓ 18% improvement</p>
+                            <p class="text-2xl font-bold text-gray-900 dark:text-white mt-2">{{ $avgResponseTime }}h</p>
+                            <p class="text-xs text-green-600 dark:text-green-400 mt-1">&nbsp;</p>
                         </div>
                         <div class="w-12 h-12 bg-gradient-to-br from-green-100 to-green-50 dark:from-green-900 dark:to-green-800 rounded-full flex items-center justify-center">
                             <svg class="w-6 h-6 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -81,8 +85,8 @@
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-gray-600 dark:text-gray-400 text-sm font-medium">Satisfaction Rate</p>
-                            <p class="text-2xl font-bold text-gray-900 dark:text-white mt-2">96%</p>
-                            <p class="text-xs text-green-600 dark:text-green-400 mt-1">↑ 4% from last month</p>
+                            <p class="text-2xl font-bold text-gray-900 dark:text-white mt-2">{{ $satisfactionRate }}%</p>
+                            <p class="text-xs text-green-600 dark:text-green-400 mt-1">&nbsp;</p>
                         </div>
                         <div class="w-12 h-12 bg-gradient-to-br from-purple-100 to-purple-50 dark:from-purple-900 dark:to-purple-800 rounded-full flex items-center justify-center">
                             <svg class="w-6 h-6 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -95,187 +99,44 @@
 
             <!-- Messages Grid -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-
-                <!-- Message Card 1 -->
-                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 hover:shadow-lg transition border-l-4 border-blue-500">
-                    <div class="flex items-start justify-between mb-4">
-                        <div class="flex items-center gap-4">
-                            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Marcus" alt="Marcus Johnson" class="w-14 h-14 rounded-full">
-                            <div>
-                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Marcus Johnson</h3>
-                                <p class="text-sm text-gray-500 dark:text-gray-400">2 hours ago</p>
+                @forelse($messages as $msg)
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6">
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="flex items-center gap-4">
+                                <div class="w-14 h-14 bg-gray-200 dark:bg-gray-700 rounded-full"></div>
+                                <div>
+                                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ optional($msg->customer)->name ?? 'Guest' }}</h3>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">{{ $msg->created_at->diffForHumans() }}</p>
+                                </div>
                             </div>
+                            <span class="px-3 py-1 text-xs font-semibold {{ $msg->status === 'unread' ? 'text-blue-700 bg-blue-100' : 'text-green-700 bg-green-100' }} dark:{{ $msg->status === 'unread' ? 'bg-blue-900/30 text-blue-400' : 'bg-green-900/30 text-green-400' }} rounded-full capitalize">{{ $msg->status }}</span>
                         </div>
-                        <span class="px-3 py-1 text-xs font-semibold text-blue-700 bg-blue-100 dark:bg-blue-900/30 dark:text-blue-400 rounded-full">Unread</span>
-                    </div>
 
-                    <div class="mb-4 pb-4 border-b border-gray-200 dark:border-gray-700">
-                        <h4 class="font-medium text-gray-900 dark:text-white mb-2">Inquiry about Property #2847</h4>
-                        <p class="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">Hi, I'm interested in the luxury penthouse at downtown area. Can you provide more details about the amenities and availability? I'd also like to schedule a viewing if possible.</p>
-                    </div>
-
-                    <div class="flex gap-2">
-                        <button class="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 text-sm font-medium rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition">
-                            View
-                        </button>
-                        <button class="flex-1 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition">
-                            Reply
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Message Card 2 -->
-                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 hover:shadow-lg transition border-l-4 border-green-500">
-                    <div class="flex items-start justify-between mb-4">
-                        <div class="flex items-center gap-4">
-                            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah" alt="Sarah Williams" class="w-14 h-14 rounded-full">
-                            <div>
-                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Sarah Williams</h3>
-                                <p class="text-sm text-gray-500 dark:text-gray-400">Yesterday</p>
-                            </div>
+                        <div class="mb-4 pb-4 border-b border-gray-200 dark:border-gray-700">
+                            <h4 class="font-medium text-gray-900 dark:text-white mb-2">{{ $msg->subject }}</h4>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">{{ $msg->body }}</p>
                         </div>
-                        <span class="px-3 py-1 text-xs font-semibold text-green-700 bg-green-100 dark:bg-green-900/30 dark:text-green-400 rounded-full">Answered</span>
-                    </div>
 
-                    <div class="mb-4 pb-4 border-b border-gray-200 dark:border-gray-700">
-                        <h4 class="font-medium text-gray-900 dark:text-white mb-2">Confirmed Viewing Appointment</h4>
-                        <p class="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">Thank you for your prompt response. I've confirmed the viewing for tomorrow at 3 PM. Looking forward to seeing the property!</p>
-                    </div>
-
-                    <div class="flex gap-2">
-                        <button class="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 text-sm font-medium rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition">
-                            View
-                        </button>
-                        <button class="flex-1 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition">
-                            Reply
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Message Card 3 -->
-                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 hover:shadow-lg transition border-l-4 border-blue-500">
-                    <div class="flex items-start justify-between mb-4">
-                        <div class="flex items-center gap-4">
-                            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Michael" alt="Michael Chen" class="w-14 h-14 rounded-full">
-                            <div>
-                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Michael Chen</h3>
-                                <p class="text-sm text-gray-500 dark:text-gray-400">6 hours ago</p>
-                            </div>
+                        <div class="flex gap-2">
+                            <a href="{{ route('messages.show', $msg) }}" class="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 text-sm font-medium rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition">
+                                View
+                            </a>
+                            <a href="{{ route('messages.edit', $msg) }}" class="flex-1 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition">
+                                Reply
+                            </a>
                         </div>
-                        <span class="px-3 py-1 text-xs font-semibold text-blue-700 bg-blue-100 dark:bg-blue-900/30 dark:text-blue-400 rounded-full">Unread</span>
                     </div>
-
-                    <div class="mb-4 pb-4 border-b border-gray-200 dark:border-gray-700">
-                        <h4 class="font-medium text-gray-900 dark:text-white mb-2">Question about Payment Terms</h4>
-                        <p class="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">I'm ready to make an offer on the property. Could you clarify the payment options and financing assistance available?</p>
-                    </div>
-
-                    <div class="flex gap-2">
-                        <button class="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 text-sm font-medium rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition">
-                            View
-                        </button>
-                        <button class="flex-1 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition">
-                            Reply
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Message Card 4 -->
-                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 hover:shadow-lg transition border-l-4 border-green-500">
-                    <div class="flex items-start justify-between mb-4">
-                        <div class="flex items-center gap-4">
-                            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Jessica" alt="Jessica Lee" class="w-14 h-14 rounded-full">
-                            <div>
-                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Jessica Lee</h3>
-                                <p class="text-sm text-gray-500 dark:text-gray-400">3 days ago</p>
-                            </div>
-                        </div>
-                        <span class="px-3 py-1 text-xs font-semibold text-green-700 bg-green-100 dark:bg-green-900/30 dark:text-green-400 rounded-full">Answered</span>
-                    </div>
-
-                    <div class="mb-4 pb-4 border-b border-gray-200 dark:border-gray-700">
-                        <h4 class="font-medium text-gray-900 dark:text-white mb-2">Purchase Agreement Signature</h4>
-                        <p class="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">I've received the purchase agreement. Just going through it with my lawyer. Will send back signed copies by Friday.</p>
-                    </div>
-
-                    <div class="flex gap-2">
-                        <button class="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 text-sm font-medium rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition">
-                            View
-                        </button>
-                        <button class="flex-1 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition">
-                            Reply
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Message Card 5 -->
-                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 hover:shadow-lg transition border-l-4 border-blue-500">
-                    <div class="flex items-start justify-between mb-4">
-                        <div class="flex items-center gap-4">
-                            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=David" alt="David Rodriguez" class="w-14 h-14 rounded-full">
-                            <div>
-                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">David Rodriguez</h3>
-                                <p class="text-sm text-gray-500 dark:text-gray-400">4 hours ago</p>
-                            </div>
-                        </div>
-                        <span class="px-3 py-1 text-xs font-semibold text-blue-700 bg-blue-100 dark:bg-blue-900/30 dark:text-blue-400 rounded-full">Unread</span>
-                    </div>
-
-                    <div class="mb-4 pb-4 border-b border-gray-200 dark:border-gray-700">
-                        <h4 class="font-medium text-gray-900 dark:text-white mb-2">Rental Property Inquiry</h4>
-                        <p class="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">Interested in renting for investment purposes. Can you provide rental rates, tenant history, and maintenance costs for the property?</p>
-                    </div>
-
-                    <div class="flex gap-2">
-                        <button class="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 text-sm font-medium rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition">
-                            View
-                        </button>
-                        <button class="flex-1 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition">
-                            Reply
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Message Card 6 -->
-                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 hover:shadow-lg transition border-l-4 border-green-500">
-                    <div class="flex items-start justify-between mb-4">
-                        <div class="flex items-center gap-4">
-                            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Emily" alt="Emily Thompson" class="w-14 h-14 rounded-full">
-                            <div>
-                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Emily Thompson</h3>
-                                <p class="text-sm text-gray-500 dark:text-gray-400">1 day ago</p>
-                            </div>
-                        </div>
-                        <span class="px-3 py-1 text-xs font-semibold text-green-700 bg-green-100 dark:bg-green-900/30 dark:text-green-400 rounded-full">Answered</span>
-                    </div>
-
-                    <div class="mb-4 pb-4 border-b border-gray-200 dark:border-gray-700">
-                        <h4 class="font-medium text-gray-900 dark:text-white mb-2">Move-in Schedule Confirmed</h4>
-                        <p class="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">Perfect! Move-in date is set for March 15th. I'll have the keys ready and documentation completed before then.</p>
-                    </div>
-
-                    <div class="flex gap-2">
-                        <button class="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 text-sm font-medium rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition">
-                            View
-                        </button>
-                        <button class="flex-1 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition">
-                            Reply
-                        </button>
-                    </div>
-                </div>
+                @empty
+                    <p class="text-gray-500">No messages yet.</p>
+                @endforelse
 
             </div>
 
             <!-- Pagination -->
             <div class="mt-8 flex items-center justify-between px-6 py-4">
-                <p class="text-sm text-gray-600 dark:text-gray-400">Showing 1 to 6 of 1,842 messages</p>
+                <p class="text-sm text-gray-600 dark:text-gray-400">Showing {{ $messages->firstItem() ?? 0 }} to {{ $messages->lastItem() ?? 0 }} of {{ $messages->total() }} messages</p>
                 <div class="flex gap-2">
-                    <button class="px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg text-sm font-medium hover:bg-gray-50 dark:hover:bg-gray-700 transition">
-                        Previous
-                    </button>
-                    <button class="px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg text-sm font-medium hover:bg-gray-50 dark:hover:bg-gray-700 transition">
-                        Next
-                    </button>
+                    {{ $messages->links() }}
                 </div>
             </div>
 

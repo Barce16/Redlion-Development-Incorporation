@@ -31,6 +31,7 @@ class Property extends Model
         'inquiries',
         'sales',
         'status',
+        'hero_image',
     ];
 
     protected $casts = [

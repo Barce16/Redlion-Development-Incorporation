@@ -37,14 +37,25 @@ body {
     <div class="max-w-7xl mx-auto flex justify-between items-center px-6 py-4">
         <!-- Logo -->
         <a href="/" class="flex items-center gap-3 group">
-            <div class="w-10 h-10 rounded-lg hero-gradient flex items-center justify-center text-white font-bold text-lg">
-                R
-            </div>
-            <div class="leading-tight">
-                <h1 class="text-lg font-bold tracking-tight text-gray-900">REDLION</h1>
-                <span class="text-xs text-red-600 font-semibold tracking-wider">DEVELOPMENTS</span>
-            </div>
-        </a>
+
+    <!-- Logo Image -->
+    <div class="w-12 h-12 rounded-lg overflow-hidden shadow-md group-hover:scale-105 transition duration-300">
+        <img src="{{ asset('images/logo.jpg') }}"
+             alt="RedLion Logo"
+             class="w-full h-full object-cover">
+    </div>
+
+    <!-- Company Name -->
+    <div class="leading-tight">
+        <h1 class="text-lg font-bold tracking-tight text-gray-900 group-hover:text-red-600 transition duration-300">
+            REDLION
+        </h1>
+        <span class="text-xs text-red-600 font-semibold tracking-wider">
+            DEVELOPMENTS
+        </span>
+    </div>
+
+</a>
 
         <!-- Desktop Menu -->
         <nav class="hidden md:flex items-center gap-8 text-sm font-medium">
@@ -67,7 +78,7 @@ body {
 
             <div class="h-5 w-px bg-gray-300"></div>
 
-            <a href="auth/login" class="px-6 py-2.5 hero-gradient text-white font-semibold rounded-lg hover:shadow-lg hover:shadow-red-500/50 transition-all duration-300 transform hover:scale-105">
+            <a href="{{ route('login') }}" class="px-6 py-2.5 hero-gradient text-white font-semibold rounded-lg hover:shadow-lg hover:shadow-red-500/50 transition-all duration-300 transform hover:scale-105">
                 Login
             </a>
         </nav>
@@ -88,7 +99,7 @@ body {
             <a href="{{ route('premium-developments') }}" class="hover:text-red-600 transition font-medium">Premium</a>
             <a href="#" class="hover:text-red-600 transition font-medium">Contact</a>
             <div class="border-t border-gray-200 pt-4 space-y-3">
-                <a href="auth/login" class="block text-center py-2.5 hero-gradient text-white font-semibold rounded-lg">Login</a>
+                <a href="{{ route('login') }}" class="block text-center py-2.5 hero-gradient text-white font-semibold rounded-lg">Login</a>
             </div>
         </div>
     </div>
@@ -153,10 +164,20 @@ body {
                 <div class="absolute inset-0 bg-gradient-to-br from-red-600 to-red-700 rounded-3xl blur-3xl opacity-30"></div>
                 <div class="relative bg-gradient-to-br from-red-50 to-red-100 rounded-3xl p-8 overflow-hidden">
                     <div class="absolute inset-0 grid-pattern opacity-10"></div>
-                    <div class="relative h-80 bg-gradient-to-br from-red-600 to-red-700 rounded-2xl flex items-center justify-center">
-                        <svg class="w-32 h-32 text-white opacity-30" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/>
-                        </svg>
+                    <div class="relative h-80 bg-gradient-to-br from-red-600 to-red-700 rounded-2xl flex items-center justify-center overflow-hidden">
+                        @if(isset($heroRecord) && $heroRecord && $heroRecord->image_path)
+                            <img src="{{ asset('storage/' . $heroRecord->image_path) }}"
+                                 alt="Hero image"
+                                 class="w-full h-full object-cover">
+                        @elseif($heroProperty && $heroProperty->hero_image)
+                            <img src="{{ asset('storage/' . $heroProperty->hero_image) }}"
+                                 alt="{{ $heroProperty->title }}"
+                                 class="w-full h-full object-cover">
+                        @else
+                            <svg class="w-32 h-32 text-white opacity-30" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/>
+                            </svg>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -164,51 +185,236 @@ body {
     </div>
 </section>
 
-<!-- ================= FEATURED PROPERTIES ================= -->
+<!-- ================= FEATURED PROPERTIES (3 ITEMS + DB IMAGES) ================= -->
 <section class="py-20 bg-gray-50">
-    <div class="max-w-7xl mx-auto px-6">
-        <div class="flex justify-between items-end mb-12">
-            <div>
-                <h2 class="text-4xl md:text-5xl font-black text-gray-900 mb-3">
-                    Featured <span class="text-red-600">Listings</span>
-                </h2>
-                <p class="text-gray-600">Premium properties handpicked for you</p>
-            </div>
-            <a href="{{ route('properties.index') }}" class="hidden sm:block text-red-600 hover:text-red-700 font-semibold">View All →</a>
-        </div>
+  <div class="max-w-7xl mx-auto px-6">
 
-        <div class="grid md:grid-cols-3 gap-8">
-            @forelse($featuredProperties as $property)
-            <a href="{{ route('properties.show', $property->id) }}" class="group bg-white rounded-2xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden">
-                <div class="relative h-56 overflow-hidden bg-gradient-to-br from-red-600 to-red-700">
-                    @if($property->images->isNotEmpty())
-                        <img src="/storage/{{ $property->images->first()->image_path }}" alt="{{ $property->title }}" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
-                    @else
-                        <div class="w-full h-full flex items-center justify-center">
-                            <svg class="w-20 h-20 text-white opacity-30" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/>
-                            </svg>
-                        </div>
-                    @endif
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                </div>
-                <div class="p-6">
-                    <p class="text-sm font-semibold text-red-600 uppercase tracking-wide">{{ $property->project_name ?? 'Featured' }}</p>
-                    <h3 class="text-xl font-bold text-gray-900 mt-2 group-hover:text-red-600 transition">{{ $property->title }}</h3>
-                    <p class="text-gray-600 text-sm mt-2">{{ $property->city }}</p>
-                    <div class="flex justify-between items-center mt-4 pt-4 border-t border-gray-200">
-                        <span class="text-2xl font-black text-red-600">₱{{ number_format($property->price / 1000000, 1) }}M</span>
-                        <span class="text-xs bg-red-100 text-red-600 px-3 py-1 rounded-full font-semibold">{{ $property->type ?? 'Property' }}</span>
-                    </div>
-                </div>
-            </a>
-            @empty
-            <div class="col-span-full text-center py-12 text-gray-500">
-                <p>No featured properties available yet.</p>
-            </div>
-            @endforelse
-        </div>
+    <div class="flex justify-between items-end mb-10">
+      <div>
+        <h2 class="text-4xl md:text-5xl font-black text-gray-900 mb-2">
+          Featured <span class="text-red-600">Listings</span>
+        </h2>
+        <p class="text-gray-600">Premium properties handpicked for you</p>
+      </div>
+
+      <div class="hidden sm:flex items-center gap-3">
+        <button type="button" data-prev
+          class="h-10 w-10 rounded-full border border-gray-200 bg-white/70 backdrop-blur-md shadow-sm hover:shadow-md transition grid place-items-center">
+          <svg class="w-5 h-5 text-gray-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
+
+        <button type="button" data-next
+          class="h-10 w-10 rounded-full border border-gray-200 bg-white/70 backdrop-blur-md shadow-sm hover:shadow-md transition grid place-items-center">
+          <svg class="w-5 h-5 text-gray-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
+
+        <a href="{{ route('properties.index') }}"
+          class="ml-2 text-red-600 hover:text-red-700 font-semibold">View All →</a>
+      </div>
     </div>
+
+    <style>
+        /* fade for readability */
+  .img-fade:after{
+    content:"";
+    position:absolute; inset:0;
+    background: linear-gradient(to top, rgba(0,0,0,.55), rgba(0,0,0,.10) 45%, rgba(0,0,0,0) 70%);
+    pointer-events:none;
+  }
+
+  /* focus effect */
+  .focus-card{
+    transform: scale(.94);
+    opacity: .88;
+    filter: saturate(.95);
+    transition: transform .25s ease, opacity .25s ease, filter .25s ease;
+  }
+  .focus-card.is-active{
+    transform: scale(1);
+    opacity: 1;
+    filter: saturate(1.05);
+  }
+
+  /* snap helpers */
+  .snap-x { scroll-snap-type: x mandatory; }
+  .snap-center { scroll-snap-align: center; }
+  .no-scrollbar::-webkit-scrollbar { display:none; }
+  .no-scrollbar { scrollbar-width:none; }
+
+      @keyframes shimmer { 0% { background-position: -600px 0 } 100% { background-position: 600px 0 } }
+      .shimmer {
+        background: linear-gradient(90deg, rgba(229,231,235,.65) 25%, rgba(243,244,246,.95) 37%, rgba(229,231,235,.65) 63%);
+        background-size: 1200px 100%;
+        animation: shimmer 1.2s infinite linear;
+      }
+    </style>
+
+    @if(isset($featuredImages) && $featuredImages->count() > 0)
+      <!-- hero-managed featured images -->
+      <div id="featuredTrack" class="flex gap-6 overflow-x-auto no-scrollbar snap-x pb-4 px-6" style="scroll-behavior:smooth; scroll-padding-left:1.5rem; scroll-padding-right:1.5rem;">
+        @foreach($featuredImages as $img)
+          <div class="shrink-0 w-[90%] sm:w-[70%] md:w-[48%] lg:w-[30%] group block rounded-3xl overflow-hidden border border-gray-200 bg-white shadow">
+            <div class="relative h-64 overflow-hidden img-fade">
+              <img src="{{ asset('storage/' . $img->image_path) }}" class="w-full h-full object-cover">
+            </div>
+            @if($img->caption)
+              <div class="p-4">
+                <p class="text-sm text-gray-700">{{ $img->caption }}</p>
+              </div>
+            @endif
+          </div>
+        @endforeach
+        <div class="shrink-0 w-6"></div>
+      </div>
+    @elseif($featuredProperties->count() > 0)
+      <!-- CAROUSEL TRACK (3 items + peek next) -->
+       <div id="featuredTrack"
+     class="flex gap-6 overflow-x-auto no-scrollbar snap-x pb-4 px-6"
+     style="scroll-behavior:smooth; scroll-padding-left:1.5rem; scroll-padding-right:1.5rem;">
+
+        @foreach($featuredProperties as $property)
+          <!-- image src will be resolved inside the card below -->
+
+           <a href="{{ route('properties.show', $property->id) }}"
+   class="focus-card snap-center shrink-0
+          w-[90%] sm:w-[70%] md:w-[48%] lg:w-[30%]
+          group block rounded-3xl overflow-hidden
+          border border-gray-200 bg-white
+          shadow hover:shadow-xl transition">
+
+  <!-- FULL IMAGE -->
+  <div class="relative h-64 overflow-hidden img-fade">
+    @php
+      $img = $property->images->first();
+      $src = $img ? asset('storage/' . $img->image_path) : null;
+    @endphp
+
+    @if($src)
+      <img src="{{ $src }}"
+           class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+    @else
+      <div class="w-full h-full bg-gray-200"></div>
+    @endif
+
+    <!-- price badge -->
+    <div class="absolute bottom-4 left-4">
+      <span class="px-4 py-2 rounded-xl text-white font-black bg-black/50 backdrop-blur">
+        ₱{{ number_format($property->price / 1000000, 1) }}M
+      </span>
+    </div>
+  </div>
+
+  <!-- DIVIDER LINE -->
+  <div class="border-t border-gray-200"></div>
+
+  <!-- CONTENT BELOW IMAGE -->
+  <div class="p-6 flex flex-col">
+
+    <p class="text-[11px] font-extrabold tracking-widest text-red-600 uppercase">
+      {{ $property->project_name ?? 'Featured' }}
+    </p>
+
+    <h3 class="text-2xl font-black text-gray-900 mt-2 leading-tight">
+      {{ $property->title }}
+    </h3>
+
+    <div class="mt-2 text-gray-500 text-sm flex items-center gap-3">
+      <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M12 10.5a3 3 0 100-6 3 3 0 000 6z" />
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M19.5 10.5c0 7-7.5 11-7.5 11s-7.5-4-7.5-11a7.5 7.5 0 1115 0z" />
+      </svg>
+      <span>{{ $property->city }}, {{ $property->province ?? '—' }}</span>
+    </div>
+
+  </div>
+
+  <!-- BOTTOM STATS STRIP -->
+  <div class="border-t border-gray-200">
+    <div class="grid grid-cols-3 text-center">
+      <div class="py-4">
+        <p class="text-xs text-gray-500 font-semibold">Completion</p>
+        <p class="text-sm font-extrabold text-gray-900 mt-1">{{ $property->completion_percentage ?? 0 }}%</p>
+      </div>
+
+      <div class="py-4 border-x border-gray-200">
+        <p class="text-xs text-gray-500 font-semibold">Type</p>
+        <p class="text-sm font-extrabold text-gray-900 mt-1 capitalize">{{ $property->category ?? '—' }}</p>
+      </div>
+
+      <div class="py-4">
+        <p class="text-xs text-gray-500 font-semibold">Area</p>
+        <p class="text-sm font-extrabold text-gray-900 mt-1">
+          {{ $property->area ?? '—' }} sqm
+        </p>
+      </div>
+    </div>
+  </div>
+
+</a>
+        @endforeach
+
+        <!-- spacer so last card can center -->
+        <div class="shrink-0 w-6"></div>
+      </div>
+
+      <!-- JS: carousel controls + drag-to-scroll -->
+      <script>
+        (function () {
+  const track = document.getElementById('featuredTrack');
+  if (!track) return;
+
+  const cards = () => Array.from(track.querySelectorAll('.focus-card'));
+
+  function setActiveCard() {
+    const list = cards();
+    if (!list.length) return;
+
+    const center = track.scrollLeft + track.clientWidth / 2;
+
+    let best = null;
+    let bestDist = Infinity;
+
+    list.forEach(card => {
+      const cardCenter = card.offsetLeft + card.offsetWidth / 2;
+      const dist = Math.abs(cardCenter - center);
+      if (dist < bestDist) { bestDist = dist; best = card; }
+    });
+
+    list.forEach(c => c.classList.remove('is-active'));
+    best?.classList.add('is-active');
+  }
+
+  // Initial + on scroll (throttled)
+  let raf = null;
+  const onScroll = () => {
+    if (raf) return;
+    raf = requestAnimationFrame(() => {
+      setActiveCard();
+      raf = null;
+    });
+  };
+
+  track.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', setActiveCard);
+
+  // Run once after render
+  setTimeout(setActiveCard, 50);
+})();
+      </script>
+
+    @else
+      <div class="text-center py-12 text-gray-500">
+        <p>No featured content uploaded yet.</p>
+      </div>
+    @endif
+
+  </div>
 </section>
 
 <!-- ================= PREMIUM DEVELOPMENTS ADVERTISEMENT ================= -->
@@ -231,7 +437,7 @@ body {
           </span>
         </div>
 
-        <!-- Heading -->
+        <!-- Headi  ng -->
         <h2 class="text-5xl lg:text-6xl font-black leading-tight">
           <span class="bg-gradient-to-r from-yellow-400 via-yellow-500 to-orange-500 bg-clip-text text-transparent">
             Premium Developments
@@ -329,53 +535,88 @@ body {
       <!-- Right Showcase -->
       <div class="relative">
         <div class="grid grid-cols-2 gap-4">
-          <!-- Large Featured Image -->
-          <div class="col-span-2 relative rounded-2xl overflow-hidden h-80 group">
-            @if($premiumDevelopments->isNotEmpty() && $premiumDevelopments->first()->images->isNotEmpty())
-              <img src="/storage/{{ $premiumDevelopments->first()->images->first()->image_path }}"
+          @if(isset($premiumImages) && $premiumImages->count() > 0)
+            <!-- Display uploaded premium images -->
+            <!-- Large Featured Image -->
+            <div class="col-span-2 relative rounded-2xl overflow-hidden h-80 group">
+              <img src="{{ asset('storage/' . $premiumImages->first()->image_path) }}"
                    alt="Premium Development"
                    class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
-            @else
-              <div class="w-full h-full bg-gradient-to-br from-yellow-600 to-orange-600 flex items-center justify-center">
-                <svg class="w-24 h-24 text-white opacity-30" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/>
-                </svg>
+              <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+              <div class="absolute bottom-4 left-4 right-4">
+                <p class="text-yellow-400 text-sm font-bold">FEATURED PROJECT</p>
+                <h3 class="text-white text-lg font-bold mt-2">
+                  @if($premiumImages->first()->caption)
+                    {{ $premiumImages->first()->caption }}
+                  @else
+                    Premium Development
+                  @endif
+                </h3>
               </div>
-            @endif
-            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-            <div class="absolute bottom-4 left-4 right-4">
-              <p class="text-yellow-400 text-sm font-bold">FEATURED PROJECT</p>
-              <h3 class="text-white text-lg font-bold mt-2">{{ $premiumDevelopments->first()->title ?? 'Luxury Development' }}</h3>
             </div>
-          </div>
 
-          <!-- Smaller Cards -->
-          @forelse($premiumDevelopments->skip(1)->take(2) as $dev)
-          <div class="relative rounded-xl overflow-hidden h-40 group">
-            @if($dev->images->isNotEmpty())
-              <img src="/storage/{{ $dev->images->first()->image_path }}"
-                   alt="{{ $dev->title }}"
+            <!-- Smaller Cards -->
+            @foreach($premiumImages->skip(1)->take(2) as $img)
+            <div class="relative rounded-xl overflow-hidden h-40 group">
+              <img src="{{ asset('storage/' . $img->image_path) }}"
+                   alt="{{ $img->caption ?? 'Premium Image' }}"
                    class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
-            @else
-              <div class="w-full h-full bg-gradient-to-br from-yellow-500 to-orange-500 flex items-center justify-center">
-                <svg class="w-12 h-12 text-white opacity-30" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/>
-                </svg>
+              <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+              <div class="absolute bottom-2 left-2 right-2">
+                <p class="text-white text-sm font-bold truncate">{{ $img->caption ?? 'Premium' }}</p>
               </div>
-            @endif
-            <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-            <div class="absolute bottom-2 left-2 right-2">
-              <p class="text-white text-sm font-bold truncate">{{ $dev->title }}</p>
-              <p class="text-yellow-300 text-xs">₱{{ number_format($dev->price/1000000, 1) }}M</p>
             </div>
-          </div>
-          @empty
-          <div class="relative rounded-xl overflow-hidden h-40 bg-gradient-to-br from-yellow-500 to-orange-500 flex items-center justify-center">
-            <svg class="w-12 h-12 text-white opacity-30" fill="currentColor" viewBox="0 0 20 20">
-              <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/>
-            </svg>
-          </div>
-          @endforelse
+            @endforeach
+          @else
+            <!-- Fallback: Display premium developments -->
+            <!-- Large Featured Image -->
+            <div class="col-span-2 relative rounded-2xl overflow-hidden h-80 group">
+              @if($premiumDevelopments->isNotEmpty() && $premiumDevelopments->first()->images->isNotEmpty())
+                <img src="/storage/{{ $premiumDevelopments->first()->images->first()->image_path }}"
+                     alt="Premium Development"
+                     class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+              @else
+                <div class="w-full h-full bg-gradient-to-br from-yellow-600 to-orange-600 flex items-center justify-center">
+                  <svg class="w-24 h-24 text-white opacity-30" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/>
+                  </svg>
+                </div>
+              @endif
+              <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+              <div class="absolute bottom-4 left-4 right-4">
+                <p class="text-yellow-400 text-sm font-bold">FEATURED PROJECT</p>
+                <h3 class="text-white text-lg font-bold mt-2">{{ $premiumDevelopments->first()->title ?? 'Luxury Development' }}</h3>
+              </div>
+            </div>
+
+            <!-- Smaller Cards -->
+            @forelse($premiumDevelopments->skip(1)->take(2) as $dev)
+            <div class="relative rounded-xl overflow-hidden h-40 group">
+              @if($dev->images->isNotEmpty())
+                <img src="/storage/{{ $dev->images->first()->image_path }}"
+                     alt="{{ $dev->title }}"
+                     class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+              @else
+                <div class="w-full h-full bg-gradient-to-br from-yellow-500 to-orange-500 flex items-center justify-center">
+                  <svg class="w-12 h-12 text-white opacity-30" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/>
+                  </svg>
+                </div>
+              @endif
+              <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+              <div class="absolute bottom-2 left-2 right-2">
+                <p class="text-white text-sm font-bold truncate">{{ $dev->title }}</p>
+                <p class="text-yellow-300 text-xs">₱{{ number_format($dev->price/1000000, 1) }}M</p>
+              </div>
+            </div>
+            @empty
+            <div class="relative rounded-xl overflow-hidden h-40 bg-gradient-to-br from-yellow-500 to-orange-500 flex items-center justify-center">
+              <svg class="w-12 h-12 text-white opacity-30" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/>
+              </svg>
+            </div>
+            @endforelse
+          @endif
         </div>
 
         <!-- Decorative Badge -->
@@ -497,13 +738,73 @@ body {
         </div>
     </div>
 </section>
+<!-- ================= PUBLIC INQUIRY FORM ================= -->
+<section id="inquiry" class="py-20 bg-white">
+    <div class="max-w-2xl mx-auto px-6">
+        <h2 class="text-3xl font-bold text-gray-900 mb-6">Send Us an Inquiry</h2>
+        @if(session('success'))
+            <div class="mb-4 p-4 bg-green-100 text-green-800 rounded">{{ session('success') }}</div>
+        @endif
+        <form action="{{ route('inquiries.store') }}" method="POST" class="space-y-4">
+            @csrf
+            <div>
+                <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
+                <input id="name" name="name" type="text" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" value="{{ old('name') }}">
+                @error('name')<p class="text-red-600 text-sm">{{ $message }}</p>@enderror
+            </div>
+            <div>
+                <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                <input id="email" name="email" type="email" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" value="{{ old('email') }}">
+                @error('email')<p class="text-red-600 text-sm">{{ $message }}</p>@enderror
+            </div>
+            <div>
+                <label for="phone" class="block text-sm font-medium text-gray-700">Contact Number</label>
+                <input id="phone" name="phone" type="text" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" value="{{ old('phone') }}">
+                @error('phone')<p class="text-red-600 text-sm">{{ $message }}</p>@enderror
+            </div>
+            <div>
+                <label for="property_id" class="block text-sm font-medium text-gray-700">Property</label>
+                <select id="property_id" name="property_id" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                    @foreach(\App\Models\PropertyListing::all() as $prop)
+                        <option value="{{ $prop->id }}" {{ old('property_id') == $prop->id ? 'selected' : '' }}>{{ $prop->title }}</option>
+                    @endforeach
+                </select>
+                @error('property_id')<p class="text-red-600 text-sm">{{ $message }}</p>@enderror
+            </div>
+            <div>
+                <label for="message" class="block text-sm font-medium text-gray-700">Message</label>
+                <textarea id="message" name="message" rows="4" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">{{ old('message') }}</textarea>
+                @error('message')<p class="text-red-600 text-sm">{{ $message }}</p>@enderror
+            </div>
+            <button type="submit" class="px-6 py-3 hero-gradient text-white rounded-lg">Send Inquiry</button>
+        </form>
+    </div>
+</section>
+
+<!-- small script to handle inquiries from property cards -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.inquire-btn').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                var propId = this.dataset.id;
+                var select = document.getElementById('property_id');
+                if(select) {
+                    select.value = propId;
+                }
+                window.location.hash = 'inquiry';
+            });
+        });
+    });
+</script>
+
 
 <!-- ================= FOOTER ================= -->
 <footer class="bg-gray-900 text-gray-400 pt-20 pb-10 border-t border-gray-800">
     <div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-4 gap-12">
         <!-- Company Info -->
         <div>
-            <h3 class="text-white text-xl font-bold mb-4">REDLION</h3>
+            <h3 class="text-white text-xl font-bold">REDLION</h3>
+            <h6 class="text-sm text-red-600 uppercase tracking-wide mb-4">Development Incorporation</h6>
             <p class="text-sm leading-relaxed mb-6">
                 Premium real estate developments designed for modern living and exceptional investment returns.
             </p>
@@ -604,7 +905,26 @@ body {
     }
   });
 
-  document.getElementById('year').textContent = new Date().getFullYear();
+
+</script>
+<script>
+(function () {
+  const track = document.getElementById('featuredTrack');
+  if (!track) return;
+
+  const prevBtn = document.querySelector('[data-prev]');
+  const nextBtn = document.querySelector('[data-next]');
+
+  const getStep = () => {
+    const card = track.querySelector('a.snap-center');
+    if (!card) return track.clientWidth * 0.9;
+    const gap = parseFloat(getComputedStyle(track).columnGap || getComputedStyle(track).gap || 24);
+    return card.getBoundingClientRect().width + gap;
+  };
+
+  prevBtn?.addEventListener('click', () => track.scrollBy({ left: -getStep(), behavior: 'smooth' }));
+  nextBtn?.addEventListener('click', () => track.scrollBy({ left:  getStep(), behavior: 'smooth' }));
+})();
 </script>
 
 </body>

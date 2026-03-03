@@ -47,7 +47,7 @@
                                     <p class="text-gray-500 dark:text-gray-400 text-sm">Price</p>
                                     <p class="text-gray-900 dark:text-white font-semibold text-lg">₱{{ number_format($property->price, 2) }}</p>
                                 </div>
-                                
+
                                 <div class="col-span-2">
                                     <p class="text-gray-500 dark:text-gray-400 text-sm">Project Name</p>
                                     <p class="text-gray-900 dark:text-white font-semibold">{{ $property->project_name ?? 'N/A' }}</p>
@@ -60,7 +60,7 @@
                                     <p class="text-gray-500 dark:text-gray-400 text-sm">Completion Status</p>
                                     <p class="text-gray-900 dark:text-white font-semibold">{{ $property->completion_percentage }}%</p>
                                 </div>
-                                
+
                                 <div>
                                     <p class="text-gray-500 dark:text-gray-400 text-sm">Status</p>
                                     <span class="px-2 py-1 rounded text-xs font-medium
@@ -99,7 +99,7 @@
                                     <p class="text-gray-500 dark:text-gray-400 text-sm">Province</p>
                                     <p class="text-gray-900 dark:text-white">{{ $property->province ?? 'N/A' }}</p>
                                 </div>
-                                
+
                             </div>
                         </div>
                     </div>
@@ -109,7 +109,7 @@
                         <div class="p-6">
                             <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Financial Details</h3>
                             <div class="grid grid-cols-2 gap-4">
-                                
+
                                 <div>
                                     <p class="text-gray-500 dark:text-gray-400 text-sm">Per Sqm Price</p>
                                     <p class="text-gray-900 dark:text-white font-semibold">{{ $property->price_per_sqm ? ('₱' . number_format($property->price_per_sqm, 2)) : 'N/A' }}</p>
@@ -194,27 +194,6 @@
                         </div>
                     </div>
 
-                    <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                        <div class="p-6">
-                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Actions</h3>
-                            <div class="space-y-2">
-                                <form action="{{ route('properties.increment-views', $property) }}" method="POST">
-                                    @csrf
-                                    <button type="submit" class="w-full px-4 py-2 bg-blue-500 text-white rounded-lg
-                                        font-medium hover:bg-blue-600 transition text-sm">
-                                        Increment Views
-                                    </button>
-                                </form>
-                                <form action="{{ route('properties.increment-inquiries', $property) }}" method="POST">
-                                    @csrf
-                                    <button type="submit" class="w-full px-4 py-2 bg-yellow-500 text-white rounded-lg
-                                        font-medium hover:bg-yellow-600 transition text-sm">
-                                        Increment Inquiries
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
 
                     <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                         <div class="p-6 text-sm text-gray-600 dark:text-gray-400">

@@ -11,26 +11,50 @@ use Illuminate\Http\RedirectResponse;
 
 class MessageController extends Controller
 {
-    public function index(): View
+    public function index(Request $request): View
     {
-        // Get statistics
-        $totalMessages = Message::count();
-        $unreadMessages = Message::where('status', 'unread')->count();
+        // Build base query and apply search/status filters
+        $baseQuery = Message::query();
 
-        // Calculate average response time in hours
-        $avgResponseTime = Message::whereNotNull('replied_at')
-            ->selectRaw('AVG(TIMESTAMPDIFF(HOUR, created_at, replied_at)) as avg_hours')
-            ->first()
-            ->avg_hours ?? 0;
+        if ($q = $request->input('q')) {
+            $baseQuery->where(function ($qBuilder) use ($q) {
+                $qBuilder->where('subject', 'like', "%{$q}%")
+                    ->orWhere('body', 'like', "%{$q}%");
+            });
+        }
+
+        if ($status = $request->input('status')) {
+            $baseQuery->where('status', $status);
+        }
+
+        // Statistics are computed from the filtered query so cards reflect current view
+        $totalMessages = (clone $baseQuery)->count();
+        $unreadMessages = (clone $baseQuery)->where('status', 'unread')->count();
+
+        // Calculate average response time in hours (work around sqlite lacking TIMESTAMPDIFF)
+        $timeQuery = (clone $baseQuery)->whereNotNull('replied_at');
+        if (config('database.default') === 'sqlite') {
+            $avgResponseTime = $timeQuery
+                ->selectRaw("AVG((julianday(replied_at) - julianday(created_at)) * 24) as avg_hours")
+                ->first()
+                ->avg_hours ?? 0;
+        } else {
+            $avgResponseTime = $timeQuery
+                ->selectRaw('AVG(TIMESTAMPDIFF(HOUR, created_at, replied_at)) as avg_hours')
+                ->first()
+                ->avg_hours ?? 0;
+        }
 
         // Calculate satisfaction rate (answered messages / total messages)
-        $answeredMessages = Message::where('status', 'answered')->count();
+        $answeredMessages = (clone $baseQuery)->where('status', 'answered')->count();
         $satisfactionRate = $totalMessages > 0 ? round(($answeredMessages / $totalMessages) * 100) : 0;
 
-        // Get all messages with relationships
-        $messages = Message::with(['customer', 'user'])
+        // Get messages with relationships and pagination (preserve query params)
+        $messages = (clone $baseQuery)
+            ->with(['customer', 'user'])
             ->latest()
-            ->paginate(6);
+            ->paginate(6)
+            ->appends($request->only('q', 'status'));
 
         return view('message', [
             'messages' => $messages,
@@ -38,6 +62,8 @@ class MessageController extends Controller
             'unreadMessages' => $unreadMessages,
             'avgResponseTime' => round($avgResponseTime, 1),
             'satisfactionRate' => $satisfactionRate,
+            'q' => $request->input('q'),
+            'status' => $request->input('status'),
         ]);
     }
 

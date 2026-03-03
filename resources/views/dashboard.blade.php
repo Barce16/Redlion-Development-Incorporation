@@ -105,50 +105,64 @@
 
                 <!-- Status Analysis Pie Chart -->
                 <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6">
+                    @php
+                        // omit refunded from chart
+                        $statuses = ['pending','completed','paid','cancelled'];
+                        // Hex color replacements matching Tailwind shades
+                        $colors = [
+                            'pending'   => '#facc15', // yellow-400
+                            'completed' => '#22c55e', // green-500
+                            'paid'      => '#3b82f6', // blue-500
+                            'cancelled' => '#ef4444', // red-500
+                        ];
+                        $circ = 2 * pi() * 60;
+                        $offset = 0;
+                    @endphp
                     <div class="flex items-center justify-between mb-4">
                         <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Status Analysis</h3>
                         <svg class="w-5 h-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
                             <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
                         </svg>
                     </div>
+                    <style>
+                        .chart-segment {
+                            transition: stroke-dasharray 0.6s ease, stroke-dashoffset 0.6s ease;
+                        }
+                    </style>
                     <div class="flex justify-center mb-6">
                         <svg width="150" height="150" viewBox="0 0 150 150" class="transform -rotate-90">
-                            <!-- Pie chart segments -->
-                            <circle cx="75" cy="75" r="60" fill="none" stroke="#3b82f6" stroke-width="30" stroke-dasharray="188.4 565.2" />
-                            <circle cx="75" cy="75" r="60" fill="none" stroke="#f59e0b" stroke-width="30" stroke-dasharray="141.3 565.2" transform="rotate(120 75 75)" />
-                            <circle cx="75" cy="75" r="60" fill="none" stroke="#f97316" stroke-width="30" stroke-dasharray="94.2 565.2" transform="rotate(195 75 75)" />
-                            <circle cx="75" cy="75" r="60" fill="none" stroke="#10b981" stroke-width="30" stroke-dasharray="141.3 565.2" transform="rotate(255 75 75)" />
+                            @if($totalStatusCount > 0)
+                                @foreach($statuses as $st)
+                                    @php
+                                        $val = $statusCounts[$st] ?? 0;
+                                        if($val <= 0) continue;
+                                        $dash = $circ * ($val / $totalStatusCount);
+                                    @endphp
+                                    <circle class="chart-segment" cx="75" cy="75" r="60" fill="none"
+                                            stroke="{{ $colors[$st] }}"
+                                            stroke-width="30"
+                                            stroke-dasharray="{{ $dash }} {{ $circ - $dash }}"
+                                            stroke-dashoffset="{{ $offset }}">
+                                        <title>{{ ucfirst($st) }}: {{ $val }}</title>
+                                    </circle>
+                                    @php $offset -= $dash; @endphp
+                                @endforeach
+                            @else
+                                <circle cx="75" cy="75" r="60" fill="none" stroke="#3b82f6" stroke-width="30" />
+                            @endif
                         </svg>
                     </div>
                     <div class="space-y-3">
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center">
-                                <div class="w-3 h-3 rounded-full bg-blue-500 mr-2"></div>
-                                <span class="text-sm text-gray-600 dark:text-gray-400">Accepted</span>
+
+                        @foreach($statuses as $st)
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <div class="w-3 h-3 rounded-full mr-2" style="background: {{ $colors[$st] }}"></div>
+                                    <span class="text-sm text-gray-600 dark:text-gray-400">{{ ucfirst($st) }}</span>
+                                </div>
+                                <span class="text-sm font-semibold text-gray-900 dark:text-white">{{ $statusCounts[$st] ?? 0 }}</span>
                             </div>
-                            <span class="text-sm font-semibold text-gray-900 dark:text-white">0</span>
-                        </div>
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center">
-                                <div class="w-3 h-3 rounded-full bg-amber-500 mr-2"></div>
-                                <span class="text-sm text-gray-600 dark:text-gray-400">Rejected</span>
-                            </div>
-                            <span class="text-sm font-semibold text-gray-900 dark:text-white">0</span>
-                        </div>
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center">
-                                <div class="w-3 h-3 rounded-full bg-orange-500 mr-2"></div>
-                                <span class="text-sm text-gray-600 dark:text-gray-400">Clients</span>
-                            </div>
-                            <span class="text-sm font-semibold text-gray-900 dark:text-white">0</span>
-                        </div>
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center">
-                                <div class="w-3 h-3 rounded-full bg-emerald-500 mr-2"></div>
-                                <span class="text-sm text-gray-600 dark:text-gray-400">others</span>
-                            </div>
-                            <span class="text-sm font-semibold text-gray-900 dark:text-white">0</span>
-                        </div>
+                        @endforeach
                     </div>
                 </div>
 
@@ -285,18 +299,18 @@
                 <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6">
                     <div class="mb-6">
                         <div class="flex items-center justify-between mb-4">
-                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">June 2025</h3>
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ $calendarNow->format('F Y') }}</h3>
                             <div class="flex gap-2">
-                                <button class="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded">
+                                <a href="{{ route('dashboard', ['month' => $prevMonth->month, 'year' => $prevMonth->year]) }}" class="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded">
                                     <svg class="w-5 h-5 text-gray-600 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
                                     </svg>
-                                </button>
-                                <button class="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded">
+                                </a>
+                                <a href="{{ route('dashboard', ['month' => $nextMonth->month, 'year' => $nextMonth->year]) }}" class="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded">
                                     <svg class="w-5 h-5 text-gray-600 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                                     </svg>
-                                </button>
+                                </a>
                             </div>
                         </div>
 
@@ -311,47 +325,29 @@
                             <div class="text-center text-xs font-medium text-gray-500 py-2">Sat</div>
                         </div>
 
-                        <!-- Calendar Days -->
+                        <!-- Calendar Days (dynamic) -->
+                        @php
+                            $now = $calendarNow;
+                            $daysInMonth = $now->daysInMonth;
+                            $firstDow = $now->copy()->startOfMonth()->dayOfWeek; // 0=Sunday
+                        @endphp
                         <div class="grid grid-cols-7 gap-2">
-                            <!-- Empty cells for days before month starts -->
-                            <div></div>
-                            <div></div>
-                            <div></div>
-                            <div></div>
-                            <div></div>
-                            <div></div>
-
-                            <!-- June 1 - 30 -->
-                            <div class="text-center py-2 text-sm text-gray-600 dark:text-gray-400">1</div>
-                            <div class="text-center py-2 text-sm text-gray-600 dark:text-gray-400">2</div>
-                            <div class="text-center py-2 text-sm text-gray-600 dark:text-gray-400">3</div>
-                            <div class="text-center py-2 text-sm text-gray-600 dark:text-gray-400">4</div>
-                            <div class="text-center py-2 text-sm text-gray-600 dark:text-gray-400">5</div>
-                            <div class="text-center py-2 text-sm text-gray-600 dark:text-gray-400">6</div>
-                            <div class="text-center py-2 text-sm text-gray-600 dark:text-gray-400">7</div>
-                            <div class="text-center py-2 text-sm text-gray-600 dark:text-gray-400">8</div>
-                            <div class="text-center py-2 text-sm text-gray-600 dark:text-gray-400">9</div>
-                            <div class="text-center py-2 text-sm text-gray-600 dark:text-gray-400">10</div>
-                            <div class="text-center py-2 text-sm text-gray-600 dark:text-gray-400">11</div>
-                            <div class="text-center py-2 text-sm text-gray-600 dark:text-gray-400">12</div>
-                            <div class="text-center py-2 text-sm text-gray-600 dark:text-gray-400">13</div>
-                            <div class="text-center py-2 text-sm text-gray-600 dark:text-gray-400">14</div>
-                            <div class="text-center py-2 text-sm bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400 font-semibold rounded py-2 text-sm">15</div>
-                            <div class="text-center py-2 text-sm text-gray-600 dark:text-gray-400">16</div>
-                            <div class="text-center py-2 text-sm text-gray-600 dark:text-gray-400">17</div>
-                            <div class="text-center py-2 text-sm text-gray-600 dark:text-gray-400">18</div>
-                            <div class="text-center py-2 text-sm text-gray-600 dark:text-gray-400">19</div>
-                            <div class="text-center py-2 text-sm text-gray-600 dark:text-gray-400">20</div>
-                            <div class="text-center py-2 text-sm text-gray-600 dark:text-gray-400">21</div>
-                            <div class="text-center py-2 text-sm text-gray-600 dark:text-gray-400">22</div>
-                            <div class="text-center py-2 text-sm text-gray-600 dark:text-gray-400">23</div>
-                            <div class="text-center py-2 text-sm text-gray-600 dark:text-gray-400">24</div>
-                            <div class="text-center py-2 text-sm text-gray-600 dark:text-gray-400">25</div>
-                            <div class="text-center py-2 text-sm text-gray-600 dark:text-gray-400">26</div>
-                            <div class="text-center py-2 text-sm text-gray-600 dark:text-gray-400">27</div>
-                            <div class="text-center py-2 text-sm text-gray-600 dark:text-gray-400">28</div>
-                            <div class="text-center py-2 text-sm text-gray-600 dark:text-gray-400">29</div>
-                            <div class="text-center py-2 text-sm text-gray-600 dark:text-gray-400">30</div>
+                            {{-- empty leading cells --}}
+                            @for($i = 0; $i < $firstDow; $i++)
+                                <div></div>
+                            @endfor
+                            @for($day = 1; $day <= $daysInMonth; $day++)
+                                @php
+                                    $isToday = $day === $now->day;
+                                    $holiday = $monthlyHolidays[$day] ?? null;
+                                    // holiday overrides today styling
+                                @endphp
+                                <div class="text-center py-2 text-sm
+                                        {{ $holiday ? 'bg-red-100 dark:bg-red-900/20 text-red-600 dark:text-red-400 font-semibold rounded' : ($isToday ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 font-semibold rounded' : 'text-gray-600 dark:text-gray-400') }}"
+                                     @if($holiday) title="{{ $holiday }}" @endif>
+                                    {{ $day }}
+                                </div>
+                            @endfor
                         </div>
                     </div>
 

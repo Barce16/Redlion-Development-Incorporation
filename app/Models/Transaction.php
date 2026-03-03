@@ -13,13 +13,24 @@ class Transaction extends Model
     protected $fillable = [
         'customer_id',
         'property_id',
-        'invoice_id',
+        'invoice_id',        // foreign key to invoices table
+        'invoice_code',      // legacy string code
         'property_type',
         'amount',
-        'payment_method',
-        'payment_card',
+        'amount_paid',
+        'remaining_balance',
+        'payment_type',
+        'gcash_reference',
+        'sender_name',
+        'card_type',
+        'card_last4',
+        'auth_code',
+        'terminal_info',
         'status',
         'transaction_date',
+        'or_number',
+        'attachment_path',
+        'recorded_by',
         'notes',
     ];
 
@@ -31,6 +42,16 @@ class Transaction extends Model
     public function customer(): BelongsTo
     {
         return $this->belongsTo(Customer::class);
+    }
+
+    public function invoice(): BelongsTo
+    {
+        return $this->belongsTo(Invoice::class);
+    }
+
+    public function recordedBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'recorded_by');
     }
 
     public function property(): BelongsTo

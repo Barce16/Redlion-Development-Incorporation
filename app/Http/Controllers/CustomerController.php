@@ -9,18 +9,38 @@ use Illuminate\Http\RedirectResponse;
 
 class CustomerController extends Controller
 {
-    public function index(): View
+    public function index(Request $request): View
     {
-        // Get statistics
-        $totalCustomers = Customer::count();
-        $activeCustomers = Customer::where('status', 'active')->count();
-        $totalRevenue = Customer::sum('total_spent');
-        $newThisMonth = Customer::whereMonth('joined_at', now()->month)
+        // build base customer query
+        $baseQuery = Customer::query();
+        if ($search = $request->input('search')) {
+            $baseQuery->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('email', 'like', "%{$search}%");
+            });
+        }
+
+        // Get statistics from filtered set
+        $totalCustomers = (clone $baseQuery)->count();
+        $activeCustomers = (clone $baseQuery)->where('status', 'active')->count();
+        $totalRevenue = (clone $baseQuery)->sum('total_spent');
+        $newThisMonth = (clone $baseQuery)
+            ->whereMonth('joined_at', now()->month)
             ->whereYear('joined_at', now()->year)
             ->count();
 
-        // Get all customers
-        $customers = Customer::paginate(6);
+        // calculate growth percent versus last month
+        $lastMonthCustomers = (clone $baseQuery)
+            ->whereYear('joined_at', now()->subMonth()->year)
+            ->whereMonth('joined_at', now()->subMonth()->month)
+            ->count();
+        $growthPct = null;
+        if ($lastMonthCustomers > 0) {
+            $growthPct = round((($totalCustomers - $lastMonthCustomers) / $lastMonthCustomers) * 100);
+        }
+
+        // Get paginated customers preserving search
+        $customers = (clone $baseQuery)->paginate(6)->appends($request->only('search'));
 
         return view('customer', [
             'customers' => $customers,
@@ -28,6 +48,8 @@ class CustomerController extends Controller
             'activeCustomers' => $activeCustomers,
             'totalRevenue' => $totalRevenue,
             'newThisMonth' => $newThisMonth,
+            'growthPct' => $growthPct,
+            'search' => $search,
         ]);
     }
 
@@ -46,20 +68,33 @@ class CustomerController extends Controller
             'city' => 'nullable|string|max:255',
             'state' => 'nullable|string|max:255',
             'address' => 'nullable|string',
-            'status' => 'required|in:active,inactive',
+            // inquire status for initial inquiries, active once meeting/payment occurs
+            'status' => 'required|in:inquire,active,inactive',
         ]);
-
-        Customer::create(array_merge($validated, [
-            'joined_at' => now(),
-        ]));
+        // set joined_at on create if active
+        if (($validated['status'] ?? '') === 'active') {
+            $validated['joined_at'] = now();
+        }
+        Customer::create($validated);
 
         return redirect()->route('customers.index')->with('success', 'Customer created successfully.');
     }
 
     public function show(Customer $customer): View
     {
-        $customer->load(['transactions', 'messages', 'user']);
-        return view('customers.show', ['customer' => $customer]);
+        // eager load non-transaction relations
+        $customer->load(['messages', 'user']);
+
+        // paginate the customer's transactions, include property relation
+        $transactions = $customer->transactions()
+            ->with('property')
+            ->latest()
+            ->paginate(10);
+
+        return view('customers.show', [
+            'customer' => $customer,
+            'transactions' => $transactions,
+        ]);
     }
 
     public function edit(Customer $customer): View
@@ -76,8 +111,13 @@ class CustomerController extends Controller
             'city' => 'nullable|string|max:255',
             'state' => 'nullable|string|max:255',
             'address' => 'nullable|string',
-            'status' => 'in:active,inactive',
+            'status' => 'in:inquire,active,inactive',
         ]);
+
+        // if switching to active and joined_at not already set, stamp it
+        if (($validated['status'] ?? $customer->status) === 'active' && is_null($customer->joined_at)) {
+            $validated['joined_at'] = now();
+        }
 
         $customer->update($validated);
 

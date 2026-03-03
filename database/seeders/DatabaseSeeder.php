@@ -19,25 +19,41 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Create test user
-        $user = User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        // wipe all data except admin user
+        // disable foreign key checks to safely remove data (works with multiple drivers)
+        \Schema::disableForeignKeyConstraints();
 
-        // Create additional users
-        User::factory(3)->create();
+        Message::truncate();
+        Transaction::truncate();
+        Customer::truncate();
+        PropertyListing::truncate();
 
-        // Create properties
-        PropertyListing::factory(20)->create();
+        \Schema::enableForeignKeyConstraints();
+        // keep only admin user
+        User::where('email', '!=', 'admin@example.com')->delete();
 
-        // Create customers
-        Customer::factory(50)->create();
+        // ensure admin user exists
+        User::firstOrCreate(
+            ['email' => 'admin@example.com'],
+            ['name' => 'Admin', 'password' => bcrypt('password')]
+        );
 
-        // Create transactions
-        Transaction::factory(100)->create();
+        // Optionally seed minimal data for demonstration
+        // create a default customer and a sample property so the admin
+        // can exercise transactions/messages without manually adding them
+        Customer::firstOrCreate(
+            ['email' => 'customer@example.com'],
+            ['name' => 'John Doe', 'phone' => '09171234567']
+        );
 
-        // Create messages
-        Message::factory(30)->create();
+        PropertyListing::firstOrCreate(
+            ['title' => 'Demo Lot'],
+            [
+                'price' => 1000000,
+                'category' => 'residential',
+                'status' => 'published',
+                'completion_percentage' => 100,
+            ]
+        );
     }
 }

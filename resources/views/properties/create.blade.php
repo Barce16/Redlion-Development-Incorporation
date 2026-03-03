@@ -87,7 +87,7 @@
                                 @error('title')<span class="text-red-500 text-sm">{{ $message }}</span>@enderror
                             </div>
 
-                           
+
 
                             <!-- Category (Project Type) -->
                             <div>
@@ -134,7 +134,7 @@
                         <div class="space-y-6">
                             <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Financial Details</h3>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                               
+
                                 <!-- Per Sqm Price -->
                                 <div>
                                     <label for="price_per_sqm" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -174,9 +174,9 @@
                             </div>
                         </div>
 
-                        
 
-                        
+
+
 
                         <!-- Plans & Design -->
                         <div class="space-y-6">
@@ -199,6 +199,16 @@
                                     <input type="file" id="site_plan_pdf" name="site_plan_pdf" accept="application/pdf"
                                            class="block w-full text-sm text-gray-700 dark:text-gray-300">
                                     @error('site_plan_pdf')<span class="text-red-500 text-sm">{{ $message }}</span>@enderror
+                                </div>
+                                <!-- Hero Image for Welcome Page -->
+                                <div class="md:col-span-2">
+                                    <label for="hero_image" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                        Hero Image (for Welcome Page Display)
+                                    </label>
+                                    <input type="file" id="hero_image" name="hero_image" accept="image/*"
+                                           class="block w-full text-sm text-gray-700 dark:text-gray-300">
+                                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">This image will be displayed in the hero section of the welcome page</p>
+                                    @error('hero_image')<span class="text-red-500 text-sm">{{ $message }}</span>@enderror
                                 </div>
                                 <!-- 3D Perspective Render / Image Gallery -->
                                 <div class="md:col-span-2">

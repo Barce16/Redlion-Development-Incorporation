@@ -7,9 +7,17 @@
   <title>Login - REDLION</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-  <style>body{font-family:'Inter',sans-serif;}</style>
+  <style>body{font-family:'Inter',sans-serif;}
+    body {
+    background-image: url("/images/background.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+  </style>
+
 </head>
-<body class="min-h-screen bg-gray-950 text-white flex items-center justify-center">
+<body class="min-h-screen text-white flex items-center justify-center"
+  style="background-image: url('{{ asset('images/final.jpg') }}'); background-size: cover; background-position: center; background-repeat: no-repeat;">
 
   <div class="w-full max-w-md p-8 bg-gray-900/60 border border-white/10 rounded-2xl shadow-xl">
     <div class="text-center mb-6">

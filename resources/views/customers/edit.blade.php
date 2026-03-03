@@ -32,16 +32,20 @@
 
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Phone</label>
-                                <input type="text" name="phone" value="{{ old('phone', $customer->phone) }}"
+                                <input type="text" name="phone" value="{{ old('phone', $customer->phone) }}" {{ old('status', $customer->status) !== 'active' ? 'disabled' : '' }}
                                     class="block w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg
                                     dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
                                 @error('phone')<span class="text-red-500 text-sm">{{ $message }}</span>@enderror
+                                @if(old('status', $customer->status) !== 'active')
+                                    <p class="text-xs text-gray-500">Phone can be edited once customer is active.</p>
+                                @endif
                             </div>
 
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Status</label>
                                 <select name="status" class="block w-full px-4 py-2 border border-gray-300
                                     dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    <option value="inquire" {{ old('status', $customer->status) == 'inquire' ? 'selected' : '' }}>Inquire</option>
                                     <option value="active" {{ old('status', $customer->status) == 'active' ? 'selected' : '' }}>Active</option>
                                     <option value="inactive" {{ old('status', $customer->status) == 'inactive' ? 'selected' : '' }}>Inactive</option>
                                 </select>
@@ -50,27 +54,36 @@
 
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">City</label>
-                                <input type="text" name="city" value="{{ old('city', $customer->city) }}"
+                                <input type="text" name="city" value="{{ old('city', $customer->city) }}" {{ old('status', $customer->status) !== 'active' ? 'disabled' : '' }}
                                     class="block w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg
                                     dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
                                 @error('city')<span class="text-red-500 text-sm">{{ $message }}</span>@enderror
+                                @if(old('status', $customer->status) !== 'active')
+                                    <p class="text-xs text-gray-500">Location can be edited once customer is active.</p>
+                                @endif
                             </div>
 
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">State</label>
-                                <input type="text" name="state" value="{{ old('state', $customer->state) }}"
+                                <input type="text" name="state" value="{{ old('state', $customer->state) }}" {{ old('status', $customer->status) !== 'active' ? 'disabled' : '' }}
                                     class="block w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg
                                     dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
                                 @error('state')<span class="text-red-500 text-sm">{{ $message }}</span>@enderror
+                                @if(old('status', $customer->status) !== 'active')
+                                    <p class="text-xs text-gray-500">Location can be edited once customer is active.</p>
+                                @endif
                             </div>
                         </div>
 
                         <div>
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Address</label>
-                            <textarea name="address" rows="4"
+                            <textarea name="address" rows="4" {{ old('status', $customer->status) !== 'active' ? 'disabled' : '' }}
                                 class="block w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg
                                 dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500">{{ old('address', $customer->address) }}</textarea>
                             @error('address')<span class="text-red-500 text-sm">{{ $message }}</span>@enderror
+                            @if(old('status', $customer->status) !== 'active')
+                                <p class="text-xs text-gray-500">Address can be edited once customer is active.</p>
+                            @endif
                         </div>
 
                         <div class="flex gap-4 justify-end">

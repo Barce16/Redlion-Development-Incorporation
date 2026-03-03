@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\PropertyListing;
+use App\Models\Message;
+use App\Models\User;
+use App\Models\Customer;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -64,6 +67,7 @@ class PropertyController extends Controller
             'brochure_file' => 'nullable|file|mimes:pdf,doc,docx|max:5000',
             'floor_plan_pdf' => 'nullable|file|mimes:pdf|max:5000',
             'site_plan_pdf' => 'nullable|file|mimes:pdf|max:5000',
+            'hero_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'project_images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
@@ -76,6 +80,9 @@ class PropertyController extends Controller
         }
         if ($request->hasFile('site_plan_pdf')) {
             $validated['site_plan_pdf'] = $request->file('site_plan_pdf')->store('properties/plans', 'public');
+        }
+        if ($request->hasFile('hero_image')) {
+            $validated['hero_image'] = $request->file('hero_image')->store('properties/hero', 'public');
         }
 
         $property = PropertyListing::create($validated);
@@ -96,6 +103,8 @@ class PropertyController extends Controller
 
     public function show(PropertyListing $property): View
     {
+        // automatically count a view each time the page is rendered
+        $property->increment('views');
         return view('properties.show', ['property' => $property]);
     }
 
@@ -123,6 +132,9 @@ class PropertyController extends Controller
             'brochure_file' => 'nullable|file|mimes:pdf,doc,docx|max:5000',
             'floor_plan_pdf' => 'nullable|file|mimes:pdf|max:5000',
             'site_plan_pdf' => 'nullable|file|mimes:pdf|max:5000',
+            'hero_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'featured_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'premium_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'project_images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
@@ -135,6 +147,15 @@ class PropertyController extends Controller
         }
         if ($request->hasFile('site_plan_pdf')) {
             $validated['site_plan_pdf'] = $request->file('site_plan_pdf')->store('properties/plans', 'public');
+        }
+        if ($request->hasFile('hero_image')) {
+            $validated['hero_image'] = $request->file('hero_image')->store('properties/hero', 'public');
+        }
+        if ($request->hasFile('featured_image')) {
+            $validated['featured_image'] = $request->file('featured_image')->store('properties/featured', 'public');
+        }
+        if ($request->hasFile('premium_image')) {
+            $validated['premium_image'] = $request->file('premium_image')->store('properties/premium', 'public');
         }
 
         $property->update($validated);
@@ -159,15 +180,72 @@ class PropertyController extends Controller
         return redirect()->route('properties.index')->with('success', 'Property deleted successfully.');
     }
 
-    public function incrementViews(PropertyListing $property): RedirectResponse
+
+    /**
+     * Handle customer inquiry for a property.
+     * Creates a message to admin and increments inquiry count.
+     */
+    public function inquire(Request $request, PropertyListing $property): RedirectResponse
     {
-        $property->increment('views');
-        return back();
+        $validated = $request->validate([
+            'customer_id' => 'required|exists:customers,id',
+            'message' => 'nullable|string',
+        ]);
+
+        // increment the counter
+        $property->increment('inquiries');
+
+        if (!empty($validated['message'])) {
+            // remove existing messages so only current inquiry remains
+            Message::truncate();
+            $admin = User::where('email', 'admin@example.com')->first();
+            Message::create([
+                'customer_id' => $validated['customer_id'],
+                'user_id' => $admin ? $admin->id : null,
+                'subject' => 'Inquiry about ' . $property->title,
+                'body' => $validated['message'],
+                'status' => 'unread',
+            ]);
+        }
+
+        return back()->with('success', 'Your inquiry has been sent.');
     }
 
-    public function incrementInquiries(PropertyListing $property): RedirectResponse
+    /**
+     * Handle public inquiry from welcome page or unauthenticated visitor.
+     * Creates/updates a customer record and message then increments property
+     * inquiry count.
+     */
+    public function publicInquire(Request $request): RedirectResponse
     {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'phone' => 'nullable|string|max:50',
+            'property_id' => 'required|exists:property_listings,id',
+            'message' => 'nullable|string',
+        ]);
+
+        // find or create customer by email
+        $customer = Customer::firstOrCreate(
+            ['email' => $validated['email']],
+            ['name' => $validated['name'], 'phone' => $validated['phone'] ?? null]
+        );
+
+        $property = PropertyListing::find($validated['property_id']);
         $property->increment('inquiries');
-        return back();
+
+        // clear previous messages
+        Message::truncate();
+        $admin = User::where('email', 'admin@example.com')->first();
+        Message::create([
+            'customer_id' => $customer->id,
+            'user_id' => $admin ? $admin->id : null,
+            'subject' => 'Inquiry about ' . $property->title,
+            'body' => $validated['message'] ?? 'No message provided',
+            'status' => 'unread',
+        ]);
+
+        return back()->with('success', 'Thank you for your inquiry. We will get back to you shortly.');
     }
 }

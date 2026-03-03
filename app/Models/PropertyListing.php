@@ -2,18 +2,17 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class PropertyListing extends Model
 {
-    use HasFactory;
-
     protected $table = 'property_listings';
 
     protected $fillable = [
         'title',
+        'project_name',
+        'developer_company',
         'description',
         'type',
         'category',
@@ -34,10 +33,6 @@ class PropertyListing extends Model
         'inquiries',
         'sales',
         'status',
-
-        // Premium Fields
-        'project_name',
-        'developer_company',
         'completion_percentage',
         'total_investment',
         'price_per_sqm',
@@ -46,7 +41,12 @@ class PropertyListing extends Model
         'brochure_file',
         'floor_plan_pdf',
         'site_plan_pdf',
+        'hero_image',
+        'featured_image',
+        'premium_image',
+        'extra_flags',
     ];
+
 
     protected $casts = [
         'price' => 'decimal:2',
@@ -65,6 +65,13 @@ class PropertyListing extends Model
 
     public function images(): HasMany
     {
-        return $this->hasMany(ProjectImage::class, 'property_id');
+        return $this->hasMany(ProjectImage::class, 'property_id', 'id')
+            ->orderBy('sort_order')
+            ->orderBy('id');
+    }
+
+    public function welcomeImages(): HasMany
+    {
+        return $this->hasMany(WelcomeImage::class, 'property_id', 'id')->orderBy('sort_order')->orderBy('id');
     }
 }

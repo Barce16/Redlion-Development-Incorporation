@@ -41,23 +41,56 @@
 
                     <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                         <div class="p-6">
-                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Recent Transactions</h3>
-                            @if($customer->transactions->count() > 0)
-                                <div class="space-y-3">
-                                    @foreach($customer->transactions->take(5) as $transaction)
-                                        <div class="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-700 rounded">
-                                            <div>
-                                                <p class="font-semibold text-gray-900 dark:text-white">{{ $transaction->invoice_id }}</p>
-                                                <p class="text-sm text-gray-600 dark:text-gray-400">{{ $transaction->transaction_date->format('M d, Y') }}</p>
-                                            </div>
-                                            <div class="text-right">
-                                                <p class="font-semibold text-gray-900 dark:text-white">₱{{ number_format($transaction->amount, 2) }}</p>
-                                                <span class="text-xs px-2 py-1 rounded {{ $transaction->status == 'paid' ? 'bg-green-100 text-green-700 dark:bg-green-900' : 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900' }}">
-                                                    {{ ucfirst($transaction->status) }}
-                                                </span>
-                                            </div>
-                                        </div>
-                                    @endforeach
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Transactions</h3>
+                                <a href="{{ route('transactions.create', ['customer_id' => $customer->id]) }}"
+                                   class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition">
+                                    Add Transaction
+                                </a>
+                            </div>
+                            @if($transactions->count() > 0)
+                                <div class="overflow-x-auto">
+                                    <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                                        <thead class="bg-gray-50 dark:bg-gray-700">
+                                            <tr>
+                                                <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Invoice</th>
+                                                <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
+                                                <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Property</th>
+                                                <th class="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase">Amount</th>
+                                                <th class="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase">Status</th>
+                                                <th class="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                                            @foreach($transactions as $transaction)
+                                                <tr>
+                                                    <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900 dark:text-white">{{ $transaction->invoice_id }}</td>
+                                                    <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">{{ $transaction->transaction_date->format('M d, Y') }}</td>
+                                                    <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                                                        @if($transaction->property)
+                                                            <a href="{{ route('properties.show', $transaction->property) }}" class="hover:underline">
+                                                                {{ $transaction->property->title }}
+                                                            </a>
+                                                        @else
+                                                            N/A
+                                                        @endif
+                                                    </td>
+                                                    <td class="px-4 py-2 whitespace-nowrap text-sm text-right text-gray-900 dark:text-white">₱{{ number_format($transaction->amount,2) }}</td>
+                                                    <td class="px-4 py-2 whitespace-nowrap text-center">
+                                                        <span class="inline-block px-2 py-1 rounded text-xs font-semibold {{ $transaction->status == 'paid' ? 'bg-green-100 text-green-700 dark:bg-green-900' : 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900' }}">
+                                                            {{ ucfirst($transaction->status) }}
+                                                        </span>
+                                                    </td>
+                                                    <td class="px-4 py-2 whitespace-nowrap text-right text-sm font-medium">
+                                                        <a href="{{ route('transactions.show', $transaction) }}" class="text-blue-600 dark:text-blue-400 hover:underline">View</a>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="mt-4">
+                                    {{ $transactions->links() }}
                                 </div>
                             @else
                                 <p class="text-gray-600 dark:text-gray-400">No transactions yet.</p>

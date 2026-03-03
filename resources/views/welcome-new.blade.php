@@ -181,7 +181,9 @@ body {
             @forelse($featuredProperties as $property)
             <a href="{{ route('properties.show', $property->id) }}" class="group bg-white rounded-2xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden">
                 <div class="relative h-56 overflow-hidden bg-gradient-to-br from-red-600 to-red-700">
-                    @if($property->images->isNotEmpty())
+                    @if($property->featured_image)
+                        <img src="/storage/{{ $property->featured_image }}" alt="{{ $property->title }}" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                    @elseif($property->images->isNotEmpty())
                         <img src="/storage/{{ $property->images->first()->image_path }}" alt="{{ $property->title }}" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
                     @else
                         <div class="w-full h-full flex items-center justify-center">
