@@ -24,6 +24,10 @@ class WelcomeImageController extends Controller
             'images' => 'nullable|array|max:20',
             'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
             'caption' => 'nullable|string|max:255',
+            'alt_text' => 'nullable|string|max:255',
+            'property_listing_id' => 'nullable|exists:property_listings,id',
+            'tags' => 'nullable|array',
+            'tags.*' => 'nullable|string|max:50',
             'is_published' => 'nullable|in:true,false,1,0',  // Accept string or numeric boolean
             'scheduled_publish_at' => 'nullable|date_format:Y-m-d H:i',
             'meta' => 'nullable|array',
@@ -69,6 +73,9 @@ class WelcomeImageController extends Controller
                 'type' => $validated['type'],
                 'image_path' => $path,
                 'caption' => $validated['caption'] ?? null,
+                'alt_text' => $validated['alt_text'] ?? null,
+                'property_listing_id' => $validated['property_listing_id'] ?? null,
+                'tags' => $validated['tags'] ?? null,
                 'meta' => $validated['meta'] ?? null,
                 'sort_order' => $maxSort,
                 'is_published' => (bool) ($validated['is_published'] ?? true),
@@ -90,9 +97,16 @@ class WelcomeImageController extends Controller
      */
     public function update(Request $request, WelcomeImage $welcomeImage): JsonResponse
     {
+        // log incoming data for easier debugging of edit issues
+        \Log::info('WelcomeImageController::update called', ['id' => $welcomeImage->id, 'request' => $request->all()]);
+
         $validated = $request->validate([
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'caption' => 'nullable|string|max:255',
+            'alt_text' => 'nullable|string|max:255',
+            'property_listing_id' => 'nullable|exists:property_listings,id',
+            'tags' => 'nullable|array',
+            'tags.*' => 'nullable|string|max:50',
             'is_published' => 'nullable|in:true,false,1,0',  // Accept both string and numeric boolean
             'scheduled_publish_at' => 'nullable|date_format:Y-m-d H:i',
             'meta' => 'nullable|array',
@@ -104,30 +118,51 @@ class WelcomeImageController extends Controller
             $validated['is_published'] = filter_var($validated['is_published'], FILTER_VALIDATE_BOOLEAN);
         }
 
+        // replace file if new one provided
         if ($request->hasFile('image')) {
-            // delete old file
             Storage::disk('public')->delete($welcomeImage->image_path);
             $path = $request->file('image')->store('welcome/' . $welcomeImage->type, 'public');
             $welcomeImage->image_path = $path;
         }
 
+        // update simple scalar attributes
         if (array_key_exists('caption', $validated)) {
             $welcomeImage->caption = $validated['caption'];
         }
-
-        if (array_key_exists('meta', $validated)) {
-            $welcomeImage->meta = $validated['meta'] ?: null;
+        if (array_key_exists('alt_text', $validated)) {
+            $welcomeImage->alt_text = $validated['alt_text'];
         }
-
+        if (array_key_exists('property_listing_id', $validated)) {
+            $welcomeImage->property_listing_id = $validated['property_listing_id'];
+        }
         if (array_key_exists('is_published', $validated)) {
             $welcomeImage->is_published = (bool) $validated['is_published'];
         }
-
         if (array_key_exists('scheduled_publish_at', $validated)) {
-            $welcomeImage->scheduled_publish_at = $validated['scheduled_publish_at'] ? Carbon::createFromFormat('Y-m-d H:i', $validated['scheduled_publish_at']) : null;
+            $welcomeImage->scheduled_publish_at = $validated['scheduled_publish_at']
+                ? Carbon::createFromFormat('Y-m-d H:i', $validated['scheduled_publish_at'])
+                : null;
+        }
+        if (array_key_exists('tags', $validated)) {
+            $welcomeImage->tags = $validated['tags'] ?: null;
+        }
+
+        // merge meta rather than replacing entirely to avoid losing unedited fields
+        if (array_key_exists('meta', $validated)) {
+            $existing = $welcomeImage->meta ?? [];
+            foreach ($validated['meta'] as $key => $value) {
+                if ($value === null || $value === '') {
+                    unset($existing[$key]);
+                } else {
+                    $existing[$key] = $value;
+                }
+            }
+            $welcomeImage->meta = $existing ?: null;
         }
 
         $welcomeImage->save();
+
+        \Log::info('WelcomeImageController::update completed', ['id' => $welcomeImage->id, 'model'=> $welcomeImage->toArray()]);
 
         return response()->json(['success' => true]);
     }

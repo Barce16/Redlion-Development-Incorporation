@@ -82,7 +82,7 @@
                             </thead>
                             <tbody>
                                 @foreach($heroImages as $img)
-                                    <tr class="border-b" data-id="{{ $img->id }}" data-caption="{{ $img->caption ?? '' }}" data-published="{{ $img->is_published ? 'true' : 'false' }}" data-schedule="{{ $img->scheduled_publish_at?->format('Y-m-d H:i') ?? '' }}" data-meta="{{ json_encode($img->meta ?? []) }}">
+                                    <tr class="border-b" data-id="{{ $img->id }}" data-caption="{{ $img->caption ?? '' }}" data-alt="{{ $img->alt_text ?? '' }}" data-property="{{ $img->property_listing_id ?? '' }}" data-tags="{{ is_array($img->tags) ? implode(',', $img->tags) : '' }}" data-published="{{ $img->is_published ? 'true' : 'false' }}" data-schedule="{{ $img->scheduled_publish_at?->format('Y-m-d H:i') ?? '' }}" data-meta="{{ json_encode($img->meta ?? []) }}">
                                         <td class="p-2"><img src="{{ asset('storage/' . $img->image_path) }}" class="h-10 w-16 object-cover rounded"></td>
                                         <td class="p-2">{{ $img->caption ?? '—' }}</td>
                                         <td class="p-2">
@@ -135,6 +135,10 @@
                     </div>
 
                     <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Alt text (Optional)</label>
+                        <input type="text" id="hero-alt" placeholder="Describe the image for accessibility" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-800 dark:text-white text-sm">
+                    </div>
+                    <div>
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Caption (Optional)</label>
                         <textarea id="hero-desc" placeholder="Add a caption..." class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-800 dark:text-white text-sm" rows="2"></textarea>
                     </div>
@@ -169,6 +173,15 @@
                                     <option value="commercial">Commercial</option>
                                 </select>
                             </div>
+                        </div>
+
+                        <div class="mt-4">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Property ID (Optional)</label>
+                            <input type="number" id="hero-property" placeholder="Link to property by ID" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-800 dark:text-white text-sm">
+                        </div>
+                        <div class="mt-3">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Tags (comma separated)</label>
+                            <input type="text" id="hero-tags" placeholder="e.g., new,hot" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-800 dark:text-white text-sm">
                         </div>
                     </div>
 
@@ -212,6 +225,10 @@
                     </div>
 
                     <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Alt text</label>
+                        <input type="text" id="hero-edit-alt" placeholder="Describe the image" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-800 dark:text-white text-sm">
+                    </div>
+                    <div>
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Caption</label>
                         <textarea id="hero-edit-desc" placeholder="Add a caption..." class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-800 dark:text-white text-sm" rows="2"></textarea>
                     </div>
@@ -246,6 +263,15 @@
                                     <option value="commercial">Commercial</option>
                                 </select>
                             </div>
+                        </div>
+
+                        <div class="mt-4">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Property ID (Optional)</label>
+                            <input type="number" id="hero-edit-property" placeholder="Link to property by ID" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-800 dark:text-white text-sm">
+                        </div>
+                        <div class="mt-3">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Tags (comma separated)</label>
+                            <input type="text" id="hero-edit-tags" placeholder="e.g., new,hot" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-800 dark:text-white text-sm">
                         </div>
                     </div>
 
@@ -295,7 +321,7 @@
                             </thead>
                             <tbody id="featured-tbody">
                                 @foreach($featuredImages as $img)
-                                    <tr class="border-b hover:bg-gray-100 dark:hover:bg-gray-600 cursor-move" draggable="true" ondragstart="handleDragStart(event)" ondragover="handleDragOver(event)" ondrop="handleDrop(event, 'featured')" ondragend="handleDragEnd(event)" data-id="{{ $img->id }}" data-caption="{{ $img->caption ?? '' }}" data-published="{{ $img->is_published ? 'true' : 'false' }}" data-meta="{{ json_encode($img->meta ?? []) }}">
+                                    <tr class="border-b hover:bg-gray-100 dark:hover:bg-gray-600 cursor-move" draggable="true" ondragstart="handleDragStart(event)" ondragover="handleDragOver(event)" ondrop="handleDrop(event, 'featured')" ondragend="handleDragEnd(event)" data-id="{{ $img->id }}" data-caption="{{ $img->caption ?? '' }}" data-alt="{{ $img->alt_text ?? '' }}" data-property="{{ $img->property_listing_id ?? '' }}" data-tags="{{ is_array($img->tags) ? implode(',', $img->tags) : '' }}" data-published="{{ $img->is_published ? 'true' : 'false' }}" data-meta="{{ json_encode($img->meta ?? []) }}">
                                         <td class="p-2 text-gray-400">⋮⋮</td>
                                         <td class="p-2"><img src="{{ asset('storage/' . $img->image_path) }}" class="h-10 w-16 object-cover rounded"></td>
                                         <td class="p-2 truncate">{{ $img->caption ?? '—' }}</td>
@@ -346,6 +372,10 @@
                     <div id="featured-preview-grid" class="grid grid-cols-3 gap-4" style="display:none;"></div>
 
                     <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Alt text (Optional)</label>
+                        <input type="text" id="featured-alt" placeholder="Describe the image" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-800 dark:text-white text-sm">
+                    </div>
+                    <div>
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Caption</label>
                         <textarea id="featured-desc" placeholder="Add a caption..." class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-800 dark:text-white text-sm" rows="2"></textarea>
                     </div>
@@ -380,6 +410,15 @@
                                     <option value="commercial">Commercial</option>
                                 </select>
                             </div>
+                        </div>
+
+                        <div class="mt-4">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Property ID (Optional)</label>
+                            <input type="number" id="featured-property" placeholder="Link to property by ID" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-800 dark:text-white text-sm">
+                        </div>
+                        <div class="mt-3">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Tags (comma separated)</label>
+                            <input type="text" id="featured-tags" placeholder="e.g., new,hot" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-800 dark:text-white text-sm">
                         </div>
                     </div>
 
@@ -417,6 +456,10 @@
                     </div>
 
                     <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Alt text</label>
+                        <input type="text" id="featured-edit-alt" placeholder="Describe the image" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-800 dark:text-white text-sm">
+                    </div>
+                    <div>
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Caption</label>
                         <textarea id="featured-edit-desc" placeholder="Add a caption..." class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-800 dark:text-white text-sm" rows="2"></textarea>
                     </div>
@@ -451,6 +494,15 @@
                                     <option value="commercial">Commercial</option>
                                 </select>
                             </div>
+                        </div>
+
+                        <div class="mt-4">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Property ID (Optional)</label>
+                            <input type="number" id="featured-edit-property" placeholder="Link to property by ID" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-800 dark:text-white text-sm">
+                        </div>
+                        <div class="mt-3">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Tags (comma separated)</label>
+                            <input type="text" id="featured-edit-tags" placeholder="e.g., new,hot" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-800 dark:text-white text-sm">
                         </div>
                     </div>
 
@@ -494,7 +546,7 @@
                             </thead>
                             <tbody id="premium-tbody">
                                 @foreach($premiumImages as $img)
-                                    <tr class="border-b hover:bg-gray-100 dark:hover:bg-gray-600 cursor-move" draggable="true" ondragstart="handleDragStart(event)" ondragover="handleDragOver(event)" ondrop="handleDrop(event, 'premium')" ondragend="handleDragEnd(event)" data-id="{{ $img->id }}" data-caption="{{ $img->caption ?? '' }}" data-published="{{ $img->is_published ? 'true' : 'false' }}" data-meta="{{ json_encode($img->meta ?? []) }}">
+                                    <tr class="border-b hover:bg-gray-100 dark:hover:bg-gray-600 cursor-move" draggable="true" ondragstart="handleDragStart(event)" ondragover="handleDragOver(event)" ondrop="handleDrop(event, 'premium')" ondragend="handleDragEnd(event)" data-id="{{ $img->id }}" data-caption="{{ $img->caption ?? '' }}" data-alt="{{ $img->alt_text ?? '' }}" data-property="{{ $img->property_listing_id ?? '' }}" data-tags="{{ is_array($img->tags) ? implode(',', $img->tags) : '' }}" data-published="{{ $img->is_published ? 'true' : 'false' }}" data-meta="{{ json_encode($img->meta ?? []) }}">
                                         <td class="p-2 text-gray-400">⋮⋮</td>
                                         <td class="p-2"><img src="{{ asset('storage/' . $img->image_path) }}" class="h-10 w-16 object-cover rounded"></td>
                                         <td class="p-2 truncate">{{ $img->caption ?? '—' }}</td>
@@ -545,6 +597,10 @@
                     <div id="premium-preview-grid" class="grid grid-cols-3 gap-4" style="display:none;"></div>
 
                     <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Alt text (Optional)</label>
+                        <input type="text" id="premium-alt" placeholder="Describe the image" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-800 dark:text-white text-sm">
+                    </div>
+                    <div>
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Caption (for single edit)</label>
                         <textarea id="premium-desc" placeholder="Add a caption..." class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-800 dark:text-white text-sm" rows="2"></textarea>
                     </div>
@@ -579,6 +635,15 @@
                                     <option value="commercial">Commercial</option>
                                 </select>
                             </div>
+                        </div>
+
+                        <div class="mt-4">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Property ID (Optional)</label>
+                            <input type="number" id="premium-property" placeholder="Link to property by ID" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-800 dark:text-white text-sm">
+                        </div>
+                        <div class="mt-3">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Tags (comma separated)</label>
+                            <input type="text" id="premium-tags" placeholder="e.g., new,hot" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-800 dark:text-white text-sm">
                         </div>
                     </div>
 
@@ -616,6 +681,10 @@
                     </div>
 
                     <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Alt text</label>
+                        <input type="text" id="premium-edit-alt" placeholder="Describe the image" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-800 dark:text-white text-sm">
+                    </div>
+                    <div>
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Caption</label>
                         <textarea id="premium-edit-desc" placeholder="Add a caption..." class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-800 dark:text-white text-sm" rows="2"></textarea>
                     </div>
@@ -650,6 +719,15 @@
                                     <option value="commercial">Commercial</option>
                                 </select>
                             </div>
+                        </div>
+
+                        <div class="mt-4">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Property ID (Optional)</label>
+                            <input type="number" id="premium-edit-property" placeholder="Link to property by ID" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-800 dark:text-white text-sm">
+                        </div>
+                        <div class="mt-3">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Tags (comma separated)</label>
+                            <input type="text" id="premium-edit-tags" placeholder="e.g., new,hot" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-800 dark:text-white text-sm">
                         </div>
                     </div>
 
@@ -947,10 +1025,22 @@
             const schedule = row.dataset.schedule || '';
             const meta = row.dataset.meta ? JSON.parse(row.dataset.meta) : {};
             const imgPath = row.querySelector('img').src;
+            const alt = row.dataset.alt || '';
+            const propertyId = row.dataset.property || '';
+            const tags = row.dataset.tags || '';
 
             // Populate edit form
             document.getElementById(`${type}-edit-id`).value = id;
             document.getElementById(`${type}-edit-desc`).value = caption;
+            if (document.getElementById(`${type}-edit-alt`)) {
+                document.getElementById(`${type}-edit-alt`).value = alt;
+            }
+            if (document.getElementById(`${type}-edit-property`)) {
+                document.getElementById(`${type}-edit-property`).value = propertyId;
+            }
+            if (document.getElementById(`${type}-edit-tags`)) {
+                document.getElementById(`${type}-edit-tags`).value = tags;
+            }
             document.getElementById(`${type}-edit-published`).checked = published;
             document.getElementById(`${type}-edit-img`).src = imgPath;
 
@@ -1006,6 +1096,9 @@
             const locationInput = document.getElementById(`${type}-edit-location`);
             const priceInput = document.getElementById(`${type}-edit-price`);
             const typeInput = document.getElementById(`${type}-edit-type`);
+            const altInput = document.getElementById(`${type}-edit-alt`);
+            const propInput = document.getElementById(`${type}-edit-property`);
+            const tagsInput = document.getElementById(`${type}-edit-tags`);
 
             const formData = new FormData();
 
@@ -1015,6 +1108,17 @@
             }
 
             formData.append('caption', descInput.value);
+            if (altInput) {
+                formData.append('alt_text', altInput.value);
+            }
+            if (propInput) {
+                formData.append('property_listing_id', propInput.value);
+            }
+            if (tagsInput) {
+                // tags entered as comma-separated
+                const tags = tagsInput.value.split(',').map(t => t.trim()).filter(t => t);
+                tags.forEach((tag, idx) => formData.append(`tags[${idx}]`, tag));
+            }
             formData.append('is_published', publishedCheckbox.checked ? 'true' : 'false');
 
             // Handle schedule if it exists
@@ -1023,21 +1127,26 @@
                 formData.append('scheduled_publish_at', formatted);
             }
 
-            // Add property details if provided
-            if (sqmInput && sqmInput.value) {
+            // Always append meta fields (may be empty strings) so we don't inadvertently wipe them
+            if (sqmInput) {
                 formData.append('meta[sqm]', sqmInput.value);
             }
-            if (locationInput && locationInput.value) {
+            if (locationInput) {
                 formData.append('meta[location]', locationInput.value);
             }
-            if (priceInput && priceInput.value) {
+            if (priceInput) {
                 formData.append('meta[price]', priceInput.value);
             }
-            if (typeInput && typeInput.value) {
+            if (typeInput) {
                 formData.append('meta[property_type]', typeInput.value);
             }
 
             formData.append('_token', csrfToken);
+
+            // DEBUG: log form data contents
+            for (let pair of formData.entries()) {
+                console.log('formData', pair[0], pair[1]);
+            }
 
             fetch(`/welcome-images/${editId}`, {
                 method: 'PATCH',
